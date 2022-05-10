@@ -6,10 +6,21 @@
 
 namespace ft
 {
+
+
+
 	template < typename T >
 	class vecIter
 	{
-
+		public:
+			typedef	T	value_type;
+			typedef std::ptrdiff_t	difference_type;
+			typedef T*	pointer;
+			typedef const T* const_pointer;
+			typedef	T&	reference;
+			typedef const T&	const_reference;
+		
+		
 	};
 
 	template < class T, class Alloc = std::allocator<T> >
@@ -18,14 +29,19 @@ namespace ft
 		private:
 
 		public:
-			typedef	T			value_type;
-			typedef	Alloc		allocator_type;
-			typedef size_t		size_type;
-			typedef	ptrdiff_t	difference_type;
-			typedef	T&			reference;
-			typedef	const T&	const_reference;
-			typedef	T*			pointer;
-			typedef	const T*	const_pointer;
+			typedef	T						value_type;
+			typedef	Alloc					allocator_type;
+			typedef std::size_t				size_type;
+			typedef	std::ptrdiff_t			difference_type;
+			typedef	T&						reference;
+			typedef	const T&				const_reference;
+			typedef	T*						pointer;
+			typedef	const T*				const_pointer;
+			typedef /*iterator*/			iterator;
+			typedef const /*iterator*/		const_interator;
+			typedef	/*rev iterator*/		reverse_iterator;
+			typedef const /*rev iterator*/	const_reverse_iterator;
+	
 	// iterator
 	// const_iterator
 	// reverse_itorator
@@ -90,7 +106,7 @@ std::swap(std::vector)
 }
 
 /*
-
+You also have to implement:
 • iterators_traits
 • reverse_iterator
 • enable_if
