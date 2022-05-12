@@ -41,15 +41,11 @@ namespace ft
 			typedef const /*iterator*/		const_interator;
 			typedef	/*rev iterator*/		reverse_iterator;
 			typedef const /*rev iterator*/	const_reverse_iterator;
-	
-	// iterator
-	// const_iterator
-	// reverse_itorator
-	// const_reverse_iterator
-
 
 /******* Member functions *******/
 /* Constructor */
+		
+
 /* Destructor */
 /* Operator = */
 /* assign */
