@@ -2,7 +2,11 @@
 # define VECTOR_HPP
 
 # include <iostream>
-# include <vector>
+# include <memory> // allocator<T>
+
+/* vectors are sequence containers that can change in size
+their size can change dynamically, with their storage being handled automatically by the container
+*/
 
 namespace ft
 {
@@ -10,11 +14,9 @@ namespace ft
 	class vector
 	{
 		private:
-			/*
-			
-			- full size
-			- filled element size / count
-			*/
+			Alloc	_allocator;
+			int		_capacity;
+			int		_size;
 
 		public:
 			typedef	T						value_type;
@@ -25,14 +27,14 @@ namespace ft
 			typedef	const T&				const_reference;
 			typedef	T*						pointer;
 			typedef	const T*				const_pointer;
-			// typedef /*iterator*/			iterator;
-			// typedef const /*iterator*/		const_interator;
-			// typedef	/*rev iterator*/		reverse_iterator;
-			// typedef const /*rev iterator*/	const_reverse_iterator;
+			typedef	iterator				iterator;
+			typedef const iterator			const_interator;
+			typedef	reverse_iterator		reverse_iterator;
+			typedef const reverse_iterator	const_reverse_iterator;
 
 /******* Member functions *******/
 /*  parameters:
-		alloc - allocator object; the container keeps and uses and internal ocpy of this allocator;
+		alloc - allocator object; the container keeps and uses and internal copy of this allocator;
 			member type [allocator_type] is the internal allocator type used by the container, defined in vector as an alias of its second template parameter(Alloc).
 
 		n - initial container size(ie. the number of elements in the container at construction).
@@ -57,9 +59,17 @@ namespace ft
 	/* empty container constructor (default constructor)
 		-- constructs an empty container, with no elements*/
 
-	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type());
+	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()
+	{
+		// allocate memory
+		this->_allocator = alloc;
+		this->_size = n;
+		this->_capacity = n;
+	}
 	/* fill constructor 
 		-- constructs a container with n elements. Each element is a copy of val*/
+
+
 
 	template <class InputIterator>
 		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type());
@@ -132,7 +142,6 @@ operator>=
 std::swap(std::vector)
  
  */
-
 
 	};
 }
