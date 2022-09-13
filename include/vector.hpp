@@ -1,27 +1,24 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <iostream>
+# include <iostream> // 必要？
 # include <memory> // allocator<T>
 
 /* vectors are sequence containers that can change in size
 their size can change dynamically, with their storage being handled automatically by the container
+要素数にあわせて長さを変化させる
 */
 
 namespace ft
 {
-	template <class T, class Alloc = std::allocator<T>>
+	template <class T, class Alloc = std::allocator<T>> // アロケータ：メモリの管理を請け負うクラス；生のメモリーの確保と解放を行うライブラリ
 	class vector
 	{
-		private:
-			Alloc	_allocator;
-			int		_capacity;
-			int		_size;
 
 		public:
-			typedef	T						value_type;
-			typedef	Alloc					allocator_type;
-			typedef std::size_t				size_type;
+			typedef	T						value_type;		// ;
+			typedef	Alloc					allocator_type;	// std::allocator<value_type>
+			typedef std::size_t				size_type;		// usually same as size_t
 			typedef	std::ptrdiff_t			difference_type;
 			typedef	T&						reference;
 			typedef	const T&				const_reference;
@@ -32,47 +29,28 @@ namespace ft
 			typedef	reverse_iterator		reverse_iterator;
 			typedef const reverse_iterator	const_reverse_iterator;
 
-/******* Member functions *******/
-/*  parameters:
-		alloc - allocator object; the container keeps and uses and internal copy of this allocator;
-			member type [allocator_type] is the internal allocator type used by the container, defined in vector as an alias of its second template parameter(Alloc).
-
-		n - initial container size(ie. the number of elements in the container at construction).
-			member type [size_type] is and unsigned integral type
-		
-		val - value to fill the container with. Each of the n elements in the container will be initialized to a copy of this value.
-			member type [value_type] is the type of elements in the container, defined in vector as an alias of its first template parameter(T).
-			
-		first, last - input iterators to the initial and final positions in a range.
-			the range used is [first, last), which includes all the lements between first and last, including the element pointed by first but not the element pointed by last.
-			the function template argument InputIterator shall be an input iterator type that points to elements of a type from which value_type objects can be constructed
-
-		x - another vector object of the same type (with the same class template arguments T and Alloc), whose contents are either copied or acquired
-
-		il - an initializer_list object;
-			these objects are automatically constructed from initializer list declarators.
-			membe type value_type is the type of the elements in the container, defined in vector as an alias of its first template parameter(T).
-*/
-
 /* Constructors */
-	explicit vector (const allocator_type &alloc = allocator_type());
+	explicit vector (const allocator_type &alloc = allocator_type()); // Explicitをつけることで暗黙的型変換を防ぐ
 	/* empty container constructor (default constructor)
 		-- constructs an empty container, with no elements*/
 
-	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()
+	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	{
-		// allocate memory
 		this->_allocator = alloc;
+		this->_ptr = this->_allocator.allocate(n); // is there any possibility of failing allocation?
 		this->_size = n;
 		this->_capacity = n;
+
+		for (size_type i = 0; i < n; i++)
+			this->_allocator.construct(this->_ptr + i, val);
 	}
 	/* fill constructor 
 		-- constructs a container with n elements. Each element is a copy of val*/
-
-
-
 	template <class InputIterator>
-		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type());
+		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
+		{
+			
+		}
 	/* range constructor 
 		-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order */
 
@@ -142,6 +120,11 @@ operator>=
 std::swap(std::vector)
  
  */
+		private:
+			Alloc	_allocator;
+			pointer	_ptr;
+			size_t	_capacity;
+			size_t	_size;
 
 	};
 }
