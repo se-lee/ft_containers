@@ -30,41 +30,78 @@ namespace ft
 			typedef const reverse_iterator	const_reverse_iterator;
 
 /* Constructors */
-	explicit vector (const allocator_type &alloc = allocator_type()); // Explicitをつけることで暗黙的型変換を防ぐ
 	/* empty container constructor (default constructor)
 		-- constructs an empty container, with no elements*/
+	explicit vector (const allocator_type &alloc = allocator_type()); // Explicitをつけることで暗黙的型変換を防ぐ
 
+	/* fill constructor 
+		-- constructs a container with n elements. Each element is a copy of val*/
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	{
 		this->_allocator = alloc;
 		this->_ptr = this->_allocator.allocate(n); // is there any possibility of failing allocation?
-		this->_size = n;
 		this->_capacity = n;
+		this->_size = n;
 
-		for (size_type i = 0; i < n; i++)
-			this->_allocator.construct(this->_ptr + i, val);
+		if (this->_size > 0)
+		{
+			for (size_type i = 0; i < this->_size; i++)
+				this->_allocator.construct(this->_ptr + i, val);
+		}
 	}
-	/* fill constructor 
-		-- constructs a container with n elements. Each element is a copy of val*/
+
+	/* range constructor 
+		-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order 
+			1,2,3,4,5 だったら同じ順番で同じValueをいれる
+	*/
 	template <class InputIterator>
 		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
 		{
-			
-		}
-	/* range constructor 
-		-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order */
+			size_type	range_size = std::distance(first, last);
+			this->_allocator = alloc;
+			this->_ptr = this->_allocator.allocate(range_size);
+			this->_capacity = range_size;
+			this->_size = range_size;
 
-	vector (const vector &x);
+			/*
+			first からひとつずつずらして？値を入れる。どうやって？ぽいんた？
+			*/
+
+		}
+
 	/* copy constructor
 		-- constructs a container with a copy of each of the elements in x, in the same order */
+	vector (const vector &x)
+	{
+		this->_allocator = x._allocator;
+		this->_ptr = this->_allocator.allocate(x._capacity);
+		this->_capacity = x._capacity;
+		this->_size = x._size;
 
+		if (this->_size > 0)
+		{
+			for(size_type i = 0; i < x._size; i++)
+				this->_allocator.construct(this->_ptr + i, x[i];)
+		}
+	}
 	/* the container keeps an internal copy of alloc, which is used to allocate storage throughout its lifetime. */
 	/* the copy constructor creates a container that keeps and uses a copy of x's allocator */
 
 
-
 /* Destructor */
-	~vector();
+	~vector()
+	{
+		if (this->_size > 0)
+		{
+			for (size_type i = 0; i < this->_size; i++)
+				this->_allocator.destroy(_ptr + i);
+		}
+		if (this->_capacity > 0)
+			this->_allocator.deallocate(this->_ptr, this->_capacity);
+		this->_size = 0;
+		this->_capacity = 0;
+	}
+
 
 /* Operator = */
 	/* assign content - assigns new contents to the container, replacing its current contents, and modifying its size accordingly */
@@ -121,11 +158,10 @@ std::swap(std::vector)
  
  */
 		private:
-			Alloc	_allocator;
-			pointer	_ptr;
-			size_t	_capacity;
-			size_t	_size;
-
+			Alloc		_allocator;
+			pointer		_ptr;
+			size_type	_capacity;
+			size_type	_size;
 	};
 }
 
