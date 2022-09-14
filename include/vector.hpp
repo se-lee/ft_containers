@@ -110,51 +110,60 @@ namespace ft
 	/* copies all the elements from x into the container.
 		the container preserves its current allocator, which is used to allocate storage in case of reallocation */
 
-/* assign */
-/* get_allocator */
 
-/* -- Element access -- */
-/* at */
+/* --- Iterators ---  */
+/* begin */
+	iterator begin()
+	{
+		return ( /*  */ );
+	}
+
+/* end */
+
+/* rbegin */
+/* rend */
+
+
+/* --- Capacity --- */
+/* size */
+/* max_size */
+/* resize */
+/* capacity */
+/* empty */
+/* reserve */
+
+
+
+/* --- Element access --- */
 /* operator [] */
+/* at */
 /* front */
 /* back */
 /* data */
 
 
-/* -- Iterators --  */
-/* begin */
-/* end */
-/* rbegin */
-/* rend */
-
-
-/* -- Capacity -- */
-/* empty */
-/* size */
-/* max_size */
-/* reserve */
-/* capacity */
-
-
-/* -- Modifiers -- */
-/* clear */
-/* insert */
-/* erase */
+/* --- Modifiers --- */
+/* assign */
 /* push_back */
 /* pop_back */
-/* resize */
+/* insert */
+/* erase */
 /* swap */
+/* clear */
 
-/* 
-Non-member functions
-operator==
-operator!=
-operator<
-operator<=
-operator>
-operator>=
 
-std::swap(std::vector)
+/* --- Allocator --- */
+/* get_allocator */
+
+/* --- Non-member function overloads --- */
+/* operator== */
+/* operator!= */
+/* operator< */
+/* operator<= */
+/* operator> */
+/* operator>= */
+
+/* std::swap(std::vector) */
  
  */
 		private:
