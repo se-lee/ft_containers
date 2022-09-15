@@ -3,6 +3,8 @@
 
 # include <iostream> // 必要？
 # include <memory> // allocator<T>
+# include "iterator_traits.hpp"
+# include "reverse_iterator.hpp"
 
 /* vectors are sequence containers that can change in size
 their size can change dynamically, with their storage being handled automatically by the container
@@ -63,10 +65,10 @@ namespace ft
 			this->_capacity = range_size;
 			this->_size = range_size;
 
-			/*
-			first からひとつずつずらして？値を入れる。どうやって？ぽいんた？
-			*/
-
+			for (size_type i = 0; i < range_size; i++)
+			{
+				this->_allocator.construct(this->)
+			}
 		}
 
 	/* copy constructor
@@ -112,10 +114,10 @@ namespace ft
 
 
 /* --- Iterators ---  */
-/* begin */
+/* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
 	{
-		return ( /*  */ );
+		return (iterator);
 	}
 
 /* end */
@@ -169,6 +171,7 @@ namespace ft
 		private:
 			Alloc		_allocator;
 			pointer		_ptr;
+		//	inputiterator	_inputIter;
 			size_type	_capacity;
 			size_type	_size;
 	};
