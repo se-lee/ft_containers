@@ -104,7 +104,7 @@ namespace ft
 		{ return (*lhs >= *rhs); }
 
 		private:
-
+			pointer		_current_ptr;
 
 	};
 
