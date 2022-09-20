@@ -3,8 +3,8 @@
 
 # include <iostream> // 必要？
 # include <memory> // allocator<T>
-# include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
+# include "vector_iterator.hpp"
 
 /* vectors are sequence containers that can change in size
 their size can change dynamically, with their storage being handled automatically by the container
@@ -26,9 +26,9 @@ namespace ft
 			typedef	const T&				const_reference;
 			typedef	T*						pointer;
 			typedef	const T*				const_pointer;
-			typedef	iterator				iterator;
+			typedef	ft::vector_iterator		iterator;	// あとで直す
 			typedef const iterator			const_interator;
-			typedef	reverse_iterator		reverse_iterator;
+			typedef	reverse_iterator		reverse_iterator; //リバース書く
 			typedef const reverse_iterator	const_reverse_iterator;
 
 /* Constructors */
@@ -117,8 +117,17 @@ namespace ft
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
 	{
+		// returns an iterator pointing to the first element in the vector
 		return (iterator);
 	}
+
+	const_interator begin() const
+	{
+		
+		return (const_interator);
+	}
+
+	
 
 /* end */
 

@@ -59,14 +59,37 @@ namespace ft
 		/* operator+= : advance iterator */
 		vector_iterator &operator+=(difference_type	n)
 		{
+		
 			return (*this);
 		}
 
 		/* operator- : subtraction operator */
+		vector_iterator operator- (difference_type n) const
+		{
+			*this -= n;
+			return (*this);
+		}
 
 		/* operator-- : decrement iterator position */
+		vector_iterator &operator--()
+		{
+			(*this)--;
+			return (*this);
+		}
 
-		/* operator-= : derease iterator */
+		vector_iterator operator--(int)
+		{
+			vector_iterator temp = *this;
+			--(*this);
+			return (temp);
+		}
+
+		/* operator-= : decrease iterator */
+		vector_iterator &operator-= (difference_type n)
+		{
+			
+			return (*this);
+		}
 
 		/* opeartor-> : dereference iterator */
 		pointer	operator->() const
