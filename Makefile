@@ -4,7 +4,7 @@ NAME^^	= $(shell echo $(NAME) | tr 'a-z' 'A-Z')
 
 # Directories
 
-INC_DIR	= ./
+INC_DIR	= ./include
 
 # Sources
 __SRCS	= $(shell find . -type f -name "*.cpp" | cut -c 3-)

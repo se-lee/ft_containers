@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <iostream> // 必要？
 # include <memory> // allocator<T>
 # include "reverse_iterator.hpp"
 # include "vector_iterator.hpp"
@@ -18,18 +17,18 @@ namespace ft
 	{
 
 		public:
-			typedef	T						value_type;		// ;
-			typedef	Alloc					allocator_type;	// std::allocator<value_type>
-			typedef std::size_t				size_type;		// usually same as size_t
-			typedef	std::ptrdiff_t			difference_type;
-			typedef	T&						reference;
-			typedef	const T&				const_reference;
-			typedef	T*						pointer;
-			typedef	const T*				const_pointer;
-			typedef	ft::vector_iterator		iterator;	// あとで直す
-			typedef const iterator			const_interator;
-			typedef	reverse_iterator		reverse_iterator; //リバース書く
-			typedef const reverse_iterator	const_reverse_iterator;
+			typedef	T										value_type;
+			typedef	Alloc									allocator_type;	// std::allocator<value_type>
+			typedef std::size_t								size_type;		// usually same as size_t
+			typedef	std::ptrdiff_t							difference_type;
+			typedef	T&										reference;
+			typedef	const T&								const_reference;
+			typedef	T*										pointer;
+			typedef	const T*								const_pointer;
+			typedef	ft::vector_iterator<pointer>			iterator;	// あとで直す
+			typedef ft::vector_iterator<const_pointer>		const_interator;
+			typedef	reverse_iterator						reverse_iterator; //リバース書く
+			typedef const reverse_iterator					const_reverse_iterator;
 
 /* Constructors */
 	/* empty container constructor (default constructor)
@@ -108,7 +107,13 @@ namespace ft
 /* Operator = */
 	/* assign content - assigns new contents to the container, replacing its current contents, and modifying its size accordingly */
 	
-	vector	&operator= (const vector &x);
+	vector	&operator= (const vector &x)
+	{
+		for (iterator ite(x.begin()); ite != x.end(); ite++)
+		{
+			this->push_ba
+		}
+	}
 	/* copies all the elements from x into the container.
 		the container preserves its current allocator, which is used to allocate storage in case of reallocation */
 
@@ -118,7 +123,7 @@ namespace ft
 	iterator begin()
 	{
 		// returns an iterator pointing to the first element in the vector
-		return (iterator);
+		return (iterator(this->_ptr));
 	}
 
 	const_interator begin() const
@@ -127,19 +132,48 @@ namespace ft
 		return (const_interator);
 	}
 
-	
-
 /* end */
+	iterator end()
+	{
+		return ( /* an iterator to the element past the end of the sequence */);
+	}
+
+	const_iterator end() const
+	{
+		return (/* a const_iterator if the vector obeject is const-qualified */);
+	}
 
 /* rbegin */
-/* rend */
+	reverse_iterator rbegin()
+	{
+		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
+	}
 
+
+	const_reverse_iterator rbegin() const
+	{
+		// if the vector object is const-qualified
+		return (/*a const_reverse_iterator to the reverse beginning of the sequecne container*/)
+	}
+
+
+/* rend */
+	reverse_iterator rend()
+	{
+		return (/*a reverse iterator to the reverse end of the sequence container*/);
+	}
+
+	const_reverse_iterator rend() const
+	{
+		return (/*a const_reverse_iterator to the reverse end of the sequence container*/)
+	}
 
 /* --- Capacity --- */
 /* size */
 /* max_size */
 /* resize */
 /* capacity */
+
 /* empty */
 /* reserve */
 
@@ -176,11 +210,9 @@ namespace ft
 
 /* std::swap(std::vector) */
  
- */
 		private:
 			Alloc		_allocator;
 			pointer		_ptr;
-		//	inputiterator	_inputIter;
 			size_type	_capacity;
 			size_type	_size;
 	};

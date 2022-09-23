@@ -1,4 +1,69 @@
 #include <iostream>
+#include <vector>
+// #include <stack>
+// #include <deque>
+// #include <map>
+
+int main()
+{
+	std::vector<int>	vec1;
+	vec1.push_back(1);
+	vec1.push_back(2);
+	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	std::cout << "vec size: " << vec1.size() << std::endl;
+	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	vec1.pop_back();
+	vec1.pop_back();
+
+	std::cout << " ---- pop ---- " << std::endl;
+	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	std::cout << "vec size: " << vec1.size() << std::endl;
+	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+
+	return 0;
+}
+
+
+// struct classcomp {
+// 	bool operator () ( const char &lhs, const char &rhs) const
+// 	{ return lhs > rhs; }
+// };
+
+// template < class T >
+// void show_vector( std::vector<T> &vect ) {
+// 	std::cout << "[Vect contains: ";
+// 	for (size_t i = 0; i < vect.size(); i++ )
+// 		std::cout << ' ' << vect[i];
+// 	std::cout << ']' << std::endl << std::endl;
+// }
+
+// int main()
+// {
+// /**************** vector *****************/
+// 	std::cout << "====== constructor ======" << std::endl;
+// 	{
+// 		std::vector<int> int_vect;
+
+// 		std::cout << "Vector size: " << int_vect.size() << std::endl;
+// 		std::cout << "Alloc size : " << int_vect.capacity() << std::endl;
+
+// 	}
+
+// 	std::cout << "=======================" << std::endl;
+// 	{
+// 		std::cout << "explicit vector (size_type n, const value_type& val = ;value_type(), const allocator_type& alloc = allocator_type())" << std::endl << std::endl;
+// 		std::vector<int> int_vect( 5, 0, 1 );
+
+// 		std::cout << "Vector size: " << int_vect.size() << std::endl;
+// 		std::cout << "Alloc size : " << int_vect.capacity() << std::endl;
+// 		show_vector( int_vect );
+// 	}
+
+// 	return 0;
+// }
+
+/*
+#include <iostream>
 #include <string>
 #include <deque>
 
@@ -17,6 +82,7 @@
 
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
+
 struct Buffer
 {
 	int idx;
@@ -114,4 +180,4 @@ int main(int argc, char** argv) {
 	}
 	std::cout << std::endl;
 	return (0);
-}
+}*/
