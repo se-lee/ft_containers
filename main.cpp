@@ -8,7 +8,7 @@
 
 void	display_vector_elements(std::vector<int> vec)
 {
-	for (int i = 0; i < vec.size(); i++)
+	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << ' ';
 	std::cout << std::endl;
 }
@@ -33,49 +33,52 @@ int main()
 	// 	std::cout << '\n';
 	// }
 
-	{
-		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::vector<int>	vec1;
-		vec1.push_back(1);
-		vec1.push_back(2);
-		std::cout << "vec[1]: " << vec1[1] << std::endl;
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		display_vector_elements(vec1);
+	// {
+	// 	std::cout << "======== [ std::vector ] ========" << std::endl;
+	// 	std::vector<int>	vec1;
+	// 	vec1.push_back(1);
+	// 	vec1.push_back(2);
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
+	// 	display_vector_elements(vec1);
 
-		std::cout << " ---- resize ---- " << std::endl;
-		vec1.resize(5);
-		std::cout << "vec[1]: " << vec1[1] << std::endl;
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		display_vector_elements(vec1);
+	// 	std::cout << " ---- resize ---- " << std::endl;
+	// 	vec1.resize(5);
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
+	// 	display_vector_elements(vec1);
 
-		std::cout << " ---- resize2 ---- " << std::endl;
-		vec1.resize(10, 9);
-		std::cout << "vec[1]: " << vec1[1] << std::endl;
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		display_vector_elements(vec1);
+	// 	std::cout << " ---- resize2 ---- " << std::endl;
+	// 	vec1.resize(10, 9);
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
+	// 	display_vector_elements(vec1);
 	
-		std::cout << " ---- resize3 ---- " << std::endl;
-		vec1.resize(3);
-		std::cout << "vec[1]: " << vec1[1] << std::endl;
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		display_vector_elements(vec1);
+	// 	std::cout << " ---- resize3 ---- " << std::endl;
+	// 	vec1.resize(3);
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
+	// 	display_vector_elements(vec1);
 
-	}
+	// }
 	
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int>	vec1;
 		std::cout << "vec size: " << vec1.size() << std::endl;
 		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-
+		std::cout << "vec ptr: " << vec1.get_ptr() << std::endl;
+		vec1.push_back(1);
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
 	}
 
 	return 0;

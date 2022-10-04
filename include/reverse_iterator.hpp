@@ -9,8 +9,11 @@ namespace ft
 	template <class T>
 	class reverse_iterator
 	{
+		protected:
+			T		it;
+
 		public: 
-			typedef  T 										iterator_type;
+			typedef  T 												iterator_type;
 			typedef typename iterator_traits<T>::iterator_category	iterator_category;
 			typedef typename iterator_traits<T>::value_type			value_type;
 			typedef typename iterator_traits<T>::difference_type	difference_type;
@@ -22,11 +25,18 @@ namespace ft
 			reverse_iterator() {};
 			
 			/* initialization */
-			explicit reverse_iterator(iterator_type it) {};
+			explicit reverse_iterator(iterator_type x) 
+			{
+				this->it = x;
+			};
 
 			/* copy */
 			template <class U>
-			reverse_iterator (const reverse_iterator<U> &rev_it) {};
+			reverse_iterator (const reverse_iterator<U> &rev_it) 
+			{
+				this->it = rev_it.it;
+				return (*this);
+			};
 
 			~reverse_iterator() {};
 

@@ -245,11 +245,11 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 // /*
 // https://en.cppreference.com/w/cpp/container/vector/empty
 // */
-// 	bool empty() const
-// 	{
-// 		return ();
-// 		/* [true] if the container is empty, [false] if not empty*/
-// 	}
+	bool empty() const
+	{
+		return (this->_size == 0);
+		/* [true] if the container is empty, [false] if not empty*/
+	}
 
 // /* reserve */
 // /*
@@ -355,7 +355,20 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 
 /* --- Modifiers --- */
 /* assign */
+
+
 /* push_back */
+/*
+https://en.cppreference.com/w/cpp/container/vector/push_back
+Appends the given element value to the end of the container
+
+*/
+	void	push_back(const T& value)
+	{
+		this->_allocator.construct(&(this->_ptr[this->_size]), value);
+		this->_size++;
+	};
+
 /* pop_back */
 /* insert */
 /* erase */
@@ -365,6 +378,11 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 
 /* --- Allocator --- */
 /* get_allocator */
+	allocator_type get_allocator() const
+	{
+		return (this->_allocator);
+	};
+
 
 /* --- Non-member function overloads --- */
 /* operator== */
@@ -376,6 +394,16 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 
 /* std::swap(std::vector) */
  
+	/******/
+
+	pointer		get_ptr()
+	{
+		return (this->_ptr);
+	};
+
+	/****/
+
+
 		private:
 			Alloc		_allocator;
 			pointer		_ptr;

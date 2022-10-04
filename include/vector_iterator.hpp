@@ -12,7 +12,7 @@ namespace ft
 
 		public:
 
-			typedef  T										iterator_type;
+			typedef T												iterator_type;
 			typedef typename iterator_traits<T>::iterator_category	iterator_category;
 			typedef typename iterator_traits<T>::value_type			value_type;
 			typedef typename iterator_traits<T>::difference_type	difference_type;
@@ -63,11 +63,10 @@ namespace ft
 		};
 
 		/* operator+= : advance iterator */
-		vector_iterator &operator+=(difference_type	n)
-		{
-			
-			return (*this);
-		};
+		// vector_iterator &operator+=(difference_type	n)
+		// {
+		// 	return (*this);
+		// };
 
 		/* operator- : subtraction operator */
 		vector_iterator operator- (difference_type n) const
@@ -91,11 +90,11 @@ namespace ft
 		};
 
 		/* operator-= : decrease iterator */
-		vector_iterator &operator-= (difference_type n)
-		{
+		// vector_iterator &operator-= (difference_type n)
+		// {
 			
-			return (*this);
-		};
+		// 	return (*this);
+		// };
 
 		/* opeartor-> : dereference iterator */
 		pointer	operator->() const
