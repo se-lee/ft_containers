@@ -8,9 +8,10 @@ namespace ft
 	template <class Iterator>
 	class reverse_iterator
 	{
-	
-		public: 
+		protected:
+			Iterator current = Iterator();
 
+		public: 
 			typedef Iterator 										iterator_type;
 			typedef iterator_traits<Iterator>::iterator_category	iterator_category;
 			typedef iterator_traits<Iterator>::value_type			value_type;

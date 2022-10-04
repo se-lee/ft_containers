@@ -26,14 +26,20 @@ namespace ft
 			typedef	T*										pointer;
 			typedef	const T*								const_pointer;
 			typedef	ft::vector_iterator<pointer>			iterator;	// あとで直す
-			typedef ft::vector_iterator<const_pointer>		const_interator;
+			typedef ft::vector_iterator<const_pointer>		const_iterator;
 			typedef	reverse_iterator						reverse_iterator; //リバース書く
 			typedef const reverse_iterator					const_reverse_iterator;
 
 /* Constructors */
 	/* empty container constructor (default constructor)
 		-- constructs an empty container, with no elements*/
-	explicit vector (const allocator_type &alloc = allocator_type()); // Explicitをつけることで暗黙的型変換を防ぐ
+	explicit vector (const allocator_type &alloc = allocator_type()) 
+	{
+		this->_allocator = alloc;
+		this->_ptr = NULL;
+		this->_capacity = 0;
+		this->_size = 0;
+	}; // Explicitをつけることで暗黙的型変換を防ぐ
 
 	/* fill constructor 
 		-- constructs a container with n elements. Each element is a copy of val*/
@@ -49,7 +55,7 @@ namespace ft
 			for (size_type i = 0; i < this->_size; i++)
 				this->_allocator.construct(this->_ptr + i, val);
 		}
-	}
+	};
 
 	/* range constructor 
 		-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order 
@@ -66,9 +72,9 @@ namespace ft
 
 			for (size_type i = 0; i < range_size; i++)
 			{
-				this->_allocator.construct(this->)
+				this->_allocator.construct(this->);
 			}
-		}
+		};
 
 	/* copy constructor
 		-- constructs a container with a copy of each of the elements in x, in the same order */
@@ -84,7 +90,7 @@ namespace ft
 			for(size_type i = 0; i < x._size; i++)
 				this->_allocator.construct(this->_ptr + i, x[i];)
 		}
-	}
+	};
 	/* the container keeps an internal copy of alloc, which is used to allocate storage throughout its lifetime. */
 	/* the copy constructor creates a container that keeps and uses a copy of x's allocator */
 
@@ -101,7 +107,7 @@ namespace ft
 			this->_allocator.deallocate(this->_ptr, this->_capacity);
 		this->_size = 0;
 		this->_capacity = 0;
-	}
+	};
 
 
 /* Operator = */
@@ -110,10 +116,9 @@ namespace ft
 	vector	&operator= (const vector &x)
 	{
 		for (iterator ite(x.begin()); ite != x.end(); ite++)
-		{
-			this->push_ba
-		}
-	}
+			this->push_back(ite.base());
+		return (*this);
+	};
 	/* copies all the elements from x into the container.
 		the container preserves its current allocator, which is used to allocate storage in case of reallocation */
 
@@ -124,23 +129,25 @@ namespace ft
 	{
 		// returns an iterator pointing to the first element in the vector
 		return (iterator(this->_ptr));
-	}
+	};
 
-	const_interator begin() const
+	const_iterator begin() const
 	{
-		
-		return (const_interator);
-	}
+		return (const_iterator(this->_ptr));
+	};
 
 /* end */
 	iterator end()
 	{
-		return ( /* an iterator to the element past the end of the sequence */);
-	}
+		this->_ptr + this->size();
+		return (iterator(this->_ptr));
+	};
 
 	const_iterator end() const
 	{
-		return (/* a const_iterator if the vector obeject is const-qualified */);
+		this->_ptr + this->size();
+		return (const_iterator(this->_ptr));
+	/* returns a const_iterator if the vector obeject is const-qualified */
 	}
 
 /* rbegin */
@@ -148,7 +155,6 @@ namespace ft
 	{
 		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
 	}
-
 
 	const_reverse_iterator rbegin() const
 	{
@@ -168,23 +174,184 @@ namespace ft
 		return (/*a const_reverse_iterator to the reverse end of the sequence container*/)
 	}
 
+
 /* --- Capacity --- */
 /* size */
+/*
+Returns the number of elements in the container, i.e. std::distance(begin(), end()). 
+*/
+	size_type size() const
+	{
+		return (this->_size);
+	};
+
+
 /* max_size */
+/*
+https://en.cppreference.com/w/cpp/container/vector/max_size
+Returns the maximum number of elements the container is able to hold due to system or library 
+implementation limitations, i.e. std::distance(begin(), end()) for the largest container. 
+
+*/
+	size_type max_size() const
+	{
+		return (this->_allocator.max_size());
+	};
+
 /* resize */
+/* 
+resizes the container to contain [count] elements 
+if the current size is greater than [count], the container is reduced to its first [count] elements
+if the current size is less than [count], 
+	1) additional default-inserted elements are appended
+	2) additional copies of [value] are appended
+
+[count] : new size of the container
+[value] : the value to initialize the new elements with
+https://en.cppreference.com/w/cpp/container/vector/resize
+
+*/
+	void resize(size_type count)
+	{
+		if (this->_size > count)
+		{
+			// 最初の Count個分だけ残して、あとはすべて消す (allocator/destroy) - capacityはそのまま残る
+			
+		}
+		else // this->_size < count
+		{
+			this->_size = count;
+		}
+	};
+	void resize(size_type count, const value_type = T() );
+	void resize(size_type count, const value_type& value);
+
 /* capacity */
+/*
+https://en.cppreference.com/w/cpp/container/vector/capacity
+*/
+	size_type capacity() const
+	{
+		return (/* capacity of the currently allocated storage */)
+	}
 
 /* empty */
-/* reserve */
+/*
+https://en.cppreference.com/w/cpp/container/vector/empty
+*/
+	bool empty() const
+	{
+		return ();
+		/* [true] if the container is empty, [false] if not empty*/
+	}
 
+
+/* reserve */
+/*
+https://en.cppreference.com/w/cpp/container/vector/reserve
+
+increase the capacity of the vector (the total number of elements that the vector cann hold without requiring reallocation)
+to a value that's greater or equal to new_cap. if new_cap is greater than the current capacity(), new storage is allocated,
+otherwise the function does nothing
+
+reserve() does not change size of the vector
+if new_cap is greater than capacity(), all iterators, including the past-the-end iterator,
+and all references to the elements are invalidated.
+Otherwise, no iterator or references are invalidated
+
+[new_cap] : new capacity of the vector, in number of elements
+
+*/
+
+	void reserve(size_type new_cap);
+	constexpr void reserve(size_type new_cap);
 
 
 /* --- Element access --- */
 /* operator [] */
+/*
+https://en.cppreference.com/w/cpp/container/vector/operator_at
+
+[pos] : position of the element to return
+*/
+
+	reference operator[] (size_type pos)
+	{
+		return (/* reference to the requested element */);
+	}
+	constexpr reference operator[] (size_type pos);
+	const_reference operator [] (size_type pos) const;
+	constexpr const_reference operator[] (size_type pos) const;
+
+
 /* at */
+/*
+https://en.cppreference.com/w/cpp/container/vector/at
+
+returns a reference to the element at specified location [pos], with boounds checking.
+if [pos] is not within the range of the container, an exception of type std::out_of_range is thrown
+
+[pos] : position of the element to return
+*/
+
+	reference at(size_type pos)
+	{
+		return (/* reference to the requested element */);
+	}
+	constexpr reference at(size_type pos);
+	const_reference at(size_type pos) const;
+	constexpr const_reference at(size_type pos) const;
+
+
 /* front */
+/*
+https://en.cppreference.com/w/cpp/container/vector/front
+
+returns a reference to the first element in the container
+calling front on an empty container is undefined
+
+*/
+
+	reference front()
+	{
+		return (/* reference to the first element */);
+	}
+	const_reference front( ) const;
+
+
 /* back */
+/*
+https://en.cppreference.com/w/cpp/container/vector/back
+
+returns a  reference to the last element in the container
+calling back on an empty container causes undefined behavior
+*/
+
+	reference back()
+	{
+		return (/* reference to the last element */);
+	}
+
+	const_reference back() const;
+
+
+
 /* data */
+/*
+https://en.cppreference.com/w/cpp/container/vector/data
+
+returns pointer to the underlying array serving as element storage.
+the pointer is such that range[data(); data() + size()] is always a valid range,
+even if the container is empty (data() is not dereferenceable in that case)
+
+*/
+
+	T* data()
+	{
+		return (/* pointer to the underlying element storage*/);
+	}
+
+	const T* data() const;
 
 
 /* --- Modifiers --- */

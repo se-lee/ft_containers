@@ -14,7 +14,7 @@ namespace ft
 
 		public:
 
-//			typedef typename Iterator										iterator_type; //iterator_type is Vector
+//			typedef typename Iterator								iterator_type; //iterator_type is Vector
 			typedef typename iterator_traits<T>::iterator_category	iterator_category;
 			typedef typename iterator_traits<T>::value_type			value_type;
 			typedef typename iterator_traits<T>::difference_type	difference_type;
@@ -30,8 +30,6 @@ namespace ft
 			~vector_iterator() {};
 
 	/* --- Member functions --- */
-		/* base  */
-		
 		/* operator* : dereference iterator */
 		reference operator*() const
 		{ 

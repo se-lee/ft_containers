@@ -1,24 +1,92 @@
 #include <iostream>
 #include <vector>
-// #include <stack>
-// #include <deque>
-// #include <map>
+#include <stack>
+#include <deque>
+#include <map>
+#include <iterator>
+// #include "include/vector.hpp"
+
+void	display_vector_elements(std::vector<int> vec)
+{
+	for (int i = 0; i < vec.size(); i++)
+		std::cout << vec[i] << ' ';
+	std::cout << std::endl;
+}
 
 int main()
 {
-	std::vector<int>	vec1;
-	vec1.push_back(1);
-	vec1.push_back(2);
-	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	std::cout << "vec size: " << vec1.size() << std::endl;
-	std::cout << "vec cap: " << vec1.capacity() << std::endl;
-	vec1.pop_back();
-	vec1.pop_back();
+	// {
+	// 	std::cout << "======== [ rev_iterator ] ========" << std::endl;
+	// 	std::vector<int>	vec1;
+	// 	for (int i = 0; i < 10; i++)
+	// 		vec1.push_back(i);
 
-	std::cout << " ---- pop ---- " << std::endl;
-	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	std::cout << "vec size: " << vec1.size() << std::endl;
-	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	typedef std::vector<int>::iterator iter_type;
+	// 	iter_type from (vec1.begin());
+	// 	iter_type until (vec1.end());
+
+	// 	std::reverse_iterator<iter_type> rev_until (from);
+	// 	std::reverse_iterator<iter_type> rev_from (until);
+	// 	std::cout << "vec1: ";
+	// 	while (rev_from != rev_until)
+	// 		std::cout << ' ' << *rev_from++;
+	// 	std::cout << '\n';
+	// }
+
+	{
+		std::cout << "======== [ std::vector ] ========" << std::endl;
+		std::vector<int>	vec1;
+		vec1.push_back(1);
+		vec1.push_back(2);
+		std::cout << "vec[1]: " << vec1[1] << std::endl;
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		display_vector_elements(vec1);
+
+		std::cout << " ---- resize ---- " << std::endl;
+		vec1.resize(5);
+		std::cout << "vec[1]: " << vec1[1] << std::endl;
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		display_vector_elements(vec1);
+
+		std::cout << " ---- resize2 ---- " << std::endl;
+		vec1.resize(10, 9);
+		std::cout << "vec[1]: " << vec1[1] << std::endl;
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		display_vector_elements(vec1);
+	
+		std::cout << " ---- resize3 ---- " << std::endl;
+		vec1.resize(3);
+		std::cout << "vec[1]: " << vec1[1] << std::endl;
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		display_vector_elements(vec1);
+
+	}
+	
+
+	// {
+	// 	std::cout << "======== [ ft ] ========" << std::endl;
+	// 	ft::vector<int>	vec1;
+	// 	vec1.push_back(1);
+	// 	vec1.push_back(2);
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// 	vec1.pop_back();
+	// 	vec1.pop_back();
+
+	// 	std::cout << " ---- pop ---- " << std::endl;
+	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
+	// 	std::cout << "vec size: " << vec1.size() << std::endl;
+	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
+	// }
 
 	return 0;
 }
