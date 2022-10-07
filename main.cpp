@@ -1,10 +1,31 @@
 #include <iostream>
-#include <vector>
-#include <stack>
+#include <string>
 #include <deque>
-#include <map>
-#include <iterator>
-#include "include/vector.hpp"
+
+#if 1 //CREATE A REAL STL EXAMPLE
+	#include <map>
+	#include <stack>
+	#include <vector>
+	namespace ft = std;
+#else
+	#include <map.hpp>
+	#include <stack.hpp>
+	#include <vector.hpp>
+#endif
+
+#include <stdlib.h>
+
+#define MAX_RAM 4294967296
+#define BUFFER_SIZE 4096
+
+
+// #include <iostream>
+// #include <vector>
+// #include <stack>
+// #include <deque>
+// #include <map>
+// #include <iterator>
+// #include "include/vector.hpp"
 
 void	display_vector_elements(std::vector<int> vec)
 {
@@ -12,6 +33,14 @@ void	display_vector_elements(std::vector<int> vec)
 		std::cout << vec[i] << ' ';
 	std::cout << std::endl;
 }
+
+void	display_ft_vector_elements(ft::vector<int> vec)
+{
+	for (size_t i = 0; i < vec.size(); i++)
+		std::cout << vec[i] << ' ';
+	std::cout << std::endl;
+}
+
 
 int main()
 {
@@ -33,52 +62,55 @@ int main()
 	// 	std::cout << '\n';
 	// }
 
-	// {
-	// 	std::cout << "======== [ std::vector ] ========" << std::endl;
-	// 	std::vector<int>	vec1;
-	// 	vec1.push_back(1);
-	// 	vec1.push_back(2);
-	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	// 	std::cout << "vec size: " << vec1.size() << std::endl;
-	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
-	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
-	// 	display_vector_elements(vec1);
+	{
+		std::cout << "======== [ std::vector ] ========" << std::endl;
+		std::vector<int>	vec1;
+		std::vector<int>	vec2(3, 5);
+		std::cout << "vec size: " << vec1.size() << std::endl;
+		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		// vec1.push_back(1);
+		std::cout << "vec size: " << vec2.size() << std::endl;
+		std::cout << "vec cap: " << vec2.capacity() << std::endl;
+		display_vector_elements(vec2);
 
-	// 	std::cout << " ---- resize ---- " << std::endl;
-	// 	vec1.resize(5);
-	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	// 	std::cout << "vec size: " << vec1.size() << std::endl;
-	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
-	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
-	// 	display_vector_elements(vec1);
 
-	// 	std::cout << " ---- resize2 ---- " << std::endl;
-	// 	vec1.resize(10, 9);
-	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	// 	std::cout << "vec size: " << vec1.size() << std::endl;
-	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
-	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
-	// 	display_vector_elements(vec1);
+		// std::cout << " ---- resize ---- " << std::endl;
+		// vec1.resize(5);
+		// std::cout << "vec[1]: " << vec1[1] << std::endl;
+		// std::cout << "vec size: " << vec1.size() << std::endl;
+		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		// display_vector_elements(vec1);
+
+		// std::cout << " ---- resize2 ---- " << std::endl;
+		// vec1.resize(10, 9);
+		// std::cout << "vec[1]: " << vec1[1] << std::endl;
+		// std::cout << "vec size: " << vec1.size() << std::endl;
+		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		// display_vector_elements(vec1);
 	
-	// 	std::cout << " ---- resize3 ---- " << std::endl;
-	// 	vec1.resize(3);
-	// 	std::cout << "vec[1]: " << vec1[1] << std::endl;
-	// 	std::cout << "vec size: " << vec1.size() << std::endl;
-	// 	std::cout << "vec cap: " << vec1.capacity() << std::endl;
-	// 	std::cout << "vec max size: " << vec1.max_size() << std::endl;
-	// 	display_vector_elements(vec1);
+		// std::cout << " ---- resize3 ---- " << std::endl;
+		// vec1.resize(3);
+		// std::cout << "vec[1]: " << vec1[1] << std::endl;
+		// std::cout << "vec size: " << vec1.size() << std::endl;
+		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
+		// display_vector_elements(vec1);
 
-	// }
+	}
 	
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int>	vec1;
+		ft::vector<int> vec2(3, 5);
 		std::cout << "vec size: " << vec1.size() << std::endl;
 		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		std::cout << "vec ptr: " << vec1.get_ptr() << std::endl;
-		vec1.push_back(1);
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
+		// vec1.push_back(1);
+		std::cout << "vec size: " << vec2.size() << std::endl;
+		std::cout << "vec cap: " << vec2.capacity() << std::endl;
+		std::cout << "vec 1: " << vec2[0] << std::endl;
+		display_ft_vector_elements(vec2);
 	}
 
 	return 0;

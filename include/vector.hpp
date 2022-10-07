@@ -31,8 +31,7 @@ namespace ft
 			typedef const ft::reverse_iterator<T>			const_reverse_iterator; // constどうする
 
 /* Constructors */
-	/* empty container constructor (default constructor)
-		-- constructs an empty container, with no elements*/
+	/* empty container constructor (default constructor) -- constructs an empty container, with no elements*/
 	explicit vector (const allocator_type &alloc = allocator_type()) 
 	{
 		this->_allocator = alloc;
@@ -41,8 +40,7 @@ namespace ft
 		this->_size = 0;
 	}; // Explicitをつけることで暗黙的型変換を防ぐ
 
-	/* fill constructor 
-		-- constructs a container with n elements. Each element is a copy of val*/
+	/* fill constructor -- constructs a container with n elements. Each element is a copy of val*/
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	{
 		this->_allocator = alloc;
@@ -50,11 +48,12 @@ namespace ft
 		this->_capacity = n;
 		this->_size = n;
 
-		if (this->_size > 0)
+		if (n > 0)
 		{
 			for (size_type i = 0; i < this->_size; i++)
 				this->_allocator.construct(this->_ptr + i, val);
 		}
+		
 	};
 
 	/* range constructor 
@@ -64,16 +63,17 @@ namespace ft
 	template <class InputIterator>
 		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
 		{
-			size_type	range_size = std::distance(first, last);
+			size_type	range_size = last - first;
 			this->_allocator = alloc;
 			this->_ptr = this->_allocator.allocate(range_size);
 			this->_capacity = range_size;
 			this->_size = range_size;
 
-			// for (size_type i = 0; i < range_size; i++)
-			// {
-			// 	this->_allocator.construct(this->);
-			// }
+			for (size_type i = 0; i < range_size; i++)
+			{
+				this->_allocator.construct(this->_ptr + i, first);
+				first++;
+			}
 		};
 
 	/* copy constructor
@@ -279,11 +279,15 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 // [pos] : position of the element to return
 // */
 
-// 	reference operator[] (size_type pos)
-// 	{
-// 		return (/* reference to the requested element */);
-// 	}
-// 	const_reference operator [] (size_type pos) const;
+	reference operator[] (size_type pos)
+	{
+		return (this->_ptr[pos]);
+	};
+
+	const_reference operator [] (size_type pos) const
+	{
+		return (this->_ptr[pos]);
+	};
 
 // /* at */
 // /*

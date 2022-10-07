@@ -7,7 +7,7 @@ NAME^^	= $(shell echo $(NAME) | tr 'a-z' 'A-Z')
 INC_DIR	= ./include
 
 # Sources
-__SRCS	= $(shell find . -type f -name "*.cpp" | cut -c 3-)
+__SRCS	= $(shell find . -type f -name "main.cpp" | cut -c 3-)
 __HEAD	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
 
 SRCS	= $(__SRCS)

@@ -131,6 +131,7 @@ namespace ft
 		// bool operator>=(const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
 		// { return (*lhs >= *rhs); };
 
+		
 		protected:
 			pointer		_current_element;
 
