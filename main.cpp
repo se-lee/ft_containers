@@ -44,78 +44,51 @@ void	display_ft_vector_elements(ft::vector<int> vec)
 
 int main()
 {
-	// {
-	// 	std::cout << "======== [ rev_iterator ] ========" << std::endl;
-	// 	std::vector<int>	vec1;
-	// 	for (int i = 0; i < 10; i++)
-	// 		vec1.push_back(i);
 
-	// 	typedef std::vector<int>::iterator iter_type;
-	// 	iter_type from (vec1.begin());
-	// 	iter_type until (vec1.end());
-
-	// 	std::reverse_iterator<iter_type> rev_until (from);
-	// 	std::reverse_iterator<iter_type> rev_from (until);
-	// 	std::cout << "vec1: ";
-	// 	while (rev_from != rev_until)
-	// 		std::cout << ' ' << *rev_from++;
-	// 	std::cout << '\n';
-	// }
 
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
 		std::vector<int>	vec1;
-		std::vector<int>	vec2(3, 5);
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		// vec1.push_back(1);
-		std::cout << "vec size: " << vec2.size() << std::endl;
-		std::cout << "vec cap: " << vec2.capacity() << std::endl;
-		display_vector_elements(vec2);
+		vec1.push_back(0);
+		vec1.push_back(1);
+		vec1.push_back(2);
+		vec1.push_back(3);
+		vec1.push_back(4);
+		std::vector<int>::reverse_iterator revIter;
+		for (revIter = vec1.rbegin(); revIter != vec1.rend(); revIter++)
+			std::cout << *revIter << " ";
+		std::cout << std::endl;
 
-
-		// std::cout << " ---- resize ---- " << std::endl;
-		// vec1.resize(5);
-		// std::cout << "vec[1]: " << vec1[1] << std::endl;
-		// std::cout << "vec size: " << vec1.size() << std::endl;
-		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		// display_vector_elements(vec1);
-
-		// std::cout << " ---- resize2 ---- " << std::endl;
-		// vec1.resize(10, 9);
-		// std::cout << "vec[1]: " << vec1[1] << std::endl;
-		// std::cout << "vec size: " << vec1.size() << std::endl;
-		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		// display_vector_elements(vec1);
-	
-		// std::cout << " ---- resize3 ---- " << std::endl;
-		// vec1.resize(3);
-		// std::cout << "vec[1]: " << vec1[1] << std::endl;
-		// std::cout << "vec size: " << vec1.size() << std::endl;
-		// std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		// std::cout << "vec max size: " << vec1.max_size() << std::endl;
-		// display_vector_elements(vec1);
-
+		std::cout << std::endl;
 	}
-	
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int>	vec1;
 		ft::vector<int> vec2(3, 5);
-		std::cout << "vec size: " << vec1.size() << std::endl;
-		std::cout << "vec cap: " << vec1.capacity() << std::endl;
-		// vec1.push_back(1);
-		std::cout << "vec size: " << vec2.size() << std::endl;
-		std::cout << "vec cap: " << vec2.capacity() << std::endl;
-		std::cout << "vec 1: " << vec2[0] << std::endl;
-		display_ft_vector_elements(vec2);
+		for (std::vector<int>::iterator it = vec2.begin(); it != vec2.end(); it++)
+			std::cout << *it << " ";
+		std::cout << std::endl;
 	}
 
 	return 0;
 }
 
+	// {
+	// 	std::cout << "======== [ std::vector ] ========" << std::endl;
+	// 	std::vector<int>	vec1;
+	// 	std::vector<int>	vec2(3, 5);
+	// 	for (std::vector<int>::iterator it = vec2.begin(); it != vec2.end(); it++)
+	// 		std::cout << *it << " ";
+	// 	std::cout << std::endl;
+	// }
+	// {
+	// 	std::cout << "======== [ ft ] ========" << std::endl;
+	// 	ft::vector<int>	vec1;
+	// 	ft::vector<int> vec2(3, 5);
+	// 	for (std::vector<int>::iterator it = vec2.begin(); it != vec2.end(); it++)
+	// 		std::cout << *it << " ";
+	// 	std::cout << std::endl;
+	// }
 
 // struct classcomp {
 // 	bool operator () ( const char &lhs, const char &rhs) const

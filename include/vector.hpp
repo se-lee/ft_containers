@@ -150,17 +150,17 @@ namespace ft
 	/* returns a const_iterator if the vector obeject is const-qualified */
 	}
 
-// /* rbegin */
-// 	reverse_iterator rbegin()
-// 	{
-// 		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
-// 	}
+/* rbegin */
+	reverse_iterator rbegin()
+	{
+		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
+	}
 
-// 	const_reverse_iterator rbegin() const
-// 	{
-// 		// if the vector object is const-qualified
-// 		return (/*a const_reverse_iterator to the reverse beginning of the sequecne container*/)
-// 	}
+	const_reverse_iterator rbegin() const
+	{
+		// if the vector object is const-qualified
+		return (/*a const_reverse_iterator to the reverse beginning of the sequecne container*/)
+	}
 
 
 // /* rend */
