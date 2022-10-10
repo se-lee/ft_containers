@@ -371,7 +371,19 @@ Appends the given element value to the end of the container
 	};
 
 /* pop_back */
+	void	pop_back()
+	{
+		this->_allocator.destroy(this->end() - 1);
+		this->_size--;
+	};
+
 /* insert */
+	iterator insert(iterator poisiton, const value_type &val)
+	{
+
+	};
+
+	
 /* erase */
 /* swap */
 /* clear */

@@ -53,16 +53,8 @@ int main()
 			vec1.push_back(i);
 		std::vector<int>::reverse_iterator revIter;
 		display_vector_elements(vec1);
-		for (revIter = vec1.rbegin(); revIter != vec1.rend(); revIter++)
-			std::cout << *revIter << " ";
-		std::cout << std::endl;
-		revIter = vec1.rbegin();
-		std::cout << "rbegin: " << *revIter << std::endl;
-		revIter += 2;
-		std::cout << "+=2: " << *revIter << std::endl;
-		revIter = vec1.rbegin() + 1;
-		std::cout << "+1: " << *revIter << std::endl;
-
+		vec1.pop_back();
+		display_vector_elements(vec1);
 		std::cout << std::endl;
 	}
 	{
@@ -72,16 +64,10 @@ int main()
 		for (int i = 0; i < 5; i++)
 			vec1.push_back(i);
 		display_ft_vector_elements(vec1);
-		ft::vector<int>::reverse_iterator revIter;
-		for (revIter = vec1.rbegin(); revIter != vec1.rend(); revIter++)
-			std::cout << *revIter << " ";
+		vec1.pop_back();
+		display_vector_elements(vec1);
 		std::cout << std::endl;
-		revIter = vec1.rbegin();
-		std::cout << "rbegin: " << *revIter << std::endl;
-		revIter += 2;
-		std::cout << "+=2: " << *revIter << std::endl;
-		revIter = vec1.rbegin() + 1;
-		std::cout << "+1: " << *revIter << std::endl;
+
 	}
 	return 0;
 }
