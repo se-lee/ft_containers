@@ -153,6 +153,7 @@ namespace ft
 /* rbegin */
 	reverse_iterator rbegin()
 	{
+		
 		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
 	}
 

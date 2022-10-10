@@ -49,15 +49,19 @@ int main()
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
 		std::vector<int>	vec1;
-		vec1.push_back(0);
-		vec1.push_back(1);
-		vec1.push_back(2);
-		vec1.push_back(3);
-		vec1.push_back(4);
+		for (int i = 0; i < 5; i++)
+			vec1.push_back(i);
 		std::vector<int>::reverse_iterator revIter;
+		display_vector_elements(vec1);
 		for (revIter = vec1.rbegin(); revIter != vec1.rend(); revIter++)
 			std::cout << *revIter << " ";
 		std::cout << std::endl;
+		revIter = vec1.rbegin();
+		std::cout << "rbegin: " << *revIter << std::endl;
+		revIter += 2;
+		std::cout << "+=2: " << *revIter << std::endl;
+		revIter = vec1.rbegin() + 1;
+		std::cout << "+1: " << *revIter << std::endl;
 
 		std::cout << std::endl;
 	}
