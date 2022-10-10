@@ -148,39 +148,35 @@ namespace ft
 		this->_ptr + this->size();
 		return (const_iterator(this->_ptr));
 	/* returns a const_iterator if the vector obeject is const-qualified */
-	}
+	};
 
 /* rbegin */
 	reverse_iterator rbegin()
 	{
 		
-		return ( /* a reverse iterator to the reverse beginning of the sequence container */ );
-	}
+		return (reverse_iterator(this->end()));
+	};
 
 	const_reverse_iterator rbegin() const
 	{
-		// if the vector object is const-qualified
-		return (/*a const_reverse_iterator to the reverse beginning of the sequecne container*/)
-	}
+		return (const_reverse_iterator(this->end()));
+	};
 
 
 // /* rend */
-// 	reverse_iterator rend()
-// 	{
-// 		return (/*a reverse iterator to the reverse end of the sequence container*/);
-// 	}
+	reverse_iterator rend()
+	{
+		return (reverse_iterator(this->begin()));
+	};
 
-// 	const_reverse_iterator rend() const
-// 	{
-// 		return (/*a const_reverse_iterator to the reverse end of the sequence container*/)
-// 	}
+	const_reverse_iterator rend() const
+	{
+		return (const_reverse_iterator(this->begin()));
+	};
 
 
 /* --- Capacity --- */
-/* size */
-/*
-Returns the number of elements in the container, i.e. std::distance(begin(), end()). 
-*/
+/* size : Returns the number of elements in the container, i.e. std::distance(begin(), end()). */
 	size_type size() const
 	{
 		return (this->_size);
@@ -407,7 +403,6 @@ Appends the given element value to the end of the container
 	};
 
 	/****/
-
 
 		private:
 			Alloc		_allocator;

@@ -69,11 +69,20 @@ int main()
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int>	vec1;
 		ft::vector<int> vec2(3, 5);
-		for (std::vector<int>::iterator it = vec2.begin(); it != vec2.end(); it++)
-			std::cout << *it << " ";
+		for (int i = 0; i < 5; i++)
+			vec1.push_back(i);
+		display_ft_vector_elements(vec1);
+		ft::vector<int>::reverse_iterator revIter;
+		for (revIter = vec1.rbegin(); revIter != vec1.rend(); revIter++)
+			std::cout << *revIter << " ";
 		std::cout << std::endl;
+		revIter = vec1.rbegin();
+		std::cout << "rbegin: " << *revIter << std::endl;
+		revIter += 2;
+		std::cout << "+=2: " << *revIter << std::endl;
+		revIter = vec1.rbegin() + 1;
+		std::cout << "+1: " << *revIter << std::endl;
 	}
-
 	return 0;
 }
 
