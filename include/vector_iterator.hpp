@@ -5,19 +5,18 @@
 
 namespace ft
 {
-	template<class T>
+	template<class Iterator>
 	class vector_iterator
 	{
 
-
 		public:
 
-			typedef T												iterator_type;
-			typedef typename iterator_traits<T>::iterator_category	iterator_category;
-			typedef typename iterator_traits<T>::value_type			value_type;
-			typedef typename iterator_traits<T>::difference_type	difference_type;
-			typedef typename iterator_traits<T>::pointer			pointer;
-			typedef typename iterator_traits<T>::reference			reference;
+			typedef Iterator												iterator_type;
+			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
+			typedef typename iterator_traits<Iterator>::value_type			value_type;
+			typedef typename iterator_traits<Iterator>::difference_type		difference_type;
+			typedef typename iterator_traits<Iterator>::pointer				pointer;
+			typedef typename iterator_traits<Iterator>::reference			reference;
 
 	/* --- Constructors / Destructor --- */
 			vector_iterator() {};
@@ -104,38 +103,34 @@ namespace ft
 		};
 
 		/* operator[] : dereference iterator with offset */
-
-
-	/* --- Relational operators --- */
-		// template <class Iterator1, class Iterator2>
-		// bool operator==(const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs == *rhs); }; // ? dereference? .base()? need to compare the value which is pointed by the iterator
-
-		// template <class Iterator1, class Iterator2>
-		// bool operator!=(const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs != *rhs); };
-
-		// template <class Iterator1, class Iterator2>
-		// bool operator< (const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs < *rhs); };
-
-		// template <class Iterator1, class Iterator2>
-		// bool operator<=(const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs <= *rhs); };
-
-		// template <class Iterator1, class Iterator2>
-		// bool operator> (const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs > *rhs); };
-
-		// template <class Iterator1, class Iterator2>
-		// bool operator>=(const vector_iterator<Iterator1> &lhs, const vector_iterator<Iterator2> &rhs)
-		// { return (*lhs >= *rhs); };
-
-		
 		protected:
 			pointer		_current_element;
-
 	};
+
+	/* --- Relational operators --- */
+		template <class Iterator>
+		bool operator==(const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs == rhs); }; // ? dereference? .base()? need to compare the value which is pointed by the iterator
+
+		template <class Iterator>
+		bool operator!=(const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs != rhs); };
+
+		template <class Iterator>
+		bool operator< (const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs < rhs); };
+
+		template <class Iterator>
+		bool operator<=(const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs <= rhs); };
+
+		template <class Iterator>
+		bool operator> (const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs > rhs); };
+
+		template <class Iterator>
+		bool operator>=(const vector_iterator<Iterator> &lhs, const vector_iterator<Iterator> &rhs)
+		{ return (lhs >= rhs); };
 }
 
 #endif
