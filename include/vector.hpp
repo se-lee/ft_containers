@@ -16,6 +16,7 @@ namespace ft
 	class vector
 	{
 
+
 		public:
 			typedef	T										value_type;
 			typedef	Alloc									allocator_type;	// std::allocator<value_type>
@@ -34,24 +35,24 @@ namespace ft
 	/* empty container constructor (default constructor) -- constructs an empty container, with no elements*/
 	explicit vector (const allocator_type &alloc = allocator_type()) 
 	{
-		this->_allocator = alloc;
-		this->_ptr = NULL;
-		this->_capacity = 0;
-		this->_size = 0;
+		_allocator = alloc;
+		_ptr = NULL;
+		_capacity = 0;
+		_size = 0;
 	}; // Explicitをつけることで暗黙的型変換を防ぐ
 
 	/* fill constructor -- constructs a container with n elements. Each element is a copy of val*/
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	{
-		this->_allocator = alloc;
-		this->_ptr = this->_allocator.allocate(n); // is there any possibility of failing allocation?
-		this->_capacity = n;
-		this->_size = n;
+		_allocator = alloc;
+		_ptr = _allocator.allocate(n); // is there any possibility of failing allocation?
+		_capacity = n;
+		_size = n;
 
 		if (n > 0)
 		{
-			for (size_type i = 0; i < this->_size; i++)
-				this->_allocator.construct(this->_ptr + i, val);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(_ptr + i, val);
 		}
 		
 	};
@@ -63,14 +64,14 @@ namespace ft
 		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
 		{
 			size_type	range_size = last - first;
-			this->_allocator = alloc;
-			this->_ptr = this->_allocator.allocate(range_size);
-			this->_capacity = range_size;
-			this->_size = range_size;
+			_allocator = alloc;
+			_ptr = _allocator.allocate(range_size);
+			_capacity = range_size;
+			_size = range_size;
 
 			for (size_type i = 0; i < range_size; i++)
 			{
-				this->_allocator.construct(this->_ptr + i, first);
+				_allocator.construct(_ptr + i, first);
 				first++;
 			}
 		};
@@ -78,15 +79,15 @@ namespace ft
 	/* copy constructor -- constructs a container with a copy of each of the elements in x, in the same order */
 	vector (const vector &x)
 	{
-		this->_allocator = x._allocator;
-		this->_ptr = this->_allocator.allocate(x._capacity);
-		this->_capacity = x._capacity;
-		this->_size = x._size;
+		_allocator = x._allocator;
+		_ptr = _allocator.allocate(x._capacity);
+		_capacity = x._capacity;
+		_size = x._size;
 
-		if (this->_size > 0)
+		if (_size > 0)
 		{
 			for(size_type i = 0; i < x._size; i++)
-				this->_allocator.construct(this->_ptr + i, x[i]);
+				_allocator.construct(_ptr + i, x[i]);
 		}
 	};
 	/* the container keeps an internal copy of alloc, which is used to allocate storage throughout its lifetime. */
@@ -96,15 +97,15 @@ namespace ft
 /* Destructor */
 	~vector()
 	{
-		if (this->_size > 0)
+		if (_size > 0)
 		{
-			for (size_type i = 0; i < this->_size; i++)
-				this->_allocator.destroy(_ptr + i);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.destroy(_ptr + i);
 		}
-		if (this->_capacity > 0)
-			this->_allocator.deallocate(this->_ptr, this->_capacity);
-		this->_size = 0;
-		this->_capacity = 0;
+		if (_capacity > 0)
+			_allocator.deallocate(_ptr, _capacity);
+		_size = 0;
+		_capacity = 0;
 	};
 
 
@@ -116,7 +117,7 @@ namespace ft
 	vector	&operator= (const vector &x)
 	{
 		for (iterator ite(x.begin()); ite != x.end(); ite++)
-			this->push_back(ite.base());
+			push_back(ite.base());
 		return (*this);
 	};
 
@@ -124,44 +125,44 @@ namespace ft
 /* --- Iterators ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
-	{ return (iterator(this->_ptr)); };
+	{ return (iterator(_ptr)); };
 
 	const_iterator begin() const
-	{ return (const_iterator(this->_ptr)); };
+	{ return (const_iterator(_ptr)); };
 
 /* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
 	{
-		this->_ptr + this->size();
-		return (iterator(this->_ptr));
+		_ptr + size();
+		return (iterator(_ptr));
 	};
 
 	const_iterator end() const
 	{
-		this->_ptr + this->size();
-		return (const_iterator(this->_ptr));
+		_ptr + size();
+		return (const_iterator(_ptr));
 	};
 
 /* rbegin */
 	reverse_iterator rbegin()
-	{ return (reverse_iterator(this->end())); };
+	{ return (reverse_iterator(end())); };
 
 	const_reverse_iterator rbegin() const
-	{ return (const_reverse_iterator(this->end())); };
+	{ return (const_reverse_iterator(end())); };
 
 
 // /* rend */
 	reverse_iterator rend()
-	{ return (reverse_iterator(this->begin())); };
+	{ return (reverse_iterator(begin())); };
 
 	const_reverse_iterator rend() const
-	{ return (const_reverse_iterator(this->begin())); };
+	{ return (const_reverse_iterator(begin())); };
 
 
 /* --- Capacity --- */
 /* size : Returns the number of elements in the container, i.e. std::distance(begin(), end()). */
 	size_type size() const
-	{ return (this->_size); };
+	{ return (_size); };
 
 
 /* max_size */
@@ -172,7 +173,7 @@ implementation limitations, i.e. std::distance(begin(), end()) for the largest c
 
 */
 	size_type max_size() const
-	{ return (this->_allocator.max_size()); };
+	{ return (_allocator.max_size()); };
 
 /* resize */
 /* 
@@ -189,19 +190,19 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 */
 	void resize(size_type count)
 	{
-		if (this->_size > count)
+		if (_size > count)
 		{
 			
 			// 最初の Count個分だけ残して、あとはすべて消す (allocator/destroy) - capacityはそのまま残る
 			
 		}
-		else // this->_size < count
+		else // _size < count
 		{
 			// 既存の数からCount分までを初期値で足す（後ろにつける）
-			this->_ptr + this->_size = this->_allocator.allocate(count - this->_size);
+			_ptr + _size = _allocator.allocate(count - _size);
 			
-			if (this->_capacity < count)
-				this->_capacity = count;
+			if (_capacity < count)
+				_capacity = count;
 		}
 	};
 	void resize(size_type count, const value_type = T() );
@@ -212,13 +213,13 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
  */
 
 	size_type capacity() const
-	{ return (this->_capacity); };
+	{ return (_capacity); };
 
 /* empty : [true] if the container is empty, [false] if not empty
 https://en.cppreference.com/w/cpp/container/vector/empty
 */
 	bool empty() const
-	{ return (this->_size == 0); };
+	{ return (_size == 0); };
 
 // /* reserve */
 // /*
@@ -250,12 +251,12 @@ https://en.cppreference.com/w/cpp/container/vector/empty
 
 	reference operator[] (size_type pos)
 	{
-		return (this->_ptr[pos]);
+		return (_ptr[pos]);
 	};
 
 	const_reference operator [] (size_type pos) const
 	{
-		return (this->_ptr[pos]);
+		return (_ptr[pos]);
 	};
 
 // /* at */
@@ -338,45 +339,48 @@ Appends the given element value to the end of the container
 */
 	void	push_back(const T& value)
 	{
-		this->_allocator.construct(&(this->_ptr[this->_size]), value);
-		this->_size++;
+		_allocator.construct(&(_ptr[_size]), value);
+		_size++;
 	};
 
 /* pop_back */
 	void	pop_back()
 	{
-		this->_allocator.destroy(this->end() - 1);
-		this->_size--;
+		_allocator.destroy(end() - 1);
+		_size--;
 	};
 
 /* insert */
-	iterator insert (iterator poisiton, const value_type &val)
-	{
-
-	};
-	void	insert (iterator position, size_type n, const value_type &val)
-	{
-
-	};
+	iterator insert (iterator poisiton, const value_type &val);
+	void	insert (iterator position, size_type n, const value_type &val);
 
 	template <class InputIterator>
-	void insert (iterator position, InputIterator first, InputIterator last)
-	{
-
-	};
+	void insert (iterator position, InputIterator first, InputIterator last);
 
 /* erase */
 /* swap */
 /* clear */
 
 
+		private:
+			Alloc		_allocator;
+			pointer		_ptr;
+			size_type	_capacity;
+			size_type	_size;
+
 /* --- Allocator --- */
 /* get_allocator */
 	allocator_type get_allocator() const
 	{
-		return (this->_allocator);
+		return (_allocator);
 	};
 
+	/***あとで消す***/
+	pointer		get_ptr()
+	{ return (_ptr); };
+	/****/
+
+	};
 
 /* --- Non-member function overloads --- */
 /* operator== */
@@ -410,19 +414,6 @@ Appends the given element value to the end of the container
 
 /* std::swap(std::vector) */
 
-
-
-	/***あとで消す***/
-	pointer		get_ptr()
-	{ return (this->_ptr); };
-	/****/
-
-		private:
-			Alloc		_allocator;
-			pointer		_ptr;
-			size_type	_capacity;
-			size_type	_size;
-	};
 }
 
 #endif
