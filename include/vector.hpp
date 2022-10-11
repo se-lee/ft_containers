@@ -57,9 +57,8 @@ namespace ft
 	};
 
 	/* range constructor 
-		-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order 
-			1,2,3,4,5 だったら同じ順番で同じValueをいれる
-	*/
+	-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order 
+	1,2,3,4,5 だったら同じ順番で同じValueをいれる */
 	template <class InputIterator>
 		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
 		{
@@ -76,8 +75,7 @@ namespace ft
 			}
 		};
 
-	/* copy constructor
-		-- constructs a container with a copy of each of the elements in x, in the same order */
+	/* copy constructor -- constructs a container with a copy of each of the elements in x, in the same order */
 	vector (const vector &x)
 	{
 		this->_allocator = x._allocator;
@@ -112,6 +110,8 @@ namespace ft
 
 /* Operator = */
 	/* assign content - assigns new contents to the container, replacing its current contents, and modifying its size accordingly */
+	/* copies all the elements from x into the container.
+		the container preserves its current allocator, which is used to allocate storage in case of reallocation */
 	
 	vector	&operator= (const vector &x)
 	{
@@ -119,24 +119,17 @@ namespace ft
 			this->push_back(ite.base());
 		return (*this);
 	};
-	/* copies all the elements from x into the container.
-		the container preserves its current allocator, which is used to allocate storage in case of reallocation */
 
 
 /* --- Iterators ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
-	{
-		// returns an iterator pointing to the first element in the vector
-		return (iterator(this->_ptr));
-	};
+	{ return (iterator(this->_ptr)); };
 
 	const_iterator begin() const
-	{
-		return (const_iterator(this->_ptr));
-	};
+	{ return (const_iterator(this->_ptr)); };
 
-/* end */
+/* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
 	{
 		this->_ptr + this->size();
@@ -147,40 +140,28 @@ namespace ft
 	{
 		this->_ptr + this->size();
 		return (const_iterator(this->_ptr));
-	/* returns a const_iterator if the vector obeject is const-qualified */
 	};
 
 /* rbegin */
 	reverse_iterator rbegin()
-	{
-		
-		return (reverse_iterator(this->end()));
-	};
+	{ return (reverse_iterator(this->end())); };
 
 	const_reverse_iterator rbegin() const
-	{
-		return (const_reverse_iterator(this->end()));
-	};
+	{ return (const_reverse_iterator(this->end())); };
 
 
 // /* rend */
 	reverse_iterator rend()
-	{
-		return (reverse_iterator(this->begin()));
-	};
+	{ return (reverse_iterator(this->begin())); };
 
 	const_reverse_iterator rend() const
-	{
-		return (const_reverse_iterator(this->begin()));
-	};
+	{ return (const_reverse_iterator(this->begin())); };
 
 
 /* --- Capacity --- */
 /* size : Returns the number of elements in the container, i.e. std::distance(begin(), end()). */
 	size_type size() const
-	{
-		return (this->_size);
-	};
+	{ return (this->_size); };
 
 
 /* max_size */
@@ -191,9 +172,7 @@ implementation limitations, i.e. std::distance(begin(), end()) for the largest c
 
 */
 	size_type max_size() const
-	{
-		return (this->_allocator.max_size());
-	};
+	{ return (this->_allocator.max_size()); };
 
 /* resize */
 /* 
@@ -228,25 +207,18 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 	void resize(size_type count, const value_type = T() );
 	void resize(size_type count, const value_type& value);
 
-/* capacity */
-/*
+/* capacity :capacity of the currently allocated storage
 https://en.cppreference.com/w/cpp/container/vector/capacity
-*/
-	size_type capacity() const
-	{
-		return (this->_capacity);
-		/* capacity of the currently allocated storage */
-	}
+ */
 
-// /* empty */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/empty
-// */
+	size_type capacity() const
+	{ return (this->_capacity); };
+
+/* empty : [true] if the container is empty, [false] if not empty
+https://en.cppreference.com/w/cpp/container/vector/empty
+*/
 	bool empty() const
-	{
-		return (this->_size == 0);
-		/* [true] if the container is empty, [false] if not empty*/
-	}
+	{ return (this->_size == 0); };
 
 // /* reserve */
 // /*
@@ -378,12 +350,21 @@ Appends the given element value to the end of the container
 	};
 
 /* insert */
-	iterator insert(iterator poisiton, const value_type &val)
+	iterator insert (iterator poisiton, const value_type &val)
+	{
+
+	};
+	void	insert (iterator position, size_type n, const value_type &val)
 	{
 
 	};
 
-	
+	template <class InputIterator>
+	void insert (iterator position, InputIterator first, InputIterator last)
+	{
+
+	};
+
 /* erase */
 /* swap */
 /* clear */
@@ -399,21 +380,41 @@ Appends the given element value to the end of the container
 
 /* --- Non-member function overloads --- */
 /* operator== */
+	template<class T, class Alloc>
+	bool operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs == rhs); };
+
 /* operator!= */
+	template<class T, class Alloc>
+	bool operator!= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs != rhs); };
+
 /* operator< */
+	template<class T, class Alloc>
+	bool operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs < rhs); };
+
 /* operator<= */
+	template<class T, class Alloc>
+	bool operator<= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs <= rhs); };
+
 /* operator> */
+	template<class T, class Alloc>
+	bool operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs > rhs); };
 /* operator>= */
+	template<class T, class Alloc>
+	bool operator>= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{ return (lhs >= rhs); };
 
 /* std::swap(std::vector) */
- 
-	/******/
 
+
+
+	/***あとで消す***/
 	pointer		get_ptr()
-	{
-		return (this->_ptr);
-	};
-
+	{ return (this->_ptr); };
 	/****/
 
 		private:

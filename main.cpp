@@ -44,29 +44,30 @@ void	display_ft_vector_elements(ft::vector<int> vec)
 
 int main()
 {
-
-
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::vector<int>	vec1;
-		for (int i = 0; i < 5; i++)
-			vec1.push_back(i);
-		std::vector<int>::reverse_iterator revIter;
-		display_vector_elements(vec1);
-		vec1.pop_back();
-		display_vector_elements(vec1);
-		std::cout << std::endl;
+		std::vector<int> foo (3, 100); // three '100's
+		std::vector<int> bar (2, 200); // two '200's
+
+		if (foo == bar) std::cout << "foo == bar \n";
+		if (foo != bar) std::cout << "foo != bar \n";
+		if (foo < bar) std::cout << "foo < bar \n";
+		if (foo <= bar) std::cout << "foo <= bar \n";
+		if (foo > bar) std::cout << "foo > bar \n";
+		if (foo >= bar) std::cout << "foo >= bar \n"; 
+
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::vector<int>	vec1;
-		ft::vector<int> vec2(3, 5);
-		for (int i = 0; i < 5; i++)
-			vec1.push_back(i);
-		display_ft_vector_elements(vec1);
-		vec1.pop_back();
-		display_vector_elements(vec1);
-		std::cout << std::endl;
+		ft::vector<int> foo (3, 100); // three '100's
+		ft::vector<int> bar (2, 200); // two '200's
+
+		if (foo == bar) std::cout << "foo == bar \n";
+		if (foo != bar) std::cout << "foo != bar \n";
+		if (foo < bar) std::cout << "foo < bar \n";
+		if (foo <= bar) std::cout << "foo <= bar \n";
+		if (foo > bar) std::cout << "foo > bar \n";
+		if (foo >= bar) std::cout << "foo >= bar \n"; 
 
 	}
 	return 0;
