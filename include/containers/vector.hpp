@@ -5,6 +5,7 @@
 # include "reverse_iterator.hpp"
 # include "vector_iterator.hpp"
 # include "sfinae.hpp"
+# include "algorithm.hpp"
 
 /* vectors are sequence containers that can change in size
 their size can change dynamically, with their storage being handled automatically by the container
@@ -16,8 +17,6 @@ namespace ft
 	template <class T, class Alloc = std::allocator<T> > // アロケータ：メモリの管理を請け負うクラス；生のメモリーの確保と解放を行うライブラリ
 	class vector
 	{
-
-
 		public:
 			typedef	T										value_type;
 			typedef	Alloc									allocator_type;	// std::allocator<value_type>
@@ -62,20 +61,22 @@ namespace ft
 	-- constructs a container with as many elements as the range [first, last), with each element constructed from its corresponding element in that range, in the same order 
 	1,2,3,4,5 だったら同じ順番で同じValueをいれる */
 	template <class InputIterator>
-		vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
-		{
-			size_type	range_size = last - first;
-			_allocator = alloc;
-			_ptr = _allocator.allocate(range_size);
-			_capacity = range_size;
-			_size = range_size;
+	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
+	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type = NULL)
+	{
+		std::cout << "range constructor called" << std::endl;
+		size_type	range_size = last - first;
+		_allocator = alloc;
+		_ptr = _allocator.allocate(range_size);
+		_capacity = range_size;
+		_size = range_size;
 
-			for (size_type i = 0; i < range_size; i++)
-			{
-				_allocator.construct(_ptr + i, first);
-				first++;
-			}
-		};
+		for (size_type i = 0; i < range_size; i++)
+		{
+			_allocator.construct(_ptr + i, first);
+			first++;
+		}
+	};
 
 	/* copy constructor -- constructs a container with a copy of each of the elements in x, in the same order */
 	vector (const vector &x)
@@ -91,9 +92,6 @@ namespace ft
 				_allocator.construct(_ptr + i, x[i]);
 		}
 	};
-	/* the container keeps an internal copy of alloc, which is used to allocate storage throughout its lifetime. */
-	/* the copy constructor creates a container that keeps and uses a copy of x's allocator */
-
 
 /* Destructor */
 	~vector()
@@ -171,7 +169,6 @@ namespace ft
 https://en.cppreference.com/w/cpp/container/vector/max_size
 Returns the maximum number of elements the container is able to hold due to system or library 
 implementation limitations, i.e. std::distance(begin(), end()) for the largest container. 
-
 */
 	size_type max_size() const
 	{ return (_allocator.max_size()); };
@@ -387,7 +384,7 @@ Appends the given element value to the end of the container
 /* operator== */
 	template<class T, class Alloc>
 	bool operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ return (lhs == rhs); };
+	{ return (*lhs == *rhs); };
 
 /* operator!= */
 	template<class T, class Alloc>
