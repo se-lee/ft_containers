@@ -38,6 +38,7 @@ namespace ft
 
 			vector(size_type size, const_reference value, const allocator_type &alloc) :vector(alloc)
 			{ resize(size, value); }
+			
 
 			~vector()
 			{
@@ -130,9 +131,24 @@ namespace ft
 				if (n < size())
 				{
 					size_type diff = size() - n;
-					
+					destroy_until(rbegin() + diff);
+					last = first + n;
+				}
+				else if (n > size())
+				{
+					reserve(n);
+					for (; last != reserved_last; ++last)
+						construct(last);
 				}
 			}
+
+			void push_back(const_reference value)
+			{
+				if (size() + 1 > capacity())
+					reserve(size() + 1);
+			}
+			construct(last, value);
+			++last;
 
 	};
 

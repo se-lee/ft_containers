@@ -79,6 +79,15 @@
 		"thread": "cpp",
 		"typeinfo": "cpp",
 		"stop_token": "cpp",
-		"cinttypes": "cpp"
+		"cinttypes": "cpp",
+		"__availability": "cpp",
+		"cassert": "cpp",
+		"ccomplex": "cpp",
+		"cerrno": "cpp",
+		"cfloat": "cpp",
+		"climits": "cpp",
+		"ctgmath": "cpp",
+		"cstdbool": "cpp",
+		"version": "cpp"
 	}
 }

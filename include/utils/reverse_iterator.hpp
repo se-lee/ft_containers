@@ -10,7 +10,7 @@ namespace ft
 	class reverse_iterator
 	{
 		protected:
-			Iterator	it;
+			Iterator	_current;
 
 		public: 
 			typedef Iterator 										iterator_type;
@@ -27,14 +27,14 @@ namespace ft
 			/* initialization */
 			explicit reverse_iterator(iterator_type x) 
 			{
-				this->it = x;
+				this->_current = x;
 			};
 
 			/* copy */
 			template <class U>
 			reverse_iterator (const reverse_iterator<U> &rev_it) 
 			{
-				this->it = rev_it.it;
+				this->_current = rev_it._current;
 				return (*this);
 			};
 
@@ -44,7 +44,7 @@ namespace ft
 			/* base - the value that is pointed by the iterator */
 			iterator_type base() const
 			{
-				return (it);
+				return (_current);
 				/* returns a copy of base iterator, which iterates in the opposite direction */
 			};
 
