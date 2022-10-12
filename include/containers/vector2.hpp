@@ -3,57 +3,82 @@
 
 # include <iostream>
 # include <iterator>
+# include "../utils/reverse_iterator2.hpp"
+# include "../utils/random_access_iterator.hpp"
+# include "../utils/sfinae.hpp"
+
 
 namespace ft
 {
-	template<class T, class Allocator = std::allocator<T>>
+	template<class T, class Alloc = std::allocator<T>>
 	class vector
 	{
-		private:
-			pointer first;
-			pointer last;
-			pointer reserved_last;
-			allocator_type alloc;
+		public:
+			typedef	T				value_type;
+			typedef Alloc			allocator_type;
+			typedef std::size_t		size_type;
+			typedef std::ptrdiff_t	difference_type;
+			typedef T&				reference;
+			typedef const T& 		const_reference;
+			typedef T*				pointer;
+			typedef const T*		const_pointer;
+			typedef ft::random_access_iterator<pointer>	iterator;
+			typedef ft::random_access_iterator<const_pointer> const_iterator;
+			typedef ft::reverse_iterator<T>	reverse_iterator;
+			typedef const ft::reverse_iterator<T>	const_reverse_iterator;
+
+			// using value_type	= T;
+			// using pointer		= T *;
+			// using const_pointer	= const pointer;
+			// using reference		= value_type &;
+			// using const_reference = const value_type &;
+			// using allocator_type = Allocator;
+
+			// using iterator		= pointer;
+			// using const_iterator = const_pointer;
+			// using reverse_iterator = ft::reverse_iterator<iterator>;
+			// using const_reverse_iterator = ft::reverse_iterator<const_iterator>;
+		
+		protected:
+			pointer _first;
+			pointer _last;
+			pointer _reserved_last;
+			allocator_type _alloc;
 
 		public:
-			using value_type	= T;
-			using pointer		= T *;
-			using const_pointer	= const pointer;
-			using reference		= value_type &;
-			using const_reference = const value_type &;
-			using allocator_type = Allocator;
-
-			using iterator		= pointer;
-			using const_iterator = const_pointer;
-			using reverse_iterator = ft::reverse_iterator<iterator>;
-			using const_reverse_iterator = ft::reverse_iterator<const_iterator>;
-
-
 			vector() {}
 
 			vector(const allocator_type &alloc) : alloc(alloc){}
 
-			vector(size_type size, const allocator_type &alloc) :vector(alloc)
+			explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
+
+			vector(size_type n, const allocator_type &alloc) :vector(alloc)
 			{ resize(size); }
 
 			vector(size_type size, const_reference value, const allocator_type &alloc) :vector(alloc)
 			{ resize(size, value); }
-			
+
+
 
 			~vector()
 			{
-				clear();
-				deallocate();
+				if (size() > 0)
+				{
+					for (size_type i = 0; i < size(); i++)
+						_alloc.destroy(_first + i);
+				}
+				if (capacity() > 0)
+					_alloc.deallocate(_first, capacity());
 			}
 	
 			iterator begin() const
-			{ return (first); }
+			{ return (_first); }
 
 			iterator end() const
-			{ return (last); }
+			{ return (_last); }
 
 			reverse_iterator rbegin()
-			{ return (reverse_iterator{last}); } //型変換
+			{ return (reverse_iterator{_last}); } //型変換
 
 			size_type size() const
 			{ return (end() - begin()); }
@@ -62,20 +87,20 @@ namespace ft
 			{ return (size() == 0); }
 
 			size_type capacity() const
-			{ return (reserved_last - first); }
+			{ return (_reserved_last - _first); }
 
 			reference operator[](size_type i)
-			{ return (first[i]); }
+			{ return (_first[i]); }
 
 			const_reference operator[](size_type i) const
-			{ return (first[i]); }
+			{ return (_first[i]); }
 
 			reference at(size_type i)
 			{
 				if (i >= size())
 					throw std::out_of_range("index is out of range.");
 				
-				return (first[i]);
+				return (_first[i]);
 			}
 
 			const_reference at(size_type i)
@@ -83,7 +108,7 @@ namespace ft
 				if( i >= size())
 					throw std::out_of_range("index is out of range.");
 				
-				return (first[i]);
+				return (_first[i]);
 			}
 
 			reference front()
@@ -93,16 +118,16 @@ namespace ft
 			{ return (first); }
 
 			reference back()
-			{ return (last - 1); }
+			{ return (_last - 1); }
 
 			const_reference back() const
-			{ return (last - 1); }
+			{ return (_last - 1); }
 
 			pointer data()
-			{ return (first); }
+			{ return (_first); }
 
 			const_pointer data() const
-			{ return (first); }
+			{ return (_first); }
 
 			void reserve(size_type size)
 			{
@@ -110,16 +135,16 @@ namespace ft
 					return ;
 				pointer ptr = allocate(size);
 
-				pointer old_first = first;
-				pointer old_last = last;
+				pointer old_first = _first;
+				pointer old_last = _last;
 				size_type old_capacity = capacity();
 
-				first = ptr;
-				last = first;
-				reserved_last = first + size;
+				_first = ptr;
+				_last = _first;
+				_reserved_last = _first + size;
 
-				for (pointer old_iter = old_first; old_iter != old_last; ++old_iter, ++last)
-					construct (last, std::move(*old_ptr));
+				for (pointer old_iter = old_first; old_iter != old_last; ++old_iter, ++_last)
+					construct (_last, std::move(*old_ptr));
 
 				for (reverse_iterator riter = reverse_iterator(old_last, rend = reverse_iterator(old_first);
 					riter != rend; ++riter))
@@ -132,13 +157,13 @@ namespace ft
 				{
 					size_type diff = size() - n;
 					destroy_until(rbegin() + diff);
-					last = first + n;
+					_last = _first + n;
 				}
 				else if (n > size())
 				{
 					reserve(n);
-					for (; last != reserved_last; ++last)
-						construct(last);
+					for (; _last != _reserved_last; ++_last)
+						construct(_last);
 				}
 			}
 
@@ -147,8 +172,8 @@ namespace ft
 				if (size() + 1 > capacity())
 					reserve(size() + 1);
 			}
-			construct(last, value);
-			++last;
+			construct(_last, value);
+			++_last;
 
 	};
 
