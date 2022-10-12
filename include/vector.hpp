@@ -4,6 +4,7 @@
 # include <memory> // allocator<T>
 # include "reverse_iterator.hpp"
 # include "vector_iterator.hpp"
+# include "sfinae.hpp"
 
 /* vectors are sequence containers that can change in size
 their size can change dynamically, with their storage being handled automatically by the container
