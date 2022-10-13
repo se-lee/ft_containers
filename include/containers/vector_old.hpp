@@ -27,16 +27,13 @@ namespace ft
 			typedef	const T&									const_reference;
 			typedef	T*											pointer;
 			typedef	const T*									const_pointer;
-			typedef	ft::random_access_iterator<T>				iterator;
-			typedef ft::random_access_iterator<const T>			const_iterator;
-			typedef	ft::reverse_iterator<T>						reverse_iterator;
-			typedef const ft::reverse_iterator<T>				const_reverse_iterator;
+			typedef	typename ft::random_access_iterator<T>				iterator;
+			typedef typename ft::random_access_iterator<const T>			const_iterator;
+			typedef	typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 		private:
 			allocator_type		_allocator;
-			pointer				_ptr;
-			size_type			_capacity;
-			size_type			_size;
 			pointer				_first;
 			pointer				_last;
 			pointer				_capacity_last;
@@ -44,78 +41,61 @@ namespace ft
 	public:
 /* [Constructors] */
 /* empty container constructor (default constructor) */
-	explicit vector (const allocator_type &alloc = allocator_type()) 
-	{
-		_allocator = alloc;
-		_ptr = NULL;
-		_capacity = 0;
-		_size = 0;
-	};
+	explicit vector (const allocator_type &alloc = allocator_type()) : _allocator(alloc), _first(NULL), _last(NULL), _capacity_last(NULL) {}
 
 /* fill constructor */
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 	{
 		_allocator = alloc;
-		_ptr = _allocator.allocate(n);
-		_capacity = n;
-		_size = n;
+		_first = _allocator.allocate(n);
+		_last = NULL;
+		_capacity_last = NULL;
 
 		if (n > 0)
 		{
-			for (size_type i = 0; i < _size; i++)
-				_allocator.construct(_ptr + i, val);
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(_first + i, val);
 		}
-		
-	};
+	}
 
 /* range constructor */
 	template <class InputIterator>
 	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type = NULL)
+	: _allocator(alloc), _first(first), _last(last), _capacity_last(last);
 	{
 		std::cout << "range constructor called" << std::endl;
 		size_type	range_size = last - first;
-		_allocator = alloc;
-		_ptr = _allocator.allocate(range_size);
-		_capacity = range_size;
-		_size = range_size;
+		_first = _allocator.allocate(range_size);
 
-		for (size_type i = 0; i < range_size; i++)
-		{
-			_allocator.construct(_ptr + i, first);
-			first++;
-		}
-	};
+		for (size_type i = 0; i < range_size; ++i, ++first)
+			_allocator.construct(_first + i, first);
+	}
 
 /* copy constructor */
 	vector (const vector &x)
 	{
 		_allocator = x._allocator;
-		_ptr = _allocator.allocate(x._capacity);
-		_capacity = x._capacity;
-		_size = x._size;
-
-		if (_size > 0)
+		_first = _allocator.allocate(x._capacity);
+	
+		if (x.size() > 0)
 		{
-			for(size_type i = 0; i < x._size; i++)
-				_allocator.construct(_ptr + i, x[i]);
+			for(size_type i = 0; i < x.size(); i++)
+				_allocator.construct(_first + i, x[i]);
 		}
-	};
+	}
 
 /* Destructor */
 	~vector()
 	{
-		if (_size > 0)
+		if (size() > 0)
 		{
-			for (size_type i = 0; i < _size; i++)
-				_allocator.destroy(_ptr + i);
+			for (size_type i = 0; i < size(); i++)
+				_allocator.destroy(_first + i);
 		}
-		if (_capacity > 0)
-			_allocator.deallocate(_ptr, _capacity);
-		_size = 0;
-		_capacity = 0;
-	};
-
+		if (capacity() > 0)
+			_allocator.deallocate(_first, _capacity_last);
+	}
 
 /* Operator = */
 	/* assign content - assigns new contents to the container, replacing its current contents, and modifying its size accordingly */
@@ -127,60 +107,54 @@ namespace ft
 		for (iterator ite(x.begin()); ite != x.end(); ite++)
 			push_back(ite.base());
 		return (*this);
-	};
+	}
 
 
 /* --- Iterators ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
-	{ return (iterator(_ptr)); };
+	{ return (iterator(_first)); }
 
 	const_iterator begin() const
-	{ return (const_iterator(_ptr)); };
+	{ return (const_iterator(_ptr)); }
 
 /* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
 	{
-		_ptr + size();
-		return (iterator(_ptr));
-	};
+		return (iterator(_last));
+	}
 
 	const_iterator end() const
 	{
-		_ptr + size();
-		return (const_iterator(_ptr));
-	};
+		return (const_iterator(_last));
+	}
 
 /* rbegin */
 	reverse_iterator rbegin()
-	{ return (reverse_iterator(end())); };
+	{ return (reverse_iterator(end())); }
 
 	const_reverse_iterator rbegin() const
-	{ return (const_reverse_iterator(end())); };
+	{ return (const_reverse_iterator(end())); }
 
 
 // /* rend */
 	reverse_iterator rend()
-	{ return (reverse_iterator(begin())); };
+	{ return (reverse_iterator(begin())); }
 
 	const_reverse_iterator rend() const
-	{ return (const_reverse_iterator(begin())); };
+	{ return (const_reverse_iterator(begin())); }
 
 
 /* --- Capacity --- */
-/* size : Returns the number of elements in the container, i.e. std::distance(begin(), end()). */
+/* size : number of elements in the container */
 	size_type size() const
-	{ return (_size); };
+	{ return (end() - begin()); }
 
 
-/* max_size */
-/*
-https://en.cppreference.com/w/cpp/container/vector/max_size
-Returns the maximum number of elements the container is able to hold due to system or library 
-implementation limitations, i.e. std::distance(begin(), end()) for the largest container. 
-*/
+/* max_size : the maximum number of elements the container is able to hold due to system or library 
+implementation limitations */
 	size_type max_size() const
-	{ return (_allocator.max_size()); };
+	{ return (_allocator.max_size()); }
 
 /* resize */
 /* 
@@ -211,7 +185,7 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 			if (_capacity < count)
 				_capacity = count;
 		}
-	};
+	}
 	void resize(size_type count, const value_type = T() );
 	void resize(size_type count, const value_type& value);
 
@@ -220,7 +194,7 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
  */
 
 	size_type capacity() const
-	{ return (_capacity); };
+	{ return (_capacity_last - _first); }
 
 /* empty : [true] if the container is empty, [false] if not empty
 https://en.cppreference.com/w/cpp/container/vector/empty
@@ -257,14 +231,10 @@ https://en.cppreference.com/w/cpp/container/vector/empty
 // */
 
 	reference operator[] (size_type pos)
-	{
-		return (_ptr[pos]);
-	};
+	{ return (_first[pos]); }
 
 	const_reference operator [] (size_type pos) const
-	{
-		return (_ptr[pos]);
-	};
+	{ return (_first[pos]); }
 
 // /* at */
 // /*
@@ -276,11 +246,11 @@ https://en.cppreference.com/w/cpp/container/vector/empty
 // [pos] : position of the element to return
 // */
 
-// 	reference at(size_type pos)
-// 	{
-// 		return (/* reference to the requested element */);
-// 	}
-// 	const_reference at(size_type pos) const;
+	reference at(size_type pos)
+	{ return (_first[pos]); }
+
+	const_reference at(size_type pos) const
+	{ return (_first[pos]); }
 
 
 // /* front */
@@ -345,17 +315,11 @@ Appends the given element value to the end of the container
 
 */
 	void	push_back(const T& value)
-	{
-		_allocator.construct(&(_ptr[_size]), value);
-		_size++;
-	};
+	{ _allocator.construct(end(), value); }
 
 /* pop_back */
 	void	pop_back()
-	{
-		_allocator.destroy(end() - 1);
-		_size--;
-	};
+	{ _allocator.destroy(end() - 1); }
 
 /* insert */
 	iterator insert (iterator poisiton, const value_type &val);
@@ -372,14 +336,7 @@ Appends the given element value to the end of the container
 /* --- Allocator --- */
 /* get_allocator */
 	allocator_type get_allocator() const
-	{
-		return (_allocator);
-	};
-
-	/***あとで消す***/
-	pointer		get_ptr()
-	{ return (_ptr); };
-	/****/
+	{ return (_allocator); }
 
 	};
 
