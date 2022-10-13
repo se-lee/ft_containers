@@ -5,14 +5,14 @@
 
 namespace ft
 {
-	template<typename T>
+	template<class T>
 	class random_access_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		protected:
 			T*	_current;
 		
 		public:
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type	value_type; 
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type		value_type; 
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category	iterator_category;
 			typedef T*	pointer;
@@ -21,7 +21,7 @@ namespace ft
 			random_access_iterator() : _current(NULL) {}
 			random_access_iterator(pointer ptr) : _current(ptr) {}
 			explicit random_access_iterator(const random_access_iterator &other) : _current(other._current) {}
-			random_access_iterator &operator=(const random_access_iterator &otehr) 
+			random_access_iterator &operator=(const random_access_iterator &other) 
 			{
 				if (this == &other)
 					return (*this);
@@ -37,7 +37,7 @@ namespace ft
 			{ return (*_current); }
 
 			pointer operator->() const
-			{ return (&(opeartor*())); }
+			{ return (&(operator*())); }
 
 			reference operator[] (difference_type n) const
 			{ return (*(*this + n)); }
