@@ -48,8 +48,8 @@ namespace ft
 	{
 		_allocator = alloc;
 		_first = _allocator.allocate(n);
-		_last = NULL;
-		_capacity_last = NULL;
+		_last = _first + n;
+		_capacity_last = _last;
 
 		if (n > 0)
 		{
@@ -62,7 +62,7 @@ namespace ft
 	template <class InputIterator>
 	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type = NULL)
-	: _allocator(alloc), _first(first), _last(last), _capacity_last(last);
+	: _allocator(alloc), _first(first), _last(last), _capacity_last(last)
 	{
 		std::cout << "range constructor called" << std::endl;
 		size_type	range_size = last - first;
@@ -76,7 +76,7 @@ namespace ft
 	vector (const vector &x)
 	{
 		_allocator = x._allocator;
-		_first = _allocator.allocate(x._capacity);
+		_first = _allocator.allocate(x.capacity());
 	
 		if (x.size() > 0)
 		{
@@ -94,7 +94,7 @@ namespace ft
 				_allocator.destroy(_first + i);
 		}
 		if (capacity() > 0)
-			_allocator.deallocate(_first, _capacity_last);
+			_allocator.deallocate(_first, capacity());
 	}
 
 /* Operator = */
@@ -113,20 +113,20 @@ namespace ft
 /* --- Iterators ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
-	{ return (iterator(_first)); }
+	{ return (_first); }
 
 	const_iterator begin() const
-	{ return (const_iterator(_ptr)); }
+	{ return (_first); }
 
 /* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
 	{
-		return (iterator(_last));
+		return (_last);
 	}
 
 	const_iterator end() const
 	{
-		return (const_iterator(_last));
+		return (_last);
 	}
 
 /* rbegin */
@@ -171,7 +171,7 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 */
 	void resize(size_type count)
 	{
-		if (_size > count)
+		if (size() > count)
 		{
 			
 			// 最初の Count個分だけ残して、あとはすべて消す (allocator/destroy) - capacityはそのまま残る
@@ -180,10 +180,10 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 		else // _size < count
 		{
 			// 既存の数からCount分までを初期値で足す（後ろにつける）
-			_ptr + _size = _allocator.allocate(count - _size);
+			_first + size() = _allocator.allocate(count - size());
 			
-			if (_capacity < count)
-				_capacity = count;
+			if (capacity() < count)
+				capacity() = count;
 		}
 	}
 	void resize(size_type count, const value_type = T() );
@@ -200,7 +200,7 @@ https://en.cppreference.com/w/cpp/container/vector/capacity
 https://en.cppreference.com/w/cpp/container/vector/empty
 */
 	bool empty() const
-	{ return (_size == 0); };
+	{ return (begin() == end()); }
 
 // /* reserve */
 // /*
@@ -319,7 +319,7 @@ Appends the given element value to the end of the container
 
 /* pop_back */
 	void	pop_back()
-	{ _allocator.destroy(end() - 1); }
+	{ _allocator.destroy(_last - 1); }
 
 /* insert */
 	iterator insert (iterator poisiton, const value_type &val);

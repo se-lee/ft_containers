@@ -27,8 +27,12 @@ int main()
 		std::cout << "======== [ std::vector ] ========" << std::endl;
 		std::vector<int> foo(5, 10);
 		std::cout << "foo size: " << foo.size() << std::endl;
+		display_vector_elements(foo);
 		foo.pop_back();
 		std::cout << "foo size: " << foo.size() << std::endl;
+		std::cout << "foo max: " << foo.max_size() << std::endl;
+		
+		display_vector_elements(foo);
 
 		// if (foo == bar) std::cout << "foo == bar \n";
 		// if (foo != bar) std::cout << "foo != bar \n";
@@ -42,8 +46,10 @@ int main()
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int> foo(5, 10);
 		std::cout << "foo size: " << foo.size() << std::endl;
+		// display_ft_vector_elements(foo);
 		foo.pop_back();
 		std::cout << "foo size: " << foo.size() << std::endl;
+		// display_ft_vector_elements(foo);
 
 		// if (foo == bar) std::cout << "foo == bar \n";
 		// if (foo != bar) std::cout << "foo != bar \n";
