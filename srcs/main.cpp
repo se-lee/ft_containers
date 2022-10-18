@@ -4,20 +4,34 @@
 #include <deque>
 #include <map>
 #include <iterator>
-#include "../include/containers/vector_old.hpp"
+#include "../include/containers/vector.hpp"
 
 void	display_vector_elements(std::vector<int> vec)
 {
-	for (size_t i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << ' ';
+	// for (size_t i = 0; i < vec.size(); i++)
+	// 	std::cout << vec[i] << ' ';
+	// std::cout << std::endl;
+
+	for (std::vector<int>::iterator iter = vec.begin();
+		iter != vec.end(); iter++)
+			std::cout << *iter << ' ';
 	std::cout << std::endl;
+	
+
 }
 
 void	display_ft_vector_elements(ft::vector<int> vec)
 {
-	for (size_t i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << ' ';
+	// for (size_t i = 0; i < vec.size(); i++)
+	// 	std::cout << vec[i] << ' ';
+	// std::cout << std::endl;
+
+	for (ft::vector<int>::iterator iter = vec.begin();
+		iter != vec.end(); iter++)
+			std::cout << *iter << ' ';
 	std::cout << std::endl;
+
+
 }
 
 
@@ -26,37 +40,38 @@ int main()
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
 		std::vector<int> foo(5, 10);
+		std::vector<int> bar(5, 10);
 		std::cout << "foo size: " << foo.size() << std::endl;
-		display_vector_elements(foo);
-		foo.pop_back();
-		std::cout << "foo size: " << foo.size() << std::endl;
-		std::cout << "foo max: " << foo.max_size() << std::endl;
-		
-		display_vector_elements(foo);
+		std::cout << "bar size: " << bar.size() << std::endl;
 
-		// if (foo == bar) std::cout << "foo == bar \n";
-		// if (foo != bar) std::cout << "foo != bar \n";
-		// if (foo < bar) std::cout << "foo < bar \n";
-		// if (foo <= bar) std::cout << "foo <= bar \n";
-		// if (foo > bar) std::cout << "foo > bar \n";
-		// if (foo >= bar) std::cout << "foo >= bar \n"; 
+		std::cout <<  std::boolalpha;
+		std::cout << "foo == bar: " << (foo == bar) << std::endl;
+		std::cout << "foo != bar: " << (foo != bar) << std::endl;
+		std::cout << "foo < bar : " << (foo < bar) << std::endl;
+		std::cout << "foo <= bar: " << (foo <= bar) << std::endl;
+		std::cout << "foo > bar : " << (foo > bar) << std::endl;
+		std::cout << "foo >= bar: " << (foo >= bar) << std::endl;
+	
 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::vector<int> foo(5, 10);
+		ft::vector<int> bar(5, 10);
 		std::cout << "foo size: " << foo.size() << std::endl;
+		std::cout << "bar size: " << bar.size() << std::endl;
+
 		// display_ft_vector_elements(foo);
-		foo.pop_back();
-		std::cout << "foo size: " << foo.size() << std::endl;
 		// display_ft_vector_elements(foo);
 
-		// if (foo == bar) std::cout << "foo == bar \n";
-		// if (foo != bar) std::cout << "foo != bar \n";
-		// if (foo < bar) std::cout << "foo < bar \n";
-		// if (foo <= bar) std::cout << "foo <= bar \n";
-		// if (foo > bar) std::cout << "foo > bar \n";
-		// if (foo >= bar) std::cout << "foo >= bar \n"; 
+		std::cout <<  std::boolalpha;
+		std::cout << "foo == bar: " << (foo == bar) << std::endl;
+		std::cout << "foo != bar: " << (foo != bar) << std::endl;
+		std::cout << "foo < bar : " << (foo < bar) << std::endl;
+		std::cout << "foo <= bar: " << (foo <= bar) << std::endl;
+		std::cout << "foo > bar : " << (foo > bar) << std::endl;
+		std::cout << "foo >= bar: " << (foo >= bar) << std::endl;
+	
 
 	}
 	return 0;

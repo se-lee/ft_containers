@@ -10,7 +10,6 @@ namespace ft
 	{
 
 		public:
-
 			typedef Iterator												iterator_type;
 			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
 			typedef typename iterator_traits<Iterator>::value_type			value_type;
@@ -18,6 +17,10 @@ namespace ft
 			typedef typename iterator_traits<Iterator>::pointer				pointer;
 			typedef typename iterator_traits<Iterator>::reference			reference;
 
+		protected:
+			pointer		_current_element;
+
+		public:	
 	/* --- Constructors / Destructor --- */
 			vector_iterator() {};
 			vector_iterator(pointer ptr) 
@@ -103,8 +106,7 @@ namespace ft
 		};
 
 		/* operator[] : dereference iterator with offset */
-		protected:
-			pointer		_current_element;
+
 	};
 
 	/* --- Relational operators --- */

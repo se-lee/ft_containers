@@ -8,9 +8,6 @@ namespace ft
 	template<class T>
 	class random_access_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
 	{
-		protected:
-			T*	_current;
-		
 		public:
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type		value_type; 
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
@@ -18,9 +15,13 @@ namespace ft
 			typedef T*	pointer;
 			typedef T&	reference;
 
+		protected:
+			pointer	_current;
+		
+		public:
 			random_access_iterator() : _current(NULL) {}
 			random_access_iterator(pointer ptr) : _current(ptr) {}
-			explicit random_access_iterator(const random_access_iterator &other) : _current(other._current) {}
+			random_access_iterator(const random_access_iterator &other) : _current(other._current) {}
 			random_access_iterator &operator=(const random_access_iterator &other) 
 			{
 				if (this == &other)
@@ -97,23 +98,23 @@ namespace ft
 
 	template <class Iterator1, class Iterator2>
 	bool operator!= (const ft::random_access_iterator<Iterator1> &lhs, const ft::random_access_iterator<Iterator2> &rhs)
-	{ return (lhs != rhs); }
+	{ return (lhs.base() != rhs.base()); }
 
 	template <class Iterator1, class Iterator2>
 	bool operator< (const ft::random_access_iterator<Iterator1> &lhs, const ft::random_access_iterator<Iterator2> &rhs)
-	{ return (lhs < rhs); }
+	{ return (lhs.base() < rhs.base()); }
 
 	template <class Iterator1, class Iterator2>
 	bool operator<= (const ft::random_access_iterator<Iterator1> &lhs, const ft::random_access_iterator<Iterator2> &rhs)
-	{ return (lhs <= rhs); }
+	{ return (lhs.base() <= rhs.base()); }
 
 	template <class Iterator1, class Iterator2>
 	bool operator> (const ft::random_access_iterator<Iterator1> &lhs, const ft::random_access_iterator<Iterator2> &rhs)
-	{ return (lhs > rhs); }
+	{ return (lhs.base() > rhs.base()); }
 	
 	template <class Iterator1, class Iterator2>
 	bool operator>= (const ft::random_access_iterator<Iterator1> &lhs, const ft::random_access_iterator<Iterator2> &rhs)
-	{ return (lhs >= rhs); }
+	{ return (lhs.base() >= rhs.base()); }
 
 	/* operator+ */
 	template <class Iterator>
