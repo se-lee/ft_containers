@@ -13,27 +13,28 @@ namespace ft
 	class vector
 	{
 		public:
-			typedef	T											value_type;
-			typedef	Alloc										allocator_type;
-			typedef std::size_t									size_type;
-			typedef	std::ptrdiff_t								difference_type;
-			typedef	T&											reference;
-			typedef	const T&									const_reference;
-			typedef	T*											pointer;
-			typedef	const T*									const_pointer;
-			typedef	typename ft::random_access_iterator<T>				iterator;
-			typedef typename ft::random_access_iterator<const T>			const_iterator;
-			typedef	typename ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef	T												value_type;
+			typedef	Alloc											allocator_type;
+			typedef std::size_t										size_type;
+			typedef	std::ptrdiff_t									difference_type;
+			typedef	T&												reference;
+			typedef	const T&										const_reference;
+			typedef	T*												pointer;
+			typedef	const T*										const_pointer;
+			typedef	typename ft::random_access_iterator<T>			iterator;
+			typedef typename ft::random_access_iterator<const T>	const_iterator;
+			typedef	typename ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
-		private:
+		protected:
 			allocator_type		_allocator;
 			pointer				_first;
 			pointer				_last;
 			pointer				_capacity_last;
 
 	public:
-/* [Constructors] */
+
+/* --- [ Constructors ] --- */
 /* empty container constructor (default constructor) */
 	explicit vector (const allocator_type &alloc = allocator_type()) : _allocator(alloc), _first(NULL), _last(NULL), _capacity_last(NULL) {}
 
@@ -79,7 +80,7 @@ namespace ft
 		}
 	}
 
-/* Destructor */
+/* --- [ Destructor ] --- */
 	~vector()
 	{
 		if (size() > 0)
@@ -103,7 +104,7 @@ namespace ft
 		return (*this);
 	}
 
-/* --- Iterators ---  */
+/* --- [ Iterators ] ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
 	{ return (_first); }
@@ -134,7 +135,7 @@ namespace ft
 	{ return (const_reverse_iterator(begin())); }
 
 
-/* --- Capacity --- */
+/* --- [ Capacity ] --- */
 /* size : number of elements in the container */
 	size_type size() const
 	{ return (end() - begin()); }
@@ -231,7 +232,7 @@ implementation limitations */
 		_allocator.deallocate(temp_first, temp_capacity);
 	}
 
-/* --- Element access --- */
+/* --- [ Element access ] --- */
 /* operator [] */
 
 	reference operator[] (size_type pos)
@@ -273,16 +274,11 @@ implementation limitations */
 	{ return (_first); }
 
 
-/* --- Modifiers --- */
+/* --- [ Modifiers ] --- */
 /* assign */
 
 
-/* push_back */
-/*
-https://en.cppreference.com/w/cpp/container/vector/push_back
-Appends the given element value to the end of the container
-
-*/
+/* push_back : Appends the given element value to the end of the container */
 	void	push_back(const T& value)
 	{ 
 		_allocator.construct(_last, value); 
@@ -312,20 +308,18 @@ Appends the given element value to the end of the container
 /* clear */
 
 
-/* --- Allocator --- */
+/* --- [ Allocator ] --- */
 /* get_allocator */
 	allocator_type get_allocator() const
 	{ return (_allocator); }
 
 	};
 
-/* --- Non-member function overloads --- */
+/* --- [ Non-member function overloads ] --- */
 /* operator== */
 	template<class T, class Alloc>
 	bool operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ 
-		return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); 
-	}
+	{ return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); }
 
 /* operator!= */
 	template<class T, class Alloc>
@@ -335,31 +329,22 @@ Appends the given element value to the end of the container
 /* operator< */
 	template<class T, class Alloc>
 	bool operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ 
-		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); 
-	}
+	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 
 /* operator<= */
 	template<class T, class Alloc>
 	bool operator<= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ 
-		return (!(lhs > rhs)); 
-	}
+	{ return (!(lhs > rhs)); }
 
 /* operator> */
 	template<class T, class Alloc>
 	bool operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ 
-		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
-	}
+	{ return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 
 /* operator>= */
 	template<class T, class Alloc>
 	bool operator>= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ 
-		//!(x < y)
-		return (!(lhs < rhs));
-	}
+	{ return (!(lhs < rhs)); }
 
 /* std::swap(std::vector) */
 
