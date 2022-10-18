@@ -145,19 +145,7 @@ implementation limitations */
 	size_type max_size() const
 	{ return (_allocator.max_size()); }
 
-/* resize */
-/* 
-resizes the container to contain [count] elements 
-if the current size is greater than [count], the container is reduced to its first [count] elements
-if the current size is less than [count], 
-	1) additional default-inserted elements are appended
-	2) additional copies of [value] are appended
-
-[count] : new size of the container
-[value] : the value to initialize the new elements with
-https://en.cppreference.com/w/cpp/container/vector/resize
-
-*/
+/* resize : resizes the container to contain [count] elements */
 	void resize(size_type count)
 	{
 		if (size() > count)
@@ -166,19 +154,49 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 			for (size_type i = 0; i < diff; i++)
 				_allocator.destroy(_first + count + i);
 			_last = _first + count;
-			std::cout << "resized size: " << size() << std::endl;
 		}
 		else if (size() < count)
 		{
-			// 既存の数からCount分までを初期値で足す（後ろにつける）
-			size_type diff = count - size();
-			_last = _allocator.allocate(diff);
-			_last = _last + diff;
-			// _capacity_last =  + count;
+			reserve(count);
+			//_last以降のデータを初期化
+			for (; _last != _capacity_last; _last++)
+				_allocator.construct(_last);		
 		}
 	}
-	// void resize(size_type count, const value_type = T() );
-	// void resize(size_type count, const value_type& value);
+
+	void resize(size_type count, T value = T())
+	{
+		if (size() > count)
+		{
+			size_type diff = size() - count;
+			for (size_type i = 0; i < diff; i++)
+				_allocator.destroy(_first + count + i);
+			_last = _first + count;
+		}
+		else if (size() < count)
+		{
+			reserve(count);
+			for (; _last != _capacity_last; _last++)
+				_allocator.construct(_last, value);
+		}
+	}
+
+	void resize(size_type count, const value_type& value)
+	{
+		if (size() > count)
+		{
+			size_type diff = size() - count;
+			for (size_type i = 0; i < diff; i++)
+				_allocator.destroy(_first + count + i);
+			_last = _first + count;
+		}
+		else if (size() < count)
+		{
+			reserve(count);
+			for (; _last != _capacity_last; _last++)
+				_allocator.construct(_last, value);
+		}
+	}
 
 /* capacity :capacity of the currently allocated storage */
 
@@ -246,22 +264,13 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 	const_reference back() const
 	{ return (*(_last - 1)); }
 
-// /* data */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/data
+// /* data : the returned pointer compares equal to the address of the first element.*/
 
-// returns pointer to the underlying array serving as element storage.
-// the pointer is such that range[data(); data() + size()] is always a valid range,
-// even if the container is empty (data() is not dereferenceable in that case)
+	T* data()
+	{ return (_first); }
 
-// */
-
-// 	T* data()
-// 	{
-// 		return (/* pointer to the underlying element storage*/);
-// 	}
-
-// 	const T* data() const;
+	const T* data() const
+	{ return (_first); }
 
 
 /* --- Modifiers --- */
@@ -276,7 +285,7 @@ Appends the given element value to the end of the container
 */
 	void	push_back(const T& value)
 	{ 
-		_allocator.construct(end(), value); 
+		_allocator.construct(_last, value); 
 		_last++;
 	}
 

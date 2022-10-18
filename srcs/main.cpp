@@ -39,38 +39,30 @@ int main()
 		std::cout << "======== [ std::vector ] ========" << std::endl;
 		std::vector<int> foo(5, 10);
 		display_vector_elements(foo);
-		std::cout << "foo cap: " << foo.capacity() << std::endl;
-		foo.reserve(1);
-		display_vector_elements(foo);
-		std::cout << "foo cap: " << foo.capacity() << std::endl;
-		foo.reserve(15);
-		display_vector_elements(foo);
-		std::cout << "foo cap: " << foo.capacity() << std::endl;
-		// foo.resize(15);
-		// display_vector_elements(foo);
-		// foo.reserve()
-
+		std::cout << "foo data: " << foo.data() << std::endl;
 
 		std::cout <<  std::boolalpha;
 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::vector<int> foo(5, 10);
-		for (size_t i = 0; i < foo.size(); i++)
-			std::cout << foo[i] << ' ';
-		std::cout << std::endl;
-		std::cout << "foo cap: " << foo.capacity() << std::endl;		
-		foo.reserve(3);
-		for (size_t i = 0; i < foo.size(); i++)
-			std::cout << foo[i] << ' ';
-		std::cout << std::endl;
-		std::cout << "foo cap: " << foo.capacity() << std::endl;
-		foo.reserve(15);
-		for (size_t i = 0; i < foo.size(); i++)
-			std::cout << foo[i] << ' ';
-		std::cout << std::endl;
-		std::cout << "foo cap: " << foo.capacity() << std::endl;
+		// ft::vector<int> foo(5, 10);
+		// for (size_t i = 0; i < foo.size(); i++)
+		// 	std::cout << foo[i] << ' ';
+		// std::cout << std::endl;
+		// std::cout << "foo cap: " << foo.capacity() << std::endl;		
+		// foo.reserve(1);
+		// for (size_t i = 0; i < foo.size(); i++)
+		// 	std::cout << foo[i] << ' ';
+		// std::cout << std::endl;
+		// std::cout << "foo cap: " << foo.capacity() << std::endl;
+		// foo.resize(10, 1);
+		// for (size_t i = 0; i < foo.size(); i++)
+		// 	std::cout << foo[i] << ' ';
+		// std::cout << std::endl;
+		// std::cout << "foo cap: " << foo.capacity() << std::endl;
+		// std::cout << "foo siz: " << foo.size() << std::endl;
+	
 		// foo.resize(10);
 		// for (size_t i = 0; i < foo.size(); i++)
 		// 	std::cout << foo[i] << ' ';
