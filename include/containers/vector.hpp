@@ -342,36 +342,34 @@ Appends the given element value to the end of the container
 	template<class T, class Alloc>
 	bool operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{ 
-		// x.size() == y.size() && equal(x.begin(), x.end(), y.begin());
 		return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); 
-	};
+	}
 
 /* operator!= */
 	template<class T, class Alloc>
 	bool operator!= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-	{ return (!(lhs == rhs)); };
+	{ return (!(lhs == rhs)); }
 
 /* operator< */
 	template<class T, class Alloc>
 	bool operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{ 
-	//lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); 
-	};
+	}
 
 /* operator<= */
 	template<class T, class Alloc>
 	bool operator<= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{ 
-		//!(x > y)
 		return (!(lhs > rhs)); 
-	};
+	}
 
 /* operator> */
 	template<class T, class Alloc>
 	bool operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{ 
-		return (lhs > rhs); };
+		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
 
 /* operator>= */
 	template<class T, class Alloc>
@@ -379,7 +377,7 @@ Appends the given element value to the end of the container
 	{ 
 		//!(x < y)
 		return (!(lhs < rhs));
-	};
+	}
 
 /* std::swap(std::vector) */
 
