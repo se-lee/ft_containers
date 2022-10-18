@@ -4,7 +4,6 @@
 # include <memory> // allocator<T>
 # include "../utils/reverse_iterator.hpp"
 # include "../utils/random_access_iterator.hpp"
-// # include "../utils/vector_iterator.hpp"
 # include "../utils/sfinae.hpp"
 # include "../utils/algorithm.hpp"
 
@@ -24,8 +23,6 @@ namespace ft
 			typedef	const T*									const_pointer;
 			typedef	typename ft::random_access_iterator<T>				iterator;
 			typedef typename ft::random_access_iterator<const T>			const_iterator;
-			// typedef	ft::vector_iterator<pointer>				iterator;
-			// typedef	ft::vector_iterator<const_pointer>			const_iterator;
 			typedef	typename ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
@@ -106,7 +103,6 @@ namespace ft
 		return (*this);
 	}
 
-
 /* --- Iterators ---  */
 /* begin : returns an iterator to the beginning of a container or array*/
 	iterator begin()
@@ -117,14 +113,10 @@ namespace ft
 
 /* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
-	{
-		return (_last);
-	}
+	{ return (_last); }
 
 	const_iterator end() const
-	{
-		return (_last);
-	}
+	{ return (_last); }
 
 /* rbegin */
 	reverse_iterator rbegin()
@@ -170,62 +162,59 @@ https://en.cppreference.com/w/cpp/container/vector/resize
 	{
 		if (size() > count)
 		{
-			
-			// 最初の Count個分だけ残して、あとはすべて消す (allocator/destroy) - capacityはそのまま残る
-			
+			size_type diff = size() - count;
+			for (size_type i = 0; i < diff; i++)
+				_allocator.destroy(_first + count + i);
+			_last = _first + count;
+			std::cout << "resized size: " << size() << std::endl;
 		}
-		else // _size < count
+		else if (size() < count)
 		{
 			// 既存の数からCount分までを初期値で足す（後ろにつける）
-			_first + size() = _allocator.allocate(count - size());
-			
-			if (capacity() < count)
-				capacity() = count;
+			size_type diff = count - size();
+			_last = _allocator.allocate(diff);
+			_last = _last + diff;
+			// _capacity_last =  + count;
 		}
 	}
-	void resize(size_type count, const value_type = T() );
-	void resize(size_type count, const value_type& value);
+	// void resize(size_type count, const value_type = T() );
+	// void resize(size_type count, const value_type& value);
 
-/* capacity :capacity of the currently allocated storage
-https://en.cppreference.com/w/cpp/container/vector/capacity
- */
+/* capacity :capacity of the currently allocated storage */
 
 	size_type capacity() const
 	{ return (_capacity_last - _first); }
 
-/* empty : [true] if the container is empty, [false] if not empty
-https://en.cppreference.com/w/cpp/container/vector/empty
-*/
+/* empty : [true] if the container is empty, [false] if not empty */
 	bool empty() const
 	{ return (begin() == end()); }
 
-// /* reserve */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/reserve
+/* reserve : increase the capacity of the vector*/
+	void reserve(size_type new_cap)
+	{
+		if (capacity() >= new_cap)
+			return ;
+		pointer new_alloc = _allocator.allocate(new_cap);
+		pointer temp_first = _first;
+		pointer temp_last = _last;
+		size_type temp_capacity = capacity();
 
-// increase the capacity of the vector (the total number of elements that the vector cann hold without requiring reallocation)
-// to a value that's greater or equal to new_cap. if new_cap is greater than the current capacity(), new storage is allocated,
-// otherwise the function does nothing
+		_first = new_alloc;
+		_last = _first;
+		_capacity_last = _first + new_cap;
 
-// reserve() does not change size of the vector
-// if new_cap is greater than capacity(), all iterators, including the past-the-end iterator,
-// and all references to the elements are invalidated.
-// Otherwise, no iterator or references are invalidated
+		//copy old data
+		for (pointer iter = temp_first; iter != temp_last; iter++, _last++)
+			_allocator.construct(_last, *iter);
+	
+		//destroy & deallocate old data
+		for (pointer iter = temp_first; iter != temp_last; iter++)
+			_allocator.destroy(iter);
+		_allocator.deallocate(temp_first, temp_capacity);
+	}
 
-// [new_cap] : new capacity of the vector, in number of elements
-
-// */
-
-// 	void reserve(size_type new_cap);
-
-
-// /* --- Element access --- */
-// /* operator [] */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/operator_at
-
-// [pos] : position of the element to return
-// */
+/* --- Element access --- */
+/* operator [] */
 
 	reference operator[] (size_type pos)
 	{ return (_first[pos]); }
@@ -233,15 +222,7 @@ https://en.cppreference.com/w/cpp/container/vector/empty
 	const_reference operator [] (size_type pos) const
 	{ return (_first[pos]); }
 
-// /* at */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/at
-
-// returns a reference to the element at specified location [pos], with boounds checking.
-// if [pos] is not within the range of the container, an exception of type std::out_of_range is thrown
-
-// [pos] : position of the element to return
-// */
+/* at :returns a reference to the element at specified location [pos] */
 
 	reference at(size_type pos)
 	{ return (_first[pos]); }
@@ -250,38 +231,20 @@ https://en.cppreference.com/w/cpp/container/vector/empty
 	{ return (_first[pos]); }
 
 
-// /* front */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/front
+/* front : returns a reference to the first element in the container */
+	reference front()
+	{ return (*_first); }
 
-// returns a reference to the first element in the container
-// calling front on an empty container is undefined
-
-// */
-
-// 	reference front()
-// 	{
-// 		return (/* reference to the first element */);
-// 	}
-// 	const_reference front( ) const;
+	const_reference front( ) const
+	{ return (*_first); }
 
 
-// /* back */
-// /*
-// https://en.cppreference.com/w/cpp/container/vector/back
+/* back : returns a  reference to the last element in the container */
+	reference back()
+	{ return (*(_last - 1)); }
 
-// returns a  reference to the last element in the container
-// calling back on an empty container causes undefined behavior
-// */
-
-// 	reference back()
-// 	{
-// 		return (/* reference to the last element */);
-// 	}
-
-// 	const_reference back() const;
-
-
+	const_reference back() const
+	{ return (*(_last - 1)); }
 
 // /* data */
 // /*
@@ -312,11 +275,17 @@ Appends the given element value to the end of the container
 
 */
 	void	push_back(const T& value)
-	{ _allocator.construct(end(), value); }
+	{ 
+		_allocator.construct(end(), value); 
+		_last++;
+	}
 
 /* pop_back */
 	void	pop_back()
-	{ _allocator.destroy(_last - 1); }
+	{ 
+		_allocator.destroy(_last - 1); 
+		_last--;
+	}
 
 /* insert */
 	iterator insert (iterator poisiton, const value_type &val);
@@ -326,7 +295,11 @@ Appends the given element value to the end of the container
 	void insert (iterator position, InputIterator first, InputIterator last);
 
 /* erase */
+
+
 /* swap */
+
+
 /* clear */
 
 
