@@ -57,11 +57,13 @@ namespace ft
 
 /* --- [ Modifiers ] --- */
 /* push: */
-	// push back
+	void	push(const value_type &value)
+	{ _stack.push_back(value); }
 
 /* pop: */
 	// pop back
-
+	void	pop()
+	{ _stack.pop_back(); }
 	};
 
 /* --- [ Non-member function overloads ] --- */

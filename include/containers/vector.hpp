@@ -321,8 +321,6 @@ implementation limitations */
 
 	iterator	erase(const_iterator pos);
 
-
-
 	iterator	erase(iterator first, iterator last);
 
 	iterator	erase(const_iterator first, const_iterator last);
@@ -395,9 +393,7 @@ implementation limitations */
 /* std::swap(std::vector) */
 	template<class T, class Alloc>
 	void	swap(vector<T, Alloc> &lhs, vector<T, Alloc> &rhs)
-	{
-		lhs.swap(rhs);
-	}
+	{ lhs.swap(rhs); }
 
 }
 
