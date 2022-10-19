@@ -40,38 +40,35 @@ int main()
 {
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::vector<char> characters;
+		std::vector<char> foo;
 
-		characters.assign(4, 'a');
-		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
-		display_vector_elements(characters);
+		foo.assign(4, 'a');
+		display_vector_elements(foo);
+		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
 
 		const std::string extra(6, 'b');
-		characters.assign(extra.begin(), extra.end());
-		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
-		display_vector_elements(characters);
+		foo.assign(extra.begin(), extra.end());
+		display_vector_elements(foo);
+		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
 
-		characters.clear();
-		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
-		display_vector_elements(characters);
+		foo.clear();
+		display_vector_elements(foo);
+		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::vector<int>	foo(5, 1); 
-		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+		ft::vector<char>	foo; 
+
+		foo.assign(4, 'a');
+		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
 			std::cout << *iter << ' ';
 		std::cout << std::endl;
 		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
 
-		foo.push_back(2);
-		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
-			std::cout << *iter << ' ';
-		std::cout << std::endl;
-		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-
-		foo.clear();
-		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+		const std::vector<char> extra(6, 'b');
+		foo.assign(extra.begin(), extra.end());
+		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
 			std::cout << *iter << ' ';
 		std::cout << std::endl;
 		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;

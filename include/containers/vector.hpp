@@ -165,22 +165,22 @@ implementation limitations */
 		}
 	}
 
-	void resize(size_type count, T value = T())
-	{
-		if (size() > count)
-		{
-			size_type diff = size() - count;
-			for (size_type i = 0; i < diff; i++)
-				_allocator.destroy(_first + count + i);
-			_last = _first + count;
-		}
-		else if (size() < count)
-		{
-			reserve(count);
-			for (; _last != _capacity_last; _last++)
-				_allocator.construct(_last, value);
-		}
-	}
+	// void resize(size_type count, T value = T())
+	// {
+	// 	if (size() > count)
+	// 	{
+	// 		size_type diff = size() - count;
+	// 		for (size_type i = 0; i < diff; i++)
+	// 			_allocator.destroy(_first + count + i);
+	// 		_last = _first + count;
+	// 	}
+	// 	else if (size() < count)
+	// 	{
+	// 		reserve(count);
+	// 		for (; _last != _capacity_last; _last++)
+	// 			_allocator.construct(_last, value);
+	// 	}
+	// }
 
 	void resize(size_type count, const value_type& value)
 	{
@@ -276,17 +276,19 @@ implementation limitations */
 
 /* --- [ Modifiers ] --- */
 /* assign : replaces the contents with count copies of value [value] */
-	void	assign(size_type count, const T &value);
-	// {
-	// 	resize(count);
-		
-
-	// }
+	void	assign(size_type count, const T &value)
+	{
+		clear();
+		resize(count, value);
+	}
 
 	template<class InputIterator>
-	void	assign(InputIterator first, InputIterator last);
-
-
+	void	assign(InputIterator first, InputIterator last)
+	{
+		clear();
+		for(InputIterator iter = first; iter != last; ++iter, ++_last)
+			_allocator.construct(_last, *iter);
+	}
 
 /* push_back : Appends the given element value to the end of the container */
 	void	push_back(const T& value)
