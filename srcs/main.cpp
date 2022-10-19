@@ -40,49 +40,54 @@ int main()
 {
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::vector<char> foo;
-
-		foo.assign(4, 'a');
+		std::vector<int> foo(3, 2);
+		std::vector<int> bar(4, 5);
+		std::cout << "[foo] : ";
 		display_vector_elements(foo);
-		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
+		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+		std::cout << "[bar] : ";
+		display_vector_elements(bar);
+		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
 
-		const std::string extra(6, 'b');
-		foo.assign(extra.begin(), extra.end());
+		std::cout << " --- swap --- " << std::endl;
+		std::swap(foo, bar);
+		std::cout << "[foo] : ";
 		display_vector_elements(foo);
-		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
+		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+		std::cout << "[bar] : ";
+		display_vector_elements(bar);
+		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
 
-		foo.clear();
-		display_vector_elements(foo);
-		std::cout << "size: " << foo.size() << " | capa: " << foo.capacity() << std::endl;
+
 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::vector<char>	foo; 
-
-		foo.assign(4, 'a');
-		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+		ft::vector<int> foo(3, 2);
+		ft::vector<int> bar(4, 5);
+		std::cout << "[foo] : ";
+		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
 			std::cout << *iter << ' ';
 		std::cout << std::endl;
-		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-
-		ft::vector<char> extra(6, 'b');
-		// for (ft::vector<char>::iterator iter = extra.begin(); iter != extra.end(); iter++)
-		// 	std::cout << *iter << ' ';
-		// std::cout << std::endl;
-		foo.assign(extra.begin(), extra.end());
-		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+		std::cout << "[bar] : ";
+		for (ft::vector<int>::iterator iter = bar.begin(); iter != bar.end(); iter++)
+			std::cout << *iter << ' ';
+		std::cout << std::endl;	
+		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
+		
+		std::cout << " --- swap --- " << std::endl;
+		ft::swap(foo, bar);
+		std::cout << "[foo] : ";
+		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
 			std::cout << *iter << ' ';
 		std::cout << std::endl;
-		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-
-		foo.clear();
-		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+		std::cout << "[bar] : ";
+		for (ft::vector<int>::iterator iter = bar.begin(); iter != bar.end(); iter++)
 			std::cout << *iter << ' ';
-		std::cout << std::endl;
-		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-
-
+		std::cout << std::endl;	
+		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
 	}
 	return 0;
 }

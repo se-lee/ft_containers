@@ -327,8 +327,24 @@ implementation limitations */
 
 	iterator	erase(const_iterator first, const_iterator last);
 
-/* swap */
+/* swap : コンテナの交換 exchanges the contents of the container with those of other */
+	void	swap(vector &other)
+	{
+		allocator_type temp_alloc = _allocator;
+		pointer temp_first = _first;
+		pointer temp_last = _last;
+		pointer temp_capacity_last = _capacity_last;
+	
+		_allocator = other._allocator;
+		_first = other._first;
+		_last = other._last;
+		_capacity_last = other._capacity_last;
 
+		other._allocator = temp_alloc;
+		other._first = temp_first;
+		other._last = temp_last;
+		other._capacity_last = temp_capacity_last;
+	}
 
 /* clear : erases all elements from the container, size() returns zero*/
 	void	clear()
@@ -377,6 +393,11 @@ implementation limitations */
 	{ return (!(lhs < rhs)); }
 
 /* std::swap(std::vector) */
+	template<class T, class Alloc>
+	void	swap(vector<T, Alloc> &lhs, vector<T, Alloc> &rhs)
+	{
+		lhs.swap(rhs);
+	}
 
 }
 
