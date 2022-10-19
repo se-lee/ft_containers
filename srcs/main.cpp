@@ -4,90 +4,30 @@
 #include <deque>
 #include <map>
 #include <iterator>
+#include <utility>
+#include <string>
 #include "../include/containers/vector.hpp"
 #include "../include/containers/stack.hpp"
-
-
-template <typename T>
-void	display_vector_elements(std::vector<T> vec)
-{
-	// for (size_t i = 0; i < vec.size(); i++)
-	// 	std::cout << vec[i] << ' ';
-	// std::cout << std::endl;
-
-	for (typename std::vector<T>::iterator iter = vec.begin();
-		iter != vec.end(); iter++)
-			std::cout << *iter << ' ';
-	std::cout << std::endl;
-	
-}
-
-template<typename T>
-void	display_ft_vector_elements(ft::vector<T> ftVec)
-{
-	// for (size_t i = 0; i < ftVec.size(); i++)
-	// 	std::cout << ftVec[i] << ' ';
-	// std::cout << std::endl;
-
-	for (typename ft::vector<T>::iterator iter = ftVec.begin();
-		iter != ftVec.end(); iter++)
-			std::cout << *iter << ' ';
-	std::cout << std::endl;
-};
-
 
 int main()
 {
 	{
-		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::vector<int> foo(3, 2);
-		std::vector<int> bar(4, 5);
-		std::cout << "[foo] : ";
-		display_vector_elements(foo);
-		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-		std::cout << "[bar] : ";
-		display_vector_elements(bar);
-		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
+		std::cout << "======== [ std::pair ] ========" << std::endl;
+		std::pair<std::string, double> product1; //default constructor
+		std::pair<std::string, double> product2("tomatoes", 2.30); //value init
+		std::pair<std::string, double> product3(product2); //copy
 
-		std::cout << " --- swap --- " << std::endl;
-		std::swap(foo, bar);
-		std::cout << "[foo] : ";
-		display_vector_elements(foo);
-		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-		std::cout << "[bar] : ";
-		display_vector_elements(bar);
-		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
+		product1 = std::make_pair(std::string("lightbulbs"), 0.99); //using make_pair
 
+		product2.first = "shoes"; //the type of first is string
+		product2.second = 39.90; // the type of second is double
 
-
+		std::cout << "the price of " << product1.first << " is $" << product1.second << std::endl;
+		std::cout << "the price of " << product2.first << " is $" << product2.second << std::endl; 
+		std::cout << "the price of " << product3.first << " is $" << product3.second << std::endl; 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::vector<int> foo(3, 2);
-		ft::vector<int> bar(4, 5);
-		std::cout << "[foo] : ";
-		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
-			std::cout << *iter << ' ';
-		std::cout << std::endl;
-		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-		std::cout << "[bar] : ";
-		for (ft::vector<int>::iterator iter = bar.begin(); iter != bar.end(); iter++)
-			std::cout << *iter << ' ';
-		std::cout << std::endl;	
-		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
-		
-		std::cout << " --- swap --- " << std::endl;
-		ft::swap(foo, bar);
-		std::cout << "[foo] : ";
-		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
-			std::cout << *iter << ' ';
-		std::cout << std::endl;
-		std::cout << "foo size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
-		std::cout << "[bar] : ";
-		for (ft::vector<int>::iterator iter = bar.begin(); iter != bar.end(); iter++)
-			std::cout << *iter << ' ';
-		std::cout << std::endl;	
-		std::cout << "bar size: " << bar.size() << " | cap: " << bar.capacity() << std::endl;
 	}
 	return 0;
 }
