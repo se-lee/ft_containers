@@ -7,22 +7,74 @@
 #include "../include/containers/vector.hpp"
 #include "../include/containers/stack.hpp"
 
+
+template <typename T>
+void	display_vector_elements(std::vector<T> vec)
+{
+	// for (size_t i = 0; i < vec.size(); i++)
+	// 	std::cout << vec[i] << ' ';
+	// std::cout << std::endl;
+
+	for (typename std::vector<T>::iterator iter = vec.begin();
+		iter != vec.end(); iter++)
+			std::cout << *iter << ' ';
+	std::cout << std::endl;
+	
+}
+
+template<typename T>
+void	display_ft_vector_elements(ft::vector<T> ftVec)
+{
+	// for (size_t i = 0; i < ftVec.size(); i++)
+	// 	std::cout << ftVec[i] << ' ';
+	// std::cout << std::endl;
+
+	for (typename ft::vector<T>::iterator iter = ftVec.begin();
+		iter != ftVec.end(); iter++)
+			std::cout << *iter << ' ';
+	std::cout << std::endl;
+};
+
+
 int main()
 {
 	{
 		std::cout << "======== [ std::vector ] ========" << std::endl;
-		std::stack<int> foo;
-		foo.push(1);
-		foo.push(2);
-		foo.push(3);
+		std::vector<char> characters;
 
-		std::cout << "foo top: " << foo.top() << std::endl;
+		characters.assign(4, 'a');
+		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
+		display_vector_elements(characters);
 
-		// std::cout <<  std::boolalpha;
+		const std::string extra(6, 'b');
+		characters.assign(extra.begin(), extra.end());
+		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
+		display_vector_elements(characters);
+
+		characters.clear();
+		std::cout << "size: " << characters.size() << " | capa: " << characters.capacity() << std::endl;
+		display_vector_elements(characters);
 
 	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
+		ft::vector<int>	foo(5, 1); 
+		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+			std::cout << *iter << ' ';
+		std::cout << std::endl;
+		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+
+		foo.push_back(2);
+		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+			std::cout << *iter << ' ';
+		std::cout << std::endl;
+		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+
+		foo.clear();
+		for (ft::vector<int>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+			std::cout << *iter << ' ';
+		std::cout << std::endl;
+		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
 
 	}
 	return 0;

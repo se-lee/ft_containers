@@ -275,19 +275,30 @@ implementation limitations */
 
 
 /* --- [ Modifiers ] --- */
-/* assign */
+/* assign : replaces the contents with count copies of value [value] */
+	void	assign(size_type count, const T &value);
+	// {
+	// 	resize(count);
+		
+
+	// }
+
+	template<class InputIterator>
+	void	assign(InputIterator first, InputIterator last);
+
 
 
 /* push_back : Appends the given element value to the end of the container */
 	void	push_back(const T& value)
-	{ 
+	{
+		reserve(size() + 1);
 		_allocator.construct(_last, value); 
 		_last++;
 	}
 
 /* pop_back */
 	void	pop_back()
-	{ 
+	{
 		_allocator.destroy(_last - 1); 
 		_last--;
 	}
@@ -299,14 +310,27 @@ implementation limitations */
 	template <class InputIterator>
 	void insert (iterator position, InputIterator first, InputIterator last);
 
-/* erase */
+/* erase : removes the element at [pos] / in the range [first, last]*/
+	iterator	erase(iterator pos);
 
+	iterator	erase(const_iterator pos);
+
+
+
+	iterator	erase(iterator first, iterator last);
+
+	iterator	erase(const_iterator first, const_iterator last);
 
 /* swap */
 
 
-/* clear */
-
+/* clear : erases all elements from the container, size() returns zero*/
+	void	clear()
+	{// size becomes zero, capacity remains the same
+		for (pointer ite = _first; ite != _last; ite++)
+			_allocator.destroy(ite);
+		_last = _first;
+	}
 
 /* --- [ Allocator ] --- */
 /* get_allocator */
