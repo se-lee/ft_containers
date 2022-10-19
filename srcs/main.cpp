@@ -66,12 +66,22 @@ int main()
 		std::cout << std::endl;
 		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
 
-		const std::vector<char> extra(6, 'b');
+		ft::vector<char> extra(6, 'b');
+		// for (ft::vector<char>::iterator iter = extra.begin(); iter != extra.end(); iter++)
+		// 	std::cout << *iter << ' ';
+		// std::cout << std::endl;
 		foo.assign(extra.begin(), extra.end());
 		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
 			std::cout << *iter << ' ';
 		std::cout << std::endl;
 		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+
+		foo.clear();
+		for (ft::vector<char>::iterator iter = foo.begin(); iter != foo.end(); iter++)
+			std::cout << *iter << ' ';
+		std::cout << std::endl;
+		std::cout << "size: " << foo.size() << " | cap: " << foo.capacity() << std::endl;
+
 
 	}
 	return 0;
