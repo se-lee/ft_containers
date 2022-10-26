@@ -37,6 +37,7 @@ namespace ft
 
 /* --- [ Constructors ] --- */
 /* --- [ Destructor ] --- */
+/* --- [ Operator= ] --- */
 /* --- [ Iterators ] --- */
 /* --- [ Capacity ] --- */
 /* --- [ Element access ] --- */
