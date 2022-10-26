@@ -24,8 +24,8 @@ namespace ft
 			random_access_iterator(const random_access_iterator &other) : _current(other._current) {}
 			random_access_iterator &operator=(const random_access_iterator &other) 
 			{
-				if (this == &other)
-					return (*this);
+				// if (this == &other)
+				// 	return (*this);
 				_current = other._current;
 				return (*this);
 			}
