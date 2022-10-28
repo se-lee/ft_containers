@@ -129,12 +129,6 @@ namespace ft
 		const ft::random_access_iterator<Iterator> &lhs, 
 		const ft::random_access_iterator<Iterator> &rhs)
 	{ return (lhs.base() - rhs.base()); }
-
-
-
 }
-
-
-
 
 #endif
