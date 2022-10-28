@@ -13,7 +13,7 @@
 
 namespace ft
 {
-/************************** [ NODE CLASS ] **************************/
+/************************** [ TREE NODE ] **************************/
 
 	template<class Pair>
 	struct tree_node
@@ -31,58 +31,57 @@ namespace ft
 	};
 
 /************************** [ TREE ITER ] **************************/
-	template<class T, class NodePtr, class DiffType>
-	class tree_iterator
-	{
-		private:	
-			typedef	/*_tree_node_types<NodePtr>*/			node_types;
-			typedef	NodePtr									node_pointer;
-			typedef typename node_types::iter_pointer		iter_pointer;
+	// template<class T, class NodePtr, class DiffType>
+	// class tree_iterator
+	// {
+	// 	private:	
+	// 		typedef	/*_tree_node_types<NodePtr>*/			node_types;
+	// 		typedef	NodePtr									node_pointer;
+	// 		typedef typename node_types::iter_pointer		iter_pointer;
 
-			iter_pointer _ptr;
+	// 		iter_pointer _ptr;
 
-		public:
-			typedef bidirectional_iterator_tag						iterator_category;
-			typedef T												value_type;
-			typedef DiffType										difference_type;
-			typedef value_type&										reference;
-			typedef typename node_types::node_value_type_pointer	pointer;
+	// 	public:
+	// 		typedef bidirectional_iterator_tag						iterator_category;
+	// 		typedef T												value_type;
+	// 		typedef DiffType										difference_type;
+	// 		typedef value_type&										reference;
+	// 		typedef typename node_types::node_value_type_pointer	pointer;
 
+	// 		reference operator*() const { return (get_np()->_value); }
+	// 		pointer operator->() const { return (pointer_traits<pointer>::pointer_to(get_np()->_value)); }
+	// 		tree_iterator &operator++() 
+	// 		{
+	// 			/* _ptr to next element */
+	// 			return (*this);
+	// 		}
 
-			reference operator*() const { return (get_np()->_value); }
-			pointer operator->() const { return (pointer_traits<pointer>::pointer_to(get_np()->_value)); }
-			tree_iterator &operator++() 
-			{
-				/* _ptr to next element */
-				return (*this);
-			}
+	// 		tree_iterator operator++(int)
+	// 		{
+	// 			tree_iterator temp = *this;
+	// 			++(*this);
+	// 			return (temp);
+	// 		}
 
-			tree_iterator operator++(int)
-			{
-				tree_iterator temp = *this;
-				++(*this);
-				return (temp);
-			}
+	// 		tree_iterator &operator--()
+	// 		{
+	// 			/* _ptr to previous element */
+	// 			return (*this);
+	// 		}
 
-			tree_iterator &operator--()
-			{
-				/* _ptr to previous element */
-				return (*this);
-			}
+	// 		tree_iterator operator--(int)
+	// 		{
+	// 			tree_iterator temp = *this;
+	// 			--(*this);
+	// 			return (temp);
+	// 		}
 
-			tree_iterator operator--(int)
-			{
-				tree_iterator temp = *this;
-				--(*this);
-				return (temp);
-			}
+	// 		bool operator==(const tree_iterator &x, const tree_iterator &y)
+	// 		{ return (x._ptr == y._ptr); }
 
-			bool operator==(const tree_iterator &x, const tree_iterator &y)
-			{ return (x._ptr == y._ptr); }
-
-			bool operator!=(const tree_iterator &x, const tree_iterator &y)
-			{ return (!(x == y)); }
-	};
+	// 		bool operator!=(const tree_iterator &x, const tree_iterator &y)
+	// 		{ return (!(x == y)); }
+	// };
 
 /************************** [ TREE CLASS ] **************************/
 

@@ -65,7 +65,7 @@ int main()
 
 	// {
 	// 	std::cout << "======== [ std::vector ] ========" << std::endl;
-	// 	std::vector<int>	vec1;
+		// std::vector<int>	vec1;
 	// 	std::vector<int>	vec2(3, 5);
 	// 	for (std::vector<int>::iterator it = vec2.begin(); it != vec2.end(); it++)
 	// 		std::cout << *it << " ";
