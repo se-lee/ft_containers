@@ -104,9 +104,7 @@ namespace ft
 
 		private:
 			tree_node	*_begin_node;
-			/* compressed_pair<_end_node_type, _node_allocator> ???  _pair1; */
-			/* compressed_pair<size_type, value_compare> 	_pair3; */
-
+			tree_node	*_end_node;
 
 		public:
 
@@ -130,11 +128,13 @@ namespace ft
 			void clear();
 			void swap();
 		
-
-
 			template<class T>
 			bool is_left_child(tree_node<T> *x) const
 			{ return (x == x->_parent->_left); }
+
+			template<class T>
+			bool is_right_child(tree_node<T> *x) const
+			{ return (x == x->_parent->_right); }
 
 
 
@@ -242,12 +242,6 @@ __tree_prev_iter(_EndNodePtr __x) _NOEXCEPT
 			y->_left = _x;
 			x->set_parent(y);
 	}
-
-
-
-
-
-
 
 	};
 }
