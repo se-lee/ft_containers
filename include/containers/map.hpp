@@ -145,7 +145,7 @@ friend is allowed
 			typedef T										mapped_type;
 			typedef ft::pair<const key_type, mapped_type>	value_type;
 			typedef	Comapre									key_compare;
-			typedef 										value_compare;
+			typedef /*?*/									value_compare;
 			typedef Alloc									allocator_type;
 			typedef value_type&								reference;
 			typedef const value_type&						const_reference;
