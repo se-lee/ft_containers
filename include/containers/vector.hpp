@@ -59,7 +59,6 @@ namespace ft
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 	: _allocator(alloc), _first(first), _last(last), _capacity_last(last)
 	{
-		std::cout << "range constructor called" << std::endl;
 		size_type	range_size = last - first;
 		_first = _allocator.allocate(range_size);
 

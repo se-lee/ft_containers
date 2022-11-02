@@ -12,148 +12,28 @@
 
 namespace ft
 {
-/************************** [ MAP ITER ] **************************/
-	template<class Node>
-	class map_iterator
-	{
-		private:	
-			typedef	typename Node::NodeTypes		node_types;
-			typedef typename Node::pointer_traits	pointer_traits;
-			// typedef typename node_types::iter_pointer		iter_pointer;
-
-			Node _node;
-
-		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Node								value_type;
-			typedef ptrdiff_t							difference_type;
-			typedef value_type&							reference;
-			typedef value_type*							pointer;
-
-
-			map_iterator() {}
-			map_iterator(Node nd) : _node(nd) {}
-			
-			reference operator*() const { return (_node->_value); }
-			pointer operator->() const { return (pointer_traits<pointer>::pointer_to(_node->_get_value())); }
-			map_iterator &operator++() 
-			{
-				++_node;
-				return (*this);
-			}
-
-			map_iterator operator++(int)
-			{
-				map_iterator temp = *this;
-				++(*this);
-				return (temp);
-			}
-
-			map_iterator &operator--()
-			{
-				--_node;
-				return (*this);
-			}
-
-			map_iterator operator--(int)
-			{
-				map_iterator temp = *this;
-				--(*this);
-				return (temp);
-			}
-
-			bool operator==(const map_iterator &x, const map_iterator &y)
-			{ return (x._node == y._node); }
-
-			bool operator!=(const map_iterator &x, const map_iterator &y)
-			{ return (x._node != y._node); }
-
-	};
-
-/************************** [ CONST MAP ITER ] **************************/
-	template<class Node>
-	class map_const_iterator
-	{
-		private:	
-			typedef	typename Node::NodeTypes		node_types;
-			typedef typename Node::pointer_traits	pointer_traits;
-			// typedef typename node_types::iter_pointer		iter_pointer;
-
-			Node _node;
-
-		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Node								value_type;
-			typedef ptrdiff_t							difference_type;
-			typedef value_type&							reference;
-			typedef value_type*							pointer;
-
-
-			map_iterator() {}
-			map_iterator(Node nd) : _node(nd) {}
-			
-			reference operator*() const { return (_node->_value); }
-			pointer operator->() const { return (pointer_traits<pointer>::pointer_to(_node->_get_value())); }
-			map_iterator &operator++() 
-			{
-				++_node;
-				return (*this);
-			}
-
-			map_iterator operator++(int)
-			{
-				map_iterator temp = *this;
-				++(*this);
-				return (temp);
-			}
-
-			map_iterator &operator--()
-			{
-				--_node;
-				return (*this);
-			}
-
-			map_iterator operator--(int)
-			{
-				map_iterator temp = *this;
-				--(*this);
-				return (temp);
-			}
-
-			bool operator==(const map_iterator &x, const map_iterator &y)
-			{ return (x._node == y._node); }
-
-			bool operator!=(const map_iterator &x, const map_iterator &y)
-			{ return (x._node != y._node); }
-
-	};
-
 /************************** [ MAP CLASS ] **************************/
 
 /*
-Of course, for the implementation of std::map::value_compare, the keyword
+for the implementation of std::map::value_compare, the keyword
 friend is allowed
 */
-	template < class Key,  // map::key_type
-			class T,   // map::mapped_type
-			class Compare = std::less<Key>, // map::key_compare
-			class Alloc = std::allocator<ft::pair<const Key, T>> // map::allocator_type 
+	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T>>
 	> class map
 	{
 		public:
 			typedef Key										key_type;
 			typedef T										mapped_type;
 			typedef ft::pair<const key_type, mapped_type>	value_type;
-			typedef	Comapre									key_compare;
-			typedef /*?*/									value_compare;
+			typedef	Compare									key_compare;
 			typedef Alloc									allocator_type;
 			typedef value_type&								reference;
 			typedef const value_type&						const_reference;
 
-			typedef ft::allocator_traits<Alloc>::pointer					pointer;
-			typedef ft::allocator_traits<Alloc>::const_pointer				const_pointer;
-			typedef typename map_iterator<ft::tree_node<value_type>>		iterator;
-			typedef typename map_const_iterator<ft::tree_node<value_type>>	const_iterator;
+			typedef typename Alloc::pointer									pointer;
+			typedef typename Alloc::const_pointer							const_pointer;
+			typedef typename tree_iterator<ft::tree_node<value_type>>		iterator;
+			typedef typename tree_const_iterator<ft::tree_node<value_type>>	const_iterator;
 
 			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -163,26 +43,13 @@ friend is allowed
 		private:
 			typedef	ft::tree<T, Compare, Alloc>			_tree;
 
-		/*本家：
-    typedef _VSTD::__value_type<key_type, mapped_type>             __value_type;
-    typedef __map_value_compare<key_type, __value_type, key_compare> __vc;
-    typedef typename __rebind_alloc_helper<allocator_traits<allocator_type>,
-                                                 __value_type>::type __allocator_type;
-    typedef __tree<__value_type, __vc, __allocator_type>   __base;
-    typedef typename __base::__node_traits                 __node_traits;
-    typedef allocator_traits<allocator_type>               __alloc_traits;
-
-
-		__base	__tree;
-		*/
 		public:
 /* --- [ Constructors ] --- */
-			map() : _tree(/*value_comapre(key_comapre)*/) {}
+			map() : _tree() {}
 			explicit map(const key_comapre &comp, const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp)*/){}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Comapre(), const Alloc &alloc = Alloc())
-				: _tree(/*value_comapre(comp)*/)
+			map (InputIterator first, InputIterator last, const Compare &comp = Comapre(), const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp */)
 				{
 					insert(first, last);
 				}
@@ -196,6 +63,10 @@ friend is allowed
 /* --- [ Destructor ] --- */
 			~map() 
 			{
+				if (size() > 0)
+				{
+
+				}
 				/*
 				This destroys all container elements, 
 				and deallocates all the storage capacity allocated 
@@ -245,6 +116,8 @@ friend is allowed
 			}
 
 			ft::pair<iterator, bool> insert( const value_type &value);
+
+			iterator insert(const_iterator it, const value_type &x);
 
 			template<class InputIterator>
 			void insert(std::initializer_list<value_type> init_list); 

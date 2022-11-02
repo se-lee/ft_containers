@@ -1,4 +1,3 @@
-
 !include/*
 !main.cpp
 
@@ -37,4 +36,3 @@ ft_containers
 *.exe
 *.out
 *.app
-
