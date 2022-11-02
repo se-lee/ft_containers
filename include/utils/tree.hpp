@@ -5,13 +5,6 @@
 # include "pair.hpp"
 # include <memory>
 
-/*
-- Nodeクラスを作る：各Nodeの生成、データ型としてTreeで使う
-- tree iterator
-- Treeクラス
-*/
-
-
 namespace ft
 {
 /************************** [ TREE NODE ] **************************/
@@ -32,22 +25,35 @@ namespace ft
 	};
 
 /************************** [ TREE ITER ] **************************/
-	template<class T, class NodePtr, class DiffType>
+	template<class T>
 	class tree_iterator
 	{
-		private:	
-			typedef	/*_tree_node_types<NodePtr>*/			node_types;
-			typedef	NodePtr									node_pointer;
-			typedef typename node_types::iter_pointer		iter_pointer;
-
-			iter_pointer _ptr;
-
 		public:
-			typedef bidirectional_iterator_tag						iterator_category;
-			typedef T												value_type;
-			typedef DiffType										difference_type;
-			typedef value_type&										reference;
-			typedef typename node_types::node_value_type_pointer	pointer;
+			typedef ft::bidirectional_iterator_tag		iterator_category;
+			typedef T									value_type;
+			typedef ptrdiff_t							difference_type;
+			typedef T&									reference;
+			typedef typename T*							pointer;
+
+		private:
+			typedef tree_node<T>		_node;
+
+			_node	*_root;
+			_node	*_current;
+		
+		public:
+
+			tree_iterator() : _root(NULL), _current(NULL) {}
+			tree_iterator(pointer ptr) : _root(ptr), _current(NULL) {}
+			tree_iterator(const tree_iterator &other) : _root(other._root), _current(other._current) {}
+			tree_iterator &operator=(const tree_iterator &other)
+			{
+				_root = other._root;
+				_current = other._current;
+				return (*this);
+			}
+			~tree_iterator() {}
+
 
 			reference operator*() const { return (get_np()->_value); }
 			pointer operator->() const { return (pointer_traits<pointer>::pointer_to(get_np()->_value)); }
@@ -84,6 +90,9 @@ namespace ft
 			{ return (!(x == y)); }
 	};
 
+	template<class T>
+	class tree_const_iterator {}; // あとで↑ コピペする
+
 /************************** [ TREE CLASS ] **************************/
 
 	template<class T, class Compare, class Alloc = std::allocator<T> >
@@ -99,11 +108,11 @@ namespace ft
 			typedef typename allocator_traits<Alloc>::size_type				size_type;
 			typedef typename allocator_traits<Alloc>::difference_type		difference_type;
 
-			typedef tree_iterator<value_type, /* Node pointer,*/ difference_type>	iterator;
-			typedef tree_const_iterator<value_type, /* node pointer, */ difference_type> const_iterator; 
+			typedef tree_iterator<value_type>	iterator;
+			typedef tree_const_iterator<value_type> const_iterator; 
 
 		private:
-			tree_node	*_begin_node;
+			tree_node	*_begin_node; // rootとは違うもの？
 			tree_node	*_end_node;
 
 		public:
@@ -135,7 +144,6 @@ namespace ft
 			template<class T>
 			bool is_right_child(tree_node<T> *x) const
 			{ return (x == x->_parent->_right); }
-
 
 
 			template<class T>
@@ -171,59 +179,52 @@ namespace ft
 				return (x->_parent);
 			}
 
-/*
-template <class _EndNodePtr, class _NodePtr>
-inline _LIBCPP_INLINE_VISIBILITY
-_EndNodePtr
-__tree_next_iter(_NodePtr __x) _NOEXCEPT
-{
-    if (__x->__right_ != nullptr)
-        return static_cast<_EndNodePtr>(_VSTD::__tree_min(__x->__right_));
-    while (!_VSTD::__tree_is_left_child(__x))
-        __x = __x->__parent_unsafe();
-    return static_cast<_EndNodePtr>(__x->__parent_);
-}
+			template<class T>
+			tree_node<T>	*tree_next_iter(tree_node<T> *x) const
+			{
+				if (x->_right != NULL)
+					return (static_cast<tree_node<T>>(tree_min(x->_right)));
+				while (!is_left_child(x))
+					x = x->_parent;
+				return (static_cast<tree_node>(x->_parent));
 
-// Returns:  pointer to the previous in-order node before __x.
-// Precondition:  __x != nullptr.
-// Note: __x may be the end node.
-template <class _NodePtr, class _EndNodePtr>
-inline _LIBCPP_INLINE_VISIBILITY
-_NodePtr
-__tree_prev_iter(_EndNodePtr __x) _NOEXCEPT
-{
-    if (__x->__left_ != nullptr)
-        return _VSTD::__tree_max(__x->__left_);
-    _NodePtr __xx = static_cast<_NodePtr>(__x);
-    while (_VSTD::__tree_is_left_child(__xx))
-        __xx = __xx->__parent_unsafe();
-    return __xx->__parent_unsafe();
-}
+			}
 
-*/
+		// Returns:  pointer to the previous in-order node before __x.
+		// Precondition:  __x != nullptr.
+		// Note: __x may be the end node.
 
-		// returns pointer to a node which has no children
-		template<class T>
-		tree_node<T>	*tree_leaf(tree_node<T> x) const
-		{
-			while (true)
+			template<class T>
+			tree_node *tree_prev_iter(tree_node<T> *x) const
 			{
 				if (x->_left != NULL)
-				{
-					x = x->_left;
-					continue ;
-				}
-				if (x->_right != NULL)
-				{
-					x = x->_right;
-					continue ;
-				}
-				break ;
+					return (tree_max(x->_left));
+				tree_node *y = static_cast<tree_node<T>>(x);
+				while (is_left_child(y))
+					y = x->_parent;
+				return (y->_parent);
 			}
-			return (x);
-		}
 
-
+		// returns pointer to a node which has no children
+			template<class T>
+			tree_node<T>	*tree_leaf(tree_node<T> x) const
+			{
+				while (true)
+				{
+					if (x->_left != NULL)
+					{
+						x = x->_left;
+						continue ;
+					}
+					if (x->_right != NULL)
+					{
+						x = x->_right;
+						continue ;
+					}
+					break ;
+				}
+				return (x);
+			}
 
 /* Rotation系のやつ */
 	template<class T>
@@ -242,6 +243,12 @@ __tree_prev_iter(_EndNodePtr __x) _NOEXCEPT
 			y->_left = _x;
 			x->set_parent(y);
 	}
+
+
+// insert/erase - check balace - rotate - check balance
+
+
+
 
 	};
 }
