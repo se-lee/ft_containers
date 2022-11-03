@@ -18,20 +18,21 @@ namespace ft
 for the implementation of std::map::value_compare, the keyword
 friend is allowed
 */
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> >
+	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> >
 	> class map
 	{
 		public:
-			typedef Key										key_type;
-			typedef T										mapped_type;
-			typedef ft::pair<const key_type, mapped_type>	value_type;
-			typedef	Compare									key_compare;
-			typedef Alloc									allocator_type;
-			typedef value_type&								reference;
-			typedef const value_type&						const_reference;
+			typedef Key												key_type;
+			typedef T												mapped_type;
+			typedef ft::pair<const key_type, mapped_type>			value_type;
+			typedef	Compare											key_compare;
+			// value_compare
+			typedef Allocator										allocator_type;
+			typedef value_type&										reference;
+			typedef const value_type&								const_reference;
 
-			typedef typename Alloc::pointer									pointer;
-			typedef typename Alloc::const_pointer							const_pointer;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
 			typedef tree_iterator<ft::tree_node<value_type> >		iterator;
 			typedef tree_const_iterator<ft::tree_node<value_type> >	const_iterator;
 
@@ -41,15 +42,15 @@ friend is allowed
 			typedef std::size_t												size_type;
 
 		private:
-			typedef	ft::tree<T, Compare, Alloc>			_tree;
+			typedef	ft::tree<T, Compare, Allocator>			_tree;
 
 		public:
 /* --- [ Constructors ] --- */
 			map() : _tree() {}
-			explicit map(const key_compare &comp, const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp)*/){}
+			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp)*/){}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp */)
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp */)
 				{
 					insert(first, last);
 				}

@@ -93,26 +93,26 @@ namespace ft
 
 /************************** [ TREE CLASS ] **************************/
 
-	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> >
+	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> >
 	> class tree
 	{
 		public:
-			typedef	Key											key_type;
-			typedef T											mapped_type;
-			typedef	ft::pair<const key_type, mapped_type>		value_type;
-			typedef Compare										value_compare;
-			typedef Alloc										allocator_type;
+			typedef	Key												key_type;
+			typedef T												mapped_type;
+			typedef	typename ft::pair<const key_type, mapped_type>	value_type;
+			typedef Compare											value_compare;
+			typedef Allocator										allocator_type;
 
-			typedef	typename Alloc::pointer						pointer;
-			typedef typename Alloc::const_pointer				const_pointer;
+			typedef	typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
 			typedef typename std::size_t			size_type;
 			typedef typename std::ptrdiff_t			difference_type;
 
-			typedef tree_iterator<value_type>	iterator;
-			typedef tree_const_iterator<value_type> const_iterator; 
+			typedef typename tree_iterator<value_type>	iterator;
+			typedef typename tree_const_iterator<value_type> const_iterator; 
 
 		private:
-			pointer				*_root_node;	
+			pointer				*_root_node;
 			pointer				*_begin_node; // rootとは違うもの？-> 一番左（Key最小値）のNode
 			pointer				*_end_node; // 一番右（Key最大値）のNode
 			allocator_type		_allocator;
@@ -264,9 +264,13 @@ map.insert(std::make_pair("AAA", 10));
 		else if (_root_node != NULL)
 		{
 			// comapare the values, find right place for new_node to be inserted
-
 		}
-		return (/*  */);
+		return (ft::pair<iterator<new_node>, true>);
+/*
+(1), (2) : 戻り値としては、イテレータとbool値の組を返す。
+挿入された場合には、first に挿入された要素へのイテレータ、 second に true が設定される。
+挿入されなかった場合には、 first に x と等価のキーを持つ要素へのイテレータ、 second に false が設定される。
+*/
 	}
 
 // erase

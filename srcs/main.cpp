@@ -8,7 +8,7 @@
 #include <string>
 #include "../include/containers/vector.hpp"
 #include "../include/containers/stack.hpp"
-#include "../include/containers/map.hpp"
+// #include "../include/containers/map.hpp"
 
 
 void	print_map(std::string_view comment, const std::map<std::string, int> &m)
@@ -20,14 +20,14 @@ void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 	std::cout << std::endl;
 }
 
-void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
-{
-	std::cout << comment;
-	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
-		std::cout << '[' << it->first << "] = " << it->second << "; ";
+// void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
+// {
+// 	std::cout << comment;
+// 	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
+// 		std::cout << '[' << it->first << "] = " << it->second << "; ";
 	
-	std::cout << std::endl;	
-}
+// 	std::cout << std::endl;	
+// }
 
 int main()
 {
@@ -57,14 +57,15 @@ int main()
 		m.insert(std::make_pair("CP", 10));
 		print_map("4) Updated map: ", m);
 
-
+		std::cout << "it address: " << &it << std::endl;
+\
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 
-		ft::map<std::string, int> m;
-		m.insert(ft::make_pair("CPU", 10));
+		// ft::map<std::string, int> m;
+		// m.insert(ft::make_pair("CPU", 10));
 
-		print_ft_map("1) Initial map: " , m);
+		// print_ft_map("1) Initial map: " , m);
 
 	}
 

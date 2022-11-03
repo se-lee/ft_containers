@@ -9,12 +9,12 @@
 
 namespace ft
 {
-	template <class T, class Alloc = std::allocator<T> > // アロケータ：メモリの管理を請け負うクラス；生のメモリーの確保と解放を行うライブラリ
+	template <class T, class Allocator = std::allocator<T> > // アロケータ：メモリの管理を請け負うクラス；生のメモリーの確保と解放を行うライブラリ
 	class vector
 	{
 		public:
 			typedef	T												value_type;
-			typedef	Alloc											allocator_type;
+			typedef	Allocator											allocator_type;
 			typedef std::size_t										size_type;
 			typedef	std::ptrdiff_t									difference_type;
 			typedef	T&												reference;
@@ -360,38 +360,38 @@ implementation limitations */
 
 /* --- [ Non-member function overloads ] --- */
 /* operator== */
-	template<class T, class Alloc>
-	bool operator== (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator== (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); }
 
 /* operator!= */
-	template<class T, class Alloc>
-	bool operator!= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator!= (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return (!(lhs == rhs)); }
 
 /* operator< */
-	template<class T, class Alloc>
-	bool operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator< (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 
 /* operator<= */
-	template<class T, class Alloc>
-	bool operator<= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator<= (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return (!(lhs > rhs)); }
 
 /* operator> */
-	template<class T, class Alloc>
-	bool operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator> (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
 
 /* operator>= */
-	template<class T, class Alloc>
-	bool operator>= (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	bool operator>= (const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
 	{ return (!(lhs < rhs)); }
 
 /* std::swap(std::vector) */
-	template<class T, class Alloc>
-	void	swap(vector<T, Alloc> &lhs, vector<T, Alloc> &rhs)
+	template<class T, class Allocator>
+	void	swap(vector<T, Allocator> &lhs, vector<T, Allocator> &rhs)
 	{ lhs.swap(rhs); }
 
 }
