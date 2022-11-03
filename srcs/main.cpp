@@ -10,7 +10,6 @@
 #include "../include/containers/stack.hpp"
 #include "../include/containers/map.hpp"
 
-
 void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 {
 	std::cout << comment;
