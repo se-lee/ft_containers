@@ -18,7 +18,7 @@ namespace ft
 for the implementation of std::map::value_compare, the keyword
 friend is allowed
 */
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T>>
+	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> >
 	> class map
 	{
 		public:
@@ -32,8 +32,8 @@ friend is allowed
 
 			typedef typename Alloc::pointer									pointer;
 			typedef typename Alloc::const_pointer							const_pointer;
-			typedef typename tree_iterator<ft::tree_node<value_type>>		iterator;
-			typedef typename tree_const_iterator<ft::tree_node<value_type>>	const_iterator;
+			typedef tree_iterator<ft::tree_node<value_type> >		iterator;
+			typedef tree_const_iterator<ft::tree_node<value_type> >	const_iterator;
 
 			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -46,10 +46,10 @@ friend is allowed
 		public:
 /* --- [ Constructors ] --- */
 			map() : _tree() {}
-			explicit map(const key_comapre &comp, const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp)*/){}
+			explicit map(const key_compare &comp, const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp)*/){}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Comapre(), const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp */)
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Alloc &alloc = Alloc()) : _tree(/*value_comapre(comp */)
 				{
 					insert(first, last);
 				}
@@ -81,25 +81,40 @@ friend is allowed
 			}
 
 /* --- [ Iterators ] --- */
-			iterator	begin() { return (_tree.begin()); }
-			const_iterator	begin()const { return (_tree.begin()); }
+			iterator	begin()
+			{ return (_tree.begin()); }
+			
+			const_iterator	begin()const 
+			{ return (_tree.begin()); }
 
-			iterator	end() { return (_tree.end()); }
-			const_iterator end()const { return (_tree.end()); }
+			iterator	end() 
+			{ return (_tree.end()); }
 
-			reverse_iterator rbegin() { return (); }
-			const_reverse_iterator rbegin() const { return (); }
+			const_iterator end()const 
+			{ return (_tree.end()); }
 
-			reverse_iterator rend() { return(); }
-			const_reverse_iterator rend() const { return (); }
+			reverse_iterator rbegin() 
+			{ return (reverse_iterator(_tree.end())); }
+
+			const_reverse_iterator rbegin() const 
+			{ return (const_reverse_iterator(_tree.end())); }
+
+			reverse_iterator rend() 
+			{ return(reverse_iterator(_tree.begin())); }
+
+			const_reverse_iterator rend() const
+			{ return (const_reverse_iterator(_tree.begin())); }
 
 		
 /* --- [ Capacity ] --- */
-			bool empty() const { return (); }
+			bool empty() const 
+			{ return (_tree.begin() == _tree.end()); }
 
-			size_type size() const { return (); }
+			size_type size() const
+			{ return (_tree.end() - _tree.begin()); }
 
-			size_type max_size() const { return (); }
+			size_type max_size() const 
+			{ return (_tree.get_allocator().max_size()); }
 
 
 /* --- [ Element access ] --- */
@@ -119,8 +134,8 @@ friend is allowed
 
 			iterator insert(const_iterator it, const value_type &x);
 
-			template<class InputIterator>
-			void insert(std::initializer_list<value_type> init_list); 
+			// template<class InputIterator>
+			// void insert(std::initializer_list<value_type> init_list); 
 
 			iterator erase( iterator pos );
 			iterator erase( iterator first, iterator last );

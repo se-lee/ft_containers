@@ -8,7 +8,7 @@
 #include <string>
 #include "../include/containers/vector.hpp"
 #include "../include/containers/stack.hpp"
-// #include "../include/containers/map.hpp"
+#include "../include/containers/map.hpp"
 
 
 void	print_map(std::string_view comment, const std::map<std::string, int> &m)
@@ -18,6 +18,15 @@ void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 		std::cout << '[' << it->first << "] = " << it->second << "; ";
 	
 	std::cout << std::endl;
+}
+
+void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
+{
+	std::cout << comment;
+	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
+		std::cout << '[' << it->first << "] = " << it->second << "; ";
+	
+	std::cout << std::endl;	
 }
 
 int main()
@@ -49,21 +58,15 @@ int main()
 		print_map("4) Updated map: ", m);
 
 
-	// {
-	// 	std::cout << "======== [ ft ] ========" << std::endl;
-	// 	ft::pair<std::string, double> product1; //default constructor
-	// 	ft::pair<std::string, double> product2("tomatoes", 2.30); //value init
-	// 	ft::pair<std::string, double> product3(product2); //copy
+	{
+		std::cout << "======== [ ft ] ========" << std::endl;
 
-	// 	product1 = ft::make_pair(std::string("lightbulbs"), 0.99); //using make_pair
+		ft::map<std::string, int> m;
+		m.insert(ft::make_pair("CPU", 10));
 
-	// 	product2.first = "shoes"; //the type of first is string
-	// 	product2.second = 39.90; // the type of second is double
+		print_ft_map("1) Initial map: " , m);
 
-	// 	std::cout << "the price of " << product1.first << " is $" << product1.second << std::endl;
-	// 	std::cout << "the price of " << product2.first << " is $" << product2.second << std::endl; 
-	// 	std::cout << "the price of " << product3.first << " is $" << product3.second << std::endl; 
-	// }
+	}
 
 	}
 
