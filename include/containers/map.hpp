@@ -115,7 +115,10 @@ friend is allowed
 			{// erases all elements from the container
 			}
 
-			ft::pair<iterator, bool> insert( const value_type &value);
+			ft::pair<iterator, bool> insert( const value_type &value)
+			{
+				_tree.insert(value);
+			}
 
 			iterator insert(const_iterator it, const value_type &x);
 
@@ -148,10 +151,8 @@ friend is allowed
 			iterator upper_bound( const Key &key );
 			const_iterator upper_bound( const Key &key ) const;
 
-
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const;
-
 	};
 
 }

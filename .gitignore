@@ -1,8 +1,10 @@
 !include/*
 !main.cpp
 
-ft_containers
 .gitignore
+ft_containers
+
+.vscode
 
 # Prerequisites
 *.d

@@ -99,24 +99,25 @@ namespace ft
 	> class tree
 	{
 		public:
-			typedef	Key											key_type;
-			typedef T											mapped_type;
-			typedef	ft::pair<const key_type, mapped_type>		value_type;
-			typedef Compare										value_compare;
-			typedef Alloc										allocator_type;
+			typedef	Key										key_type;
+			typedef T										mapped_type;
+			typedef	ft::pair<const key_type, mapped_type>	value_type;
+			typedef Compare									value_compare;
+			typedef Alloc									allocator_type;
+			typedef	typename Alloc::pointer					pointer;
+			typedef typename Alloc::const_pointer			const_pointer;
+			typedef std::size_t								size_type;
+			typedef std::ptrdiff_t							difference_type;
 
-			typedef	typename Alloc::pointer						pointer;
-			typedef typename Alloc::const_pointer				const_pointer;
-			typedef typename std::size_t			size_type;
-			typedef typename std::ptrdiff_t			difference_type;
+			typedef tree_iterator<value_type>				iterator;
+			typedef tree_const_iterator<value_type> 		const_iterator; 
 
-			typedef tree_iterator<value_type>	iterator;
-			typedef tree_const_iterator<value_type> const_iterator; 
+			typedef typename tree_node<value_type>*			node_pointer;
 
 		private:
-			pointer				*_root_node;	
-			pointer				*_begin_node; // rootとは違うもの？
-			pointer				*_end_node;
+			node_pointer		_root_node;	
+			node_pointer		_begin_node; // rootとは違うもの？
+			node_pointer		_end_node;
 			allocator_type		_allocator;
 
 		public:
@@ -249,7 +250,7 @@ namespace ft
 map.insert(std::make_pair("AAA", 10));
 */
 
-	pointer	create_node(const value_type &value)
+	node_pointer	create_node(const value_type &value)
 	{
 		pointer		*new_node;
 		new_node = _allocator.allocate(1);
@@ -258,7 +259,7 @@ map.insert(std::make_pair("AAA", 10));
 		return (new_node);
 	}
 
-	pointer	find_insert_place(const value_type &value)
+	node_pointer	find_insert_place(const value_type &value)
 	{
 		// compare the value from the root;
 		
@@ -266,18 +267,14 @@ map.insert(std::make_pair("AAA", 10));
 	}
 
 
-
 	pair<iterator, bool>	insert(const value_type &value)
 	{
-		pointer	*new_node;
+		tree_	new_node;
 		new_node = create_node(value);
 		if (_root == NULL)
 			new_node = _root_node;
 		else if (_root != NULL)
-		{
-			// comapare the values, find right place for new_node to be inserted
-
-		}
+			new_node = find_insert_place(value);
 		return (/*  */);
 	}
 
