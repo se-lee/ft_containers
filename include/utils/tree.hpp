@@ -7,9 +7,10 @@
 
 namespace ft
 {
+	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >class tree;
+
+
 /************************** [ TREE NODE ] **************************/
-	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> >
-	> class tree;
 
 	template<class Pair>
 	struct tree_node
@@ -28,7 +29,7 @@ namespace ft
 
 /************************** [ TREE ITER ] **************************/
 
-	template<class Pair, class Container>
+	template<class Pair, class Container = ft::tree<class Key, class T, class Compare, class Allocator> >
 	class tree_iterator
 	{
 		public:
@@ -95,10 +96,9 @@ namespace ft
 	{ return (!(x == y)); }
 
 
-
 /************************** [ CONST TREE ITER ] **************************/
 
-	template<class Pair, class Container>
+	template<class Pair, class Container = ft::tree<class Key, class T, class Compare, class Allocator> >
 	class const_tree_iterator
 	{
 		public:
@@ -114,43 +114,43 @@ namespace ft
 			tree_node<Pair>	*_current;
 
 		public:
-			tree_iterator() : _container(NULL), _current(NULL) {}
-			tree_iterator(container_type *cont, tree_node<Pair> *ptr) : _container(cont),_current(ptr) {}
-			tree_iterator(const tree_iterator &other) : _container(other._container), _current(other._current) {}
-			tree_iterator &operator=(const tree_iterator &other)
+			const_tree_iterator() : _container(NULL), _current(NULL) {}
+			const_tree_iterator(container_type *cont, tree_node<Pair> *ptr) : _container(cont),_current(ptr) {}
+			const_tree_iterator(const_tree_iterator &other) : _container(other._container), _current(other._current) {}
+			const_tree_iterator &operator=(const_tree_iterator &other)
 			{	
 				_container = other._container;
 				_current = other._current;
 				return (*this);
 			}
-			~tree_iterator() {}
+			~const_tree_iterator() {}
 
 			reference operator*() const { return (*_current); }
 			pointer operator->() const { return (&(operator*())); }
 
-			tree_iterator &operator++() 
+			const_tree_iterator &operator++() 
 			{
 				_current = _container.tree_next_iter(_current);
 				return (*this);
 			}
 
-			tree_iterator operator++(int)
+			const_tree_iterator operator++(int)
 			{
-				tree_iterator temp = *this;
+				const_tree_iterator temp = *this;
 				++(*this);
 				return (temp);
 			}
 
-			tree_iterator &operator--()
+			const_tree_iterator &operator--()
 			{
 				//tree_prev_iter
 				_current = _container.tree_prev_iter(_current);
 				return (*this);
 			}
 
-			tree_iterator operator--(int)
+			const_tree_iterator operator--(int)
 			{
-				tree_iterator temp = *this;
+				const_tree_iterator temp = *this;
 				--(*this);
 				return (temp);
 			}
@@ -169,8 +169,8 @@ namespace ft
 
 /************************** [ TREE CLASS ] **************************/
 
-	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> >
-	> class tree
+	template<class Key, class T, class Compare, class Allocator> 
+	class tree
 	{
 		public:
 			typedef	Key												key_type;
@@ -184,14 +184,14 @@ namespace ft
 			typedef typename std::size_t			size_type;
 			typedef typename std::ptrdiff_t			difference_type;
 
-			typedef typename tree_iterator<value_type>	iterator;
-			typedef typename tree_const_iterator<value_type> const_iterator; 
+			typedef tree_iterator<value_type>		iterator;
+			typedef const_tree_iterator<value_type> const_iterator; 
 
 		private:
-			pointer				*_root_node;
-			pointer				*_begin_node;
-			pointer				*_end_node;
-			allocator_type		_allocator;
+			tree_node<value_type>	*_root_node;
+			tree_node<value_type>	*_begin_node;
+			tree_node<value_type>	*_end_node;
+			allocator_type			_allocator;
 
 		public:
 			tree();
@@ -320,7 +320,7 @@ namespace ft
 map.insert(std::make_pair("AAA", 10));
 */
 
-	node_pointer	create_node(const value_type &value)
+	pointer	create_node(const value_type &value)
 	{
 		pointer		*new_node;
 		new_node = _allocator.allocate(1);
@@ -333,7 +333,7 @@ map.insert(std::make_pair("AAA", 10));
 
 	ft::pair<iterator, bool>	insert(const value_type &value)
 	{
-		tree_	new_node;
+		tree_node<value_type>	*new_node;
 		new_node = create_node(value);
 		if (_root_node == NULL)
 			new_node = _root_node;
@@ -341,7 +341,7 @@ map.insert(std::make_pair("AAA", 10));
 		{
 			// comapare the values, find right place for new_node to be inserted
 		}
-		return (ft::pair<iterator<new_node>, true>);
+		return (ft::make_pair<iterator, true>);
 /*
 (1), (2) : 戻り値としては、イテレータとbool値の組を返す。
 挿入された場合には、first に挿入された要素へのイテレータ、 second に true が設定される。

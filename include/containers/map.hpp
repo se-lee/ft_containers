@@ -34,7 +34,7 @@ friend is allowed
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
 			typedef tree_iterator<ft::tree_node<value_type> >		iterator;
-			typedef tree_const_iterator<ft::tree_node<value_type> >	const_iterator;
+			typedef const_tree_iterator<ft::tree_node<value_type> >	const_iterator;
 
 			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -47,7 +47,7 @@ friend is allowed
 		public:
 /* --- [ Constructors ] --- */
 			map() : _tree() {}
-			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp)*/){}
+			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) :
 
 			template<class InputIterator>
 			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp */)
@@ -150,7 +150,7 @@ friend is allowed
 
 /* --- [ Observers ] --- */
 			key_compare key_comp() const;
-			map::value_compare value_comp() const;
+			// map::value_compare value_comp() const;
 
 /* --- [ Operations / Lookup ] --- */
 			size_type	count( const Key &key ) const;
