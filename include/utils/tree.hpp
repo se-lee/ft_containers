@@ -110,7 +110,25 @@ template<class value_type>
 				return (y->_parent);
 			}
 
-
+			template<class value_type>
+			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
+			{
+				while (true)
+				{
+					if (x->_left != NULL)
+					{
+						x = x->_left;
+						continue ;
+					}
+					if (x->_right != NULL)
+					{
+						x = x->_right;
+						continue ;
+					}
+					break ;
+				}
+				return (x);
+			}
 
 
 /*************[ お試し ]**************************/
@@ -235,7 +253,28 @@ template<class value_type>
 				return (y->_parent);
 			}
 
+			template<class value_type>
+			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
+			{
+				while (true)
+				{
+					if (x->_left != NULL)
+					{
+						x = x->_left;
+						continue ;
+					}
+					if (x->_right != NULL)
+					{
+						x = x->_right;
+						continue ;
+					}
+					break ;
+				}
+				return (x);
+			}
 
+
+/*************[ お試し ]**************************/
 
 			const_tree_iterator &operator++() 
 			{
