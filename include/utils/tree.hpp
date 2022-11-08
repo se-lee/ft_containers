@@ -29,28 +29,28 @@ namespace ft
 
 /************************** [ TREE ITER ] **************************/
 
-	template<class Pair, class Container = ft::tree<class Key, class T, class Compare, class Allocator> >
+	template<class Pair>//, class Container = ft::tree<class Key, class T, class Compare, class Allocator> >
 	class tree_iterator
 	{
 		public:
 			typedef ft::bidirectional_iterator_tag		iterator_category;
 			typedef Pair								value_type;
-			typedef Container							container_type;
+			// typedef Container							container_type;
 			typedef ptrdiff_t							difference_type;
 			typedef Pair&								reference;
 			typedef Pair*								pointer;
 
 		private:
-			container_type	*_container;
+			// container_type	*_container;
 			tree_node<Pair>	*_current;
 
 		public:
-			tree_iterator() : _container(NULL), _current(NULL) {}
-			tree_iterator(container_type *cont, tree_node<Pair> *ptr) : _container(cont),_current(ptr) {}
-			tree_iterator(const tree_iterator &other) : _container(other._container), _current(other._current) {}
+			tree_iterator() : /*_container(NULL), */_current(NULL) {}
+			tree_iterator(/*container_type *cont, */tree_node<Pair> *ptr) : /*_container(cont),*/ _current(ptr) {}
+			tree_iterator(const tree_iterator &other) : /*_container(other._container),*/ _current(other._current) {}
 			tree_iterator &operator=(const tree_iterator &other)
 			{	
-				_container = other._container;
+				// _container = other._container;
 				_current = other._current;
 				return (*this);
 			}
@@ -59,9 +59,67 @@ namespace ft
 			reference operator*() const { return (*_current); }
 			pointer operator->() const { return (&(operator*())); }
 
+
+/*************[ お試し ]**************************/
+template<class value_type>
+			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
+			{
+				while (x->_left != NULL)
+					x = x->_left;
+				return (x);
+			}
+
+			// returns pointer to the right-most node under x node
+			template<class value_type>
+			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
+			{
+				while(x->_right != NULL)
+					x = x->_right;
+				return (x);
+			}
+
+			// returns pointer to the next in-order node after x
+			template<class value_type>
+			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
+			{
+				if (x->_right != NULL)
+					return (tree_min(x->_right));
+				while (!is_left_child(x))
+					x = x->_parent;
+				return (x->_parent);
+			}
+
+			template<class value_type>
+			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
+			{
+				if (x->_right != NULL)
+					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
+				while (!is_left_child(x))
+					x = x->_parent;
+				return (static_cast<tree_node<value_type> >(x->_parent));
+			}
+
+			template<class value_type>
+			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
+			{
+				if (x->_left != NULL)
+					return (tree_max(x->_left));
+				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
+				while (is_left_child(y))
+					y = x->_parent;
+				return (y->_parent);
+			}
+
+
+
+
+/*************[ お試し ]**************************/
+
+
+
 			tree_iterator &operator++() 
 			{
-				_current = _container.tree_next_iter(_current);
+				_current = tree_next_iter(_current);
 				return (*this);
 			}
 
@@ -74,8 +132,7 @@ namespace ft
 
 			tree_iterator &operator--()
 			{
-				//tree_prev_iter
-				_current = _container.tree_prev_iter(_current);
+				_current = tree_prev_iter(_current);
 				return (*this);
 			}
 
@@ -87,12 +144,12 @@ namespace ft
 			}
 	};
 
-	template<class Iterator1, class Iterator2, class Container>
-	bool operator==(const ft::tree_iterator<Iterator1, Container> &x, const ft::tree_iterator<Iterator2, Container> &y)
+	template<class Iterator1, class Iterator2/*, class Container*/>
+	bool operator==(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
 	{ return (x == y); }
 
-	template<class Iterator1, class Iterator2, class Container>
-	bool operator!=(const ft::tree_iterator<Iterator1, Container> &x, const ft::tree_iterator<Iterator2, Container> &y)
+	template<class Iterator1, class Iterator2/*, class Container*/>
+	bool operator!=(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
 	{ return (!(x == y)); }
 
 
@@ -128,9 +185,61 @@ namespace ft
 			reference operator*() const { return (*_current); }
 			pointer operator->() const { return (&(operator*())); }
 
+/*************[ お試し ]**************************/
+template<class value_type>
+			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
+			{
+				while (x->_left != NULL)
+					x = x->_left;
+				return (x);
+			}
+
+			// returns pointer to the right-most node under x node
+			template<class value_type>
+			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
+			{
+				while(x->_right != NULL)
+					x = x->_right;
+				return (x);
+			}
+
+			// returns pointer to the next in-order node after x
+			template<class value_type>
+			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
+			{
+				if (x->_right != NULL)
+					return (tree_min(x->_right));
+				while (!is_left_child(x))
+					x = x->_parent;
+				return (x->_parent);
+			}
+
+			template<class value_type>
+			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
+			{
+				if (x->_right != NULL)
+					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
+				while (!is_left_child(x))
+					x = x->_parent;
+				return (static_cast<tree_node<value_type> >(x->_parent));
+			}
+
+			template<class value_type>
+			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
+			{
+				if (x->_left != NULL)
+					return (tree_max(x->_left));
+				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
+				while (is_left_child(y))
+					y = x->_parent;
+				return (y->_parent);
+			}
+
+
+
 			const_tree_iterator &operator++() 
 			{
-				_current = _container.tree_next_iter(_current);
+				_current = tree_next_iter(_current);
 				return (*this);
 			}
 
@@ -144,7 +253,7 @@ namespace ft
 			const_tree_iterator &operator--()
 			{
 				//tree_prev_iter
-				_current = _container.tree_prev_iter(_current);
+				_current = tree_prev_iter(_current);
 				return (*this);
 			}
 
@@ -156,12 +265,12 @@ namespace ft
 			}
 	};
 
-	template<class Iterator1, class Iterator2, class Container>
-	bool operator==(const ft::const_tree_iterator<Iterator1, Container> &x, const ft::const_tree_iterator<Iterator2, Container> &y)
+	template<class Iterator1, class Iterator2>
+	bool operator==(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
 	{ return (x == y); }
 
-	template<class Iterator1, class Iterator2, class Container>
-	bool operator!=(const ft::const_tree_iterator<Iterator1, Container> &x, const ft::const_tree_iterator<Iterator2, Container> &y)
+	template<class Iterator1, class Iterator2>
+	bool operator!=(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
 	{ return (!(x == y)); }
 
 
@@ -228,75 +337,75 @@ namespace ft
 			{ x->_parent = p; }
 
 			// returns pointer to the left-most node under x node
-			template<class value_type>
-			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
-			{
-				while (x->_left != NULL)
-					x = x->_left;
-				return (x);
-			}
+		// 	template<class value_type>
+		// 	tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
+		// 	{
+		// 		while (x->_left != NULL)
+		// 			x = x->_left;
+		// 		return (x);
+		// 	}
 
-			// returns pointer to the right-most node under x node
-			template<class value_type>
-			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
-			{
-				while(x->_right != NULL)
-					x = x->_right;
-				return (x);
-			}
+		// 	// returns pointer to the right-most node under x node
+		// 	template<class value_type>
+		// 	tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
+		// 	{
+		// 		while(x->_right != NULL)
+		// 			x = x->_right;
+		// 		return (x);
+		// 	}
 
-			// returns pointer to the next in-order node after x
-			template<class value_type>
-			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (tree_min(x->_right));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (x->_parent);
-			}
+		// 	// returns pointer to the next in-order node after x
+		// 	template<class value_type>
+		// 	tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
+		// 	{
+		// 		if (x->_right != NULL)
+		// 			return (tree_min(x->_right));
+		// 		while (!is_left_child(x))
+		// 			x = x->_parent;
+		// 		return (x->_parent);
+		// 	}
 
-			template<class value_type>
-			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (static_cast<tree_node<value_type> >(x->_parent));
-			}
+		// 	template<class value_type>
+		// 	tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
+		// 	{
+		// 		if (x->_right != NULL)
+		// 			return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
+		// 		while (!is_left_child(x))
+		// 			x = x->_parent;
+		// 		return (static_cast<tree_node<value_type> >(x->_parent));
+		// 	}
 
-			template<class value_type>
-			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
-			{
-				if (x->_left != NULL)
-					return (tree_max(x->_left));
-				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
-				while (is_left_child(y))
-					y = x->_parent;
-				return (y->_parent);
-			}
+		// 	template<class value_type>
+		// 	tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
+		// 	{
+		// 		if (x->_left != NULL)
+		// 			return (tree_max(x->_left));
+		// 		tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
+		// 		while (is_left_child(y))
+		// 			y = x->_parent;
+		// 		return (y->_parent);
+		// 	}
 
-		// returns pointer to a node which has no children
-			template<class value_type>
-			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
-			{
-				while (true)
-				{
-					if (x->_left != NULL)
-					{
-						x = x->_left;
-						continue ;
-					}
-					if (x->_right != NULL)
-					{
-						x = x->_right;
-						continue ;
-					}
-					break ;
-				}
-				return (x);
-			}
+		// // returns pointer to a node which has no children
+		// 	template<class value_type>
+		// 	tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
+		// 	{
+		// 		while (true)
+		// 		{
+		// 			if (x->_left != NULL)
+		// 			{
+		// 				x = x->_left;
+		// 				continue ;
+		// 			}
+		// 			if (x->_right != NULL)
+		// 			{
+		// 				x = x->_right;
+		// 				continue ;
+		// 			}
+		// 			break ;
+		// 		}
+		// 		return (x);
+		// 	}
 
 /* Rotation系のやつ */
 	template<class value_type>

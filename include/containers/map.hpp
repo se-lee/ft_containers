@@ -47,7 +47,10 @@ friend is allowed
 		public:
 /* --- [ Constructors ] --- */
 			map() : _tree() {}
-			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) :
+			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) 
+			{
+				
+			}
 
 			template<class InputIterator>
 			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp */)
@@ -64,10 +67,6 @@ friend is allowed
 /* --- [ Destructor ] --- */
 			~map() 
 			{
-				if (size() > 0)
-				{
-
-				}
 				/*
 				This destroys all container elements, 
 				and deallocates all the storage capacity allocated 

@@ -22,7 +22,7 @@ void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
 {
 	std::cout << comment;
-	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
+	for (ft::map<std::string, int>::iterator it = m.begin(); it != m.end(); ++it)
 		std::cout << '[' << it->first << "] = " << it->second << "; ";
 
 	std::cout << std::endl;
