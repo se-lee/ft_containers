@@ -19,14 +19,14 @@ void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 	std::cout << std::endl;
 }
 
-void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
-{
-	std::cout << comment;
-	for (ft::map<std::string, int>::iterator it = m.begin(); it != m.end(); ++it)
-		std::cout << '[' << it->first << "] = " << it->second << "; ";
+// void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
+// {
+// 	std::cout << comment;
+// 	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
+// 		std::cout << '[' << it->_pair_value.first << "] = " << it->_pair_value.second << "; ";
 
-	std::cout << std::endl;
-}
+// 	std::cout << std::endl;
+// }
 
 
 int main()

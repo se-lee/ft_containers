@@ -18,13 +18,13 @@ namespace ft
 for the implementation of std::map::value_compare, the keyword
 friend is allowed
 */
-	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> >
+	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
 		public:
 			typedef Key												key_type;
 			typedef T												mapped_type;
-			typedef ft::pair<const key_type, mapped_type>			value_type;
+			typedef pair<const key_type, mapped_type>			value_type;
 			typedef	Compare											key_compare;
 			// value_compare
 			typedef Allocator										allocator_type;
@@ -33,8 +33,8 @@ friend is allowed
 
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef tree_iterator<ft::tree_node<value_type> >		iterator;
-			typedef const_tree_iterator<ft::tree_node<value_type> >	const_iterator;
+			typedef tree_iterator<tree_node<value_type> >		iterator;
+			typedef const_tree_iterator<tree_node<value_type> >	const_iterator;
 
 			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -42,31 +42,39 @@ friend is allowed
 			typedef std::size_t												size_type;
 
 		private:
-			typedef	ft::tree<T, Compare, Allocator>			_tree;
+			tree<T, Compare, Allocator>		_tree;
+			// key_compare		_key_comp;
+			// allocator_type	_alloc;
+
 
 		public:
 /* --- [ Constructors ] --- */
 			map() : _tree() {}
-			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) 
+
+			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) : _tree(comp, alloc)
 			{
-				
+				// _key_comp = comp;
+				// _alloc = alloc;
 			}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(/*value_comapre(comp */)
-				{
-					insert(first, last);
-				}
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(first, last, comp, alloc)
+			{
+				// _key_comp = comp;
+				// _alloc = alloc;
+				// insert(first, last);
+			}
 			
 			map(const map &other) 
 			{
-				/* copy elements */
+				*this = other;
 				return (*this);
 			}
 
 /* --- [ Destructor ] --- */
 			~map() 
 			{
+				_tree.~tree();
 				/*
 				This destroys all container elements, 
 				and deallocates all the storage capacity allocated 
@@ -76,6 +84,9 @@ friend is allowed
 /* --- [ Operator= ] --- */
 			map &operator=(const map &other)
 			{
+				_tree = other._tree;
+				// _key_comp = other._key_comp;
+				// _alloc = other._alloc;
 				/* copy every element of [other] to [this] */
 				return (*this);
 			}
@@ -84,13 +95,13 @@ friend is allowed
 			iterator	begin()
 			{ return (_tree.begin()); }
 			
-			const_iterator	begin()const 
+			const_iterator	begin() const 
 			{ return (_tree.begin()); }
 
 			iterator	end() 
 			{ return (_tree.end()); }
 
-			const_iterator end()const 
+			const_iterator end() const 
 			{ return (_tree.end()); }
 
 			reverse_iterator rbegin() 
@@ -108,29 +119,27 @@ friend is allowed
 		
 /* --- [ Capacity ] --- */
 			bool empty() const 
-			{ return (_tree.begin() == _tree.end()); }
+			{ return ( _tree.empty); }
 
 			size_type size() const
-			{ return (_tree.end() - _tree.begin()); }
+			{ return (_tree.size()); }
 
 			size_type max_size() const 
 			{ return (_tree.get_allocator().max_size()); }
 
 
 /* --- [ Element access ] --- */
-			T &at( const Key &key) 
-			{}
+			T &at( const Key &key) ;
 			
-			const T &at( const Key &key) const
-			{}
+			const T &at( const Key &key) const;
 
 /* --- [ Modifiers ] --- */
 			// std::map<Key, T, Compare, Allocator>::clear
-			void clear() 
-			{// erases all elements from the container
-			}
+			void clear() ;
+			// erases all elements from the container
+			
 
-			ft::pair<iterator, bool> insert( const value_type &value)
+			ft::pair<iterator, bool> insert(const value_type &value)
 			{
 				_tree.insert(value);
 			}
@@ -168,11 +177,10 @@ friend is allowed
 
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const;
+
+
 	};
-
 }
-
-
 
 
 #endif
