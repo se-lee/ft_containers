@@ -1,14 +1,13 @@
 #ifndef TREE_HPP
 # define TREE_HPP
 
+# include <memory>
+# include <functional>
 # include "bidirectional_iterator.hpp"
 # include "pair.hpp"
-# include <memory>
 
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >class tree;
-
 
 /************************** [ TREE NODE ] **************************/
 
@@ -20,7 +19,7 @@ namespace ft
 		pointer		_parent;
 		pointer		_left;
 		pointer		_right;
-		Pair		_pair_value;
+		Pair		_pair_value; //first, second;
 
 		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _pair_value(NULL) {}
 		tree_node(const Pair &pr) : _parent(NULL), _left(NULL), _right(NULL), _pair_value(pr) {}
@@ -29,13 +28,12 @@ namespace ft
 
 /************************** [ TREE ITER ] **************************/
 
-	template<class Pair>//, class Container = ft::tree<class Key, class T, class Compare, class Allocator> >
+	template<class Pair>
 	class tree_iterator
 	{
 		public:
 			typedef ft::bidirectional_iterator_tag		iterator_category;
 			typedef Pair								value_type;
-			// typedef Container							container_type;
 			typedef ptrdiff_t							difference_type;
 			typedef Pair&								reference;
 			typedef Pair*								pointer;
@@ -59,7 +57,7 @@ namespace ft
 
 
 /*************[ お試し ]**************************/
-template<class value_type>
+			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
 				while (x->_left != NULL)
@@ -199,7 +197,7 @@ template<class value_type>
 			pointer operator->() const { return (&(operator*())); }
 
 /*************[ お試し ]**************************/
-template<class value_type>
+			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
 				while (x->_left != NULL)
@@ -312,7 +310,9 @@ template<class value_type>
 
 /************************** [ TREE CLASS ] **************************/
 
-	template<class Key, class T, class Compare, class Allocator> 
+	// template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >class tree;
+
+	template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > > 
 	class tree
 	{
 		public:
@@ -324,11 +324,11 @@ template<class value_type>
 
 			typedef	typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef typename std::size_t			size_type;
-			typedef typename std::ptrdiff_t			difference_type;
+			typedef typename std::size_t							size_type;
+			typedef typename std::ptrdiff_t							difference_type;
 
-			typedef tree_iterator<value_type>		iterator;
-			typedef const_tree_iterator<value_type> const_iterator; 
+			typedef tree_iterator<value_type>						iterator;
+			typedef const_tree_iterator<value_type> 				const_iterator; 
 
 		private:
 			tree_node<value_type>	*_root_node;
@@ -344,20 +344,6 @@ template<class value_type>
 			explicit tree(const allocator_type &a) : _root_node(NULL), _begin_node(NULL), _end_node(NULL), _allocator(a), _value_compare(NULL) {}
 			tree(const value_compare &comp, const allocator_type &a) : _root_node(NULL), _begin_node(NULL), _end_node(NULL), _allocator(a), _value_compare(comp) {}
 	
-/*
-	template <class InputIterator>
-	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
-	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
-	: _allocator(alloc), _first(first), _last(last), _capacity_last(last)
-	{
-		size_type	range_size = last - first;
-		_first = _allocator.allocate(range_size);
-
-		for (size_type i = 0; i < range_size; ++i, ++first)
-			_allocator.construct(_first + i, first);
-	}
-
-*/
 			template<class InputIterator>
 			tree (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator())
 			{
@@ -446,9 +432,9 @@ template<class value_type>
 map.insert(std::make_pair("AAA", 10));
 */
 
-	pointer	create_node(const value_type &value)
+	tree_node<value_type> *create_node(const value_type &value)
 	{
-		pointer		*new_node;
+		tree_node<value_type>	*new_node;
 		new_node = _allocator.allocate(1);
 		_allocator.construct(new_node, value);
 
