@@ -3,311 +3,12 @@
 
 # include <memory>
 # include <functional>
-# include "bidirectional_iterator.hpp"
 # include "pair.hpp"
+# include "../iterators/bidirectional_iterator.hpp"
+# include "../iterators/tree_iterator.hpp"
 
 namespace ft
 {
-
-/************************** [ TREE NODE ] **************************/
-
-	template<class Pair>
-	struct tree_node
-	{
-		typedef	tree_node<Pair>	*pointer;
-	
-		pointer		_parent;
-		pointer		_left;
-		pointer		_right;
-		Pair		_pair_value; //first, second;
-
-		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _pair_value(NULL) {}
-		tree_node(const Pair &pr) : _parent(NULL), _left(NULL), _right(NULL), _pair_value(pr) {}
-
-	};
-
-/************************** [ TREE ITER ] **************************/
-
-	template<class Pair>
-	class tree_iterator
-	{
-		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Pair								value_type;
-			typedef ptrdiff_t							difference_type;
-			typedef Pair&								reference;
-			typedef Pair*								pointer;
-
-		private:
-			tree_node<Pair>	*_current;
-
-		public:
-			tree_iterator() : _current(NULL) {}
-			tree_iterator(tree_node<Pair> *ptr) : _current(ptr) {}
-			tree_iterator(const tree_iterator &other) : _current(other._current) {}
-			tree_iterator &operator=(const tree_iterator &other)
-			{	
-				_current = other._current;
-				return (*this);
-			}
-			~tree_iterator() {}
-
-			reference operator*() const { return (*_current); }
-			pointer operator->() const { return (&(operator*())); }
-
-
-/*************[ お試し ]**************************/
-			template<class value_type>
-			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
-			{
-				while (x->_left != NULL)
-					x = x->_left;
-				return (x);
-			}
-
-			// returns pointer to the right-most node under x node
-			template<class value_type>
-			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
-			{
-				while(x->_right != NULL)
-					x = x->_right;
-				return (x);
-			}
-
-			// returns pointer to the next in-order node after x
-			template<class value_type>
-			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (tree_min(x->_right));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (x->_parent);
-			}
-
-			template<class value_type>
-			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (static_cast<tree_node<value_type> >(x->_parent));
-			}
-
-			template<class value_type>
-			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
-			{
-				if (x->_left != NULL)
-					return (tree_max(x->_left));
-				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
-				while (is_left_child(y))
-					y = x->_parent;
-				return (y->_parent);
-			}
-
-			template<class value_type>
-			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
-			{
-				while (true)
-				{
-					if (x->_left != NULL)
-					{
-						x = x->_left;
-						continue ;
-					}
-					if (x->_right != NULL)
-					{
-						x = x->_right;
-						continue ;
-					}
-					break ;
-				}
-				return (x);
-			}
-
-
-/*************[ お試し ]**************************/
-
-
-
-			tree_iterator &operator++() 
-			{
-				_current = tree_next_iter(_current);
-				return (*this);
-			}
-
-			tree_iterator operator++(int)
-			{
-				tree_iterator temp = *this;
-				++(*this);
-				return (temp);
-			}
-
-			tree_iterator &operator--()
-			{
-				_current = tree_prev_iter(_current);
-				return (*this);
-			}
-
-			tree_iterator operator--(int)
-			{
-				tree_iterator temp = *this;
-				--(*this);
-				return (temp);
-			}
-	};
-
-	template<class Iterator1, class Iterator2>
-	bool operator==(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (x == y); }
-
-	template<class Iterator1, class Iterator2>
-	bool operator!=(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (!(x == y)); }
-
-
-/************************** [ CONST TREE ITER ] **************************/
-
-	template<class Pair>
-	class const_tree_iterator
-	{
-		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Pair								value_type;
-			typedef ptrdiff_t							difference_type;
-			typedef Pair&								reference;
-			typedef Pair*								pointer;
-
-		private:
-			tree_node<Pair>	*_current;
-
-		public:
-			const_tree_iterator() : _current(NULL) {}
-			const_tree_iterator(tree_node<Pair> *ptr) :_current(ptr) {}
-			const_tree_iterator(const_tree_iterator &other) : _current(other._current) {}
-			const_tree_iterator &operator=(const_tree_iterator &other)
-			{	
-				_current = other._current;
-				return (*this);
-			}
-			~const_tree_iterator() {}
-
-			reference operator*() const { return (*_current); }
-			pointer operator->() const { return (&(operator*())); }
-
-/*************[ お試し ]**************************/
-			template<class value_type>
-			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
-			{
-				while (x->_left != NULL)
-					x = x->_left;
-				return (x);
-			}
-
-			// returns pointer to the right-most node under x node
-			template<class value_type>
-			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
-			{
-				while(x->_right != NULL)
-					x = x->_right;
-				return (x);
-			}
-
-			// returns pointer to the next in-order node after x
-			template<class value_type>
-			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (tree_min(x->_right));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (x->_parent);
-			}
-
-			template<class value_type>
-			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
-			{
-				if (x->_right != NULL)
-					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (static_cast<tree_node<value_type> >(x->_parent));
-			}
-
-			template<class value_type>
-			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
-			{
-				if (x->_left != NULL)
-					return (tree_max(x->_left));
-				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
-				while (is_left_child(y))
-					y = x->_parent;
-				return (y->_parent);
-			}
-
-			template<class value_type>
-			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
-			{
-				while (true)
-				{
-					if (x->_left != NULL)
-					{
-						x = x->_left;
-						continue ;
-					}
-					if (x->_right != NULL)
-					{
-						x = x->_right;
-						continue ;
-					}
-					break ;
-				}
-				return (x);
-			}
-
-
-/*************[ お試し ]**************************/
-
-			const_tree_iterator &operator++() 
-			{
-				_current = tree_next_iter(_current);
-				return (*this);
-			}
-
-			const_tree_iterator operator++(int)
-			{
-				const_tree_iterator temp = *this;
-				++(*this);
-				return (temp);
-			}
-
-			const_tree_iterator &operator--()
-			{
-				//tree_prev_iter
-				_current = tree_prev_iter(_current);
-				return (*this);
-			}
-
-			const_tree_iterator operator--(int)
-			{
-				const_tree_iterator temp = *this;
-				--(*this);
-				return (temp);
-			}
-	};
-
-	template<class Iterator1, class Iterator2>
-	bool operator==(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (x == y); }
-
-	template<class Iterator1, class Iterator2>
-	bool operator!=(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (!(x == y)); }
-
-
-
-
 /************************** [ TREE CLASS ] **************************/
 
 	// template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >class tree;
@@ -411,56 +112,118 @@ namespace ft
 			{ x->_parent = p; }
 
 /* Rotation系のやつ */
-	template<class value_type>
-	void	tree_left_rotate(tree_node<value_type> *x) const
-	{
-		tree_node<value_type> *y = x->_right;
+			template<class value_type>
+			void	tree_left_rotate(tree_node<value_type> *x) const
+			{
+				tree_node<value_type> *y = x->_right;
 
-		x->_right = y->_left;
-		if (x->_right != NULL)
-			x->_right -> set_parent(x);
-		y->parent = x->_parent;
-		if (is_left_child(x))
-			x->_parent->_left = y;
-		else
-			x->_parent->_right = y;
-			y->_left = x;
-			x->set_parent(y);
-	}
+				x->_right = y->_left;
+				if (x->_right != NULL)
+					x->_right -> set_parent(x);
+				y->parent = x->_parent;
+				if (is_left_child(x))
+					x->_parent->_left = y;
+				else
+					x->_parent->_right = y;
+					y->_left = x;
+					x->set_parent(y);
+			}
 
-/*
-map.insert(std::make_pair("AAA", 10));
-*/
+			tree_node<value_type> *create_node(const value_type &value)
+			{
+				tree_node<value_type>	*new_node;
+				new_node = _allocator.allocate(1);
+				_allocator.construct(new_node, value);
 
-	tree_node<value_type> *create_node(const value_type &value)
-	{
-		tree_node<value_type>	*new_node;
-		new_node = _allocator.allocate(1);
-		_allocator.construct(new_node, value);
+				return (new_node);
+			}
 
-		return (new_node);
-	}
 
-	pointer	find_insert_place(const value_type &value);
+	// returns NULL if value doesnt exist in tree
+	// returns reference to the node that has duplicate value
+			tree_node<value_type> *find_equal(tree_node<value_type> &parent, const value_type &value)
+			{
+				tree_node<value_type> *_temp_root = _root_node;
 
-	ft::pair<iterator, bool>	insert(const value_type &value)
-	{
-		tree_node<value_type>	*new_node;
-		new_node = create_node(value);
-		if (_root_node == NULL)
-			new_node = _root_node;
-		// else if (_root_node != NULL)
-		// {
-		// 	// comapare the values, find right place for new_node to be inserted
-		// }
-		return (ft::make_pair<iterator, true>);
+				if (_temp_root != NULL)
+				{
+					while (true)
+					{
+						if (value_compare() (value, _temp_root->_pair_value)) {
+							if (_temp_root->_left != NULL)
+								_temp_root = _temp_root->_left;
+							else {
+								parent = _temp_root;
+								return (parent._left);
+							}
+						}
+						else if (value_compare()(_temp_root->_pair_value, value)){ //
+							if (_temp_root->_right != NULL)
+								_temp_root = _temp_root->_right;
+							else {
+								parent = _temp_root;
+								return (_temp_root->_right);
+						}
+						else {
+							parent = _temp_root;
+							return (&)
+						}
+					}
+				}
+			}
 
-// erase
-		iterator erase( iterator pos );
-		iterator erase( iterator first, iterator last );
-		size_type erase( const Key &key );
+			void insert_node_at(tree_node<value_type> *parent, tree_node<value_type> *child, tree_node<value_type> *new_node)
+			{
+				new_node->_left = NULL;
+				new_node->_right = NULL;
+				new_node->_parent = parent;
+				child = new_node;
+				
+				if (_begin_node->_left != NULL)
+					_begin_node = _begin_node->_left; //
+				
+				//balance_after_insert;
+				_size++;
+			}
 
-//	check balance
+
+		/*
+			挿入された場合には、first に挿入された要素へのイテレータ、 second に true が設定される。
+			挿入されなかった場合には、 first に x と等価のキーを持つ要素へのイテレータ、 second に false が設定される。
+		*/
+			ft::pair<iterator, bool>	insert(const value_type &value)
+			{
+				iterator it = begin();
+
+				// if key already exists in the tree, return iterator to the value and false;
+					return (ft::pair<iterator, bool> (it, false));
+
+
+
+
+				// if key doesnt exist, create a new node
+				// if there is no root node, set new node as the root;
+				// else, search for the place to insert new_node;
+
+				tree_node<value_type>	*new_node;
+				new_node = insert_node(value);
+				if (_root_node == NULL)
+					new_node = _root_node;
+
+				return (ft::pair<iterator, bool> it, true);
+
+			}
+
+
+			iterator insert(const_iterator it, const value_type &x);
+
+			template<class InputIterator>
+			void insert(InputIterator first, InputIterator last);
+
+	// erase
+			iterator erase( iterator pos );
+			iterator erase( iterator first, iterator last );
+			size_type erase( const Key &key );
 
 
 // rotate

@@ -67,6 +67,7 @@ namespace	ft
 				return (temp);
 			}
 	};
+
 	template <class Iterator1, class Iterator2> 
 	bool operator== (const ft::bidirectional_iterator<Iterator1> &lhs, const ft::bidirectional_iterator<Iterator2> &rhs)
 	{ return (lhs.base() == rhs.base()); }

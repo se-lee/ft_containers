@@ -3,11 +3,11 @@
 
 # include <memory> // allocator
 # include <functional> // std::less
-# include "../utils/random_access_iterator.hpp"
-# include "../utils/reverse_iterator.hpp"
+# include "../iterators/random_access_iterator.hpp"
+# include "../iterators/reverse_iterator.hpp"
 # include "../utils/pair.hpp"
-# include "../utils/iterator_traits.hpp"
-# include "../utils/bidirectional_iterator.hpp"
+# include "../iterators/iterator_traits.hpp"
+# include "../iterators/bidirectional_iterator.hpp"
 # include "../utils/tree.hpp"
 
 namespace ft
@@ -148,6 +148,8 @@ friend is allowed
 
 			// template<class InputIterator>
 			// void insert(std::initializer_list<value_type> init_list); 
+			template<class InputIterator>
+			void insert(InputIterator first, InputIterator last);
 
 			iterator erase( iterator pos );
 			iterator erase( iterator first, iterator last );
