@@ -178,7 +178,7 @@ friend is allowed
 			const_iterator upper_bound( const Key &key ) const;
 
 /* --- [ Allocator ] --- */
-			allocator_type get_allocator() const;
+			allocator_type get_allocator() const { return (_tree.get_allocator()); }
 
 
 	};
