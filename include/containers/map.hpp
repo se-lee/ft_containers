@@ -24,6 +24,7 @@ namespace ft
 			typedef	Compare											key_compare;
 			// value_compare
 			typedef Allocator										allocator_type;
+			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
 			typedef value_type&										reference;
 			typedef const value_type&								const_reference;
 
@@ -37,7 +38,8 @@ namespace ft
 			typedef	std::ptrdiff_t											difference_type;
 			typedef std::size_t												size_type;
 
-			class value_compare {
+			class value_compare : public std::binary_function<value_type, value_type, bool>
+			 {
 				friend class map;
 
 				protected:
@@ -52,27 +54,24 @@ namespace ft
 					bool operator() (const value_type &x, const value_type &y) const
 					{ return (comp(x.first, y.first)); }
 
-					
 			};
 
 		private:
-			tree<T, Compare, Allocator>		_tree;
-			// key_compare		_key_comp;
-			// allocator_type	_alloc;
-
+			value_compare	_vcompare;
+			tree<value_type, value_compare, tree_alloc>		_tree;
 
 		public:
 /* --- [ Constructors ] --- */
-			map() : _tree() {}
+			// map() : _tree(_vcompare) {}
 
-			explicit map(const key_compare &comp, const Allocator &alloc = Allocator()) : _tree(comp, alloc)
+			explicit map(const key_compare &comp, const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _tree(_vcompare, alloc)
 			{
 				// _key_comp = comp;
 				// _alloc = alloc;
 			}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator()) : _tree(first, last, comp, alloc)
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _tree(first, last, _vcompare, alloc)
 			{
 				// _key_comp = comp;
 				// _alloc = alloc;

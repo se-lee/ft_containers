@@ -12,34 +12,38 @@ namespace ft
 // template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > ;
 
 
-template<class Type, class Compare, class Allocator = std::allocator<ft::tree_node<Type> > >
+template<class Type, class Compare = std::less<Type>, class Allocator = std::allocator<ft::tree_node<Type> > >
 class tree
 {
 	public:
-		typedef Type				value_type;
-		typedef Compare			value_compare;
-		typedef Allocator				allocator_type;
-		typedef std::size_t				size_type;
+		typedef Type							value_type;
+		typedef Compare							value_compare;
+		typedef Allocator						allocator_type;
+		typedef std::size_t						size_type;
+		typedef tree_node<value_type>*			pointer;
+		typedef	const tree_node<value_type>*	const_pointer;
 
-		typedef tree_iterator<value_type>						iterator;
-		typedef const_tree_iterator<value_type> 				const_iterator; 
+		typedef tree_iterator<value_type>			iterator;
+		typedef const_tree_iterator<value_type> 	const_iterator; 
 
 	private:
-		tree_node<value_type>	*_root_node;
-		tree_node<value_type>	*_begin_node;
-		tree_node<value_type>	*_end_node;
+		pointer					_root;
+		pointer					_begin;
+		pointer					_end;
+		size_t					_size;
 		allocator_type			_allocator;
 		value_compare			_value_compare;
-		size_t					_size;
 
 	public:
-		tree() : _root_node(NULL), _begin_node(NULL), _end_node(NULL) {}
-		explicit tree(const value_compare &comp) : _root_node(NULL), _begin_node(NULL), _end_node(NULL), _allocator(NULL), _value_compare(comp) {}
-		explicit tree(const allocator_type &a) : _root_node(NULL), _begin_node(NULL), _end_node(NULL), _allocator(a), _value_compare(NULL) {}
-		tree(const value_compare &comp, const allocator_type &a) : _root_node(NULL), _begin_node(NULL), _end_node(NULL), _allocator(a), _value_compare(comp) {}
+		tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
+		explicit tree(const value_compare &comp) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
+		{ _value_compare = comp; }
+		explicit tree(const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
+		{ _allocator = a; }
+		tree(const value_compare &comp, const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0), _allocator(a), _value_compare(comp) {}
 
 		template<class InputIterator>
-		tree (InputIterator first, InputIterator last, const Compare &comp = Compare(), const Allocator &alloc = Allocator())
+		tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc)
 		{
 			_allocator = alloc;
 			_value_compare = comp;
@@ -54,14 +58,14 @@ class tree
 
 		~tree() 
 		{
-			clear();
+			clear_all_elements();
 		}
 
 		tree &operator=(const tree &other)
 		{
-			_root_node = other._root_node;
-			_begin_node = other._begin_node;
-			_end_node = other._end_node;
+			_root = other._root;
+			_begin = other._begin;
+			_end = other._end;
 			_allocator = other._allocator;
 			_value_compare = other._value_compare;
 		
@@ -74,53 +78,62 @@ class tree
 		bool empty() const { return (!_size); }
 
 		iterator begin() 
-		{ return (iterator(_begin_node)); }
+		{ return (iterator(_begin)); }
 
 		const_iterator begin() const 
-		{ return (const_iterator(_begin_node)); }
+		{ return (const_iterator(_begin)); }
 
 		iterator end() 
-		{ return (iterator(_end_node)); }
+		{ return (iterator(_end)); }
 		
 		const_iterator end() const 
-		{ return (const_itertor(_end_node)); }
+		{ return (const_itertor(_end)); }
 
 		iterator root() 
-		{ return (iterator(_root_node)); }
+		{ return (iterator(_root)); }
 		
 		const_iterator root() const 
-		{ return (iterator(_root_node)); }
+		{ return (iterator(_root)); }
 
 		size_type max_size();
 
 		void clear()
 		{
-			_allocator.destroy(_root_node);
+			_allocator.destroy(_root);
 			_size = 0;
-			_begin_node = _end_node;
-			_end_node->_left = NULL;
+			_begin = _end;
+			_end->_left = NULL;
 		}
 
+		void clear_all_elements()
+		{
+			for (pointer ptr = _begin; ptr != _end; ptr++)
+				_allocator.destroy(ptr);
+			_size = 0;
+		}
 
 		void swap();
 
+
+
+
 		template<class value_type>
-		bool is_left_child(tree_node<value_type> *x) const
+		bool is_left_child(pointer x) const
 		{ return (x == x->_parent->_left); }
 
 		template<class value_type>
-		bool is_right_child(tree_node<value_type> *x) const
+		bool is_right_child(pointer x) const
 		{ return (x == x->_parent->_right); }
 
 		template<class value_type>
-		void set_parent(tree_node<value_type> *x, tree_node<value_type> *p)
+		void set_parent(pointer x, pointer p)
 		{ x->_parent = p; }
 
 
 		template<class value_type>
-		void	tree_left_rotate(tree_node<value_type> *x) const
+		void	tree_left_rotate(pointer x) const
 		{
-			tree_node<value_type> *y = x->_right;
+			pointer y = x->_right;
 
 			x->_right = y->_left;
 			if (x->_right != NULL)
@@ -165,7 +178,7 @@ class tree
 		// 	return (parent->_left);
 		// }
 
-		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root/*root*/, const value_type &value)
+		pointer find_insert_place(pointer root/*root*/, const value_type &value)
 		{
 			while (true) { //std::less<int>()(2, 3)
 				if (_value_compare(value.first, root->_pair_value.first)) {
@@ -192,17 +205,17 @@ class tree
 	*/
 		ft::pair<iterator, bool>	insert(const value_type &value)
 		{
-			tree_node<value_type> *new_node;
+			pointer new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
-			if (_root_node == NULL) { // first node insertion
-				_root_node = new_node;
-				_begin_node = _root_node;
-				_end_node = _root_node;
+			if (_root == NULL) { // first node insertion
+				_root = new_node;
+				_begin = _root;
+				_end = _root;
 				_size++;
 				return (ft::pair<iterator, bool>(iterator(new_node), true));
 			}
-			new_node = find_insert_place(_root_node, value);
+			new_node = find_insert_place(_root, value);
 			
 		
 

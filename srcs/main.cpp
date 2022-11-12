@@ -9,7 +9,6 @@
 #include "../include/containers/vector.hpp"
 #include "../include/containers/stack.hpp"
 #include "../include/containers/map.hpp"
-// #include "../include/utils/pair.hpp"
 
 void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 {
@@ -66,7 +65,7 @@ int main()
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::map<std::string, int> m;
-		// m.insert(ft::make_pair("CPU", 10));
+		m.insert(ft::make_pair("CPU", 10));
 
 	}
 
