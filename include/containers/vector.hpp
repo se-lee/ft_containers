@@ -2,8 +2,8 @@
 # define VECTOR_HPP
 
 # include <memory> // allocator<T>
-# include "../utils/reverse_iterator.hpp"
-# include "../utils/random_access_iterator.hpp"
+# include "../iterators/reverse_iterator.hpp"
+# include "../iterators/random_access_iterator.hpp"
 # include "../utils/sfinae.hpp"
 # include "../utils/algorithm.hpp"
 
