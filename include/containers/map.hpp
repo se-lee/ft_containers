@@ -14,17 +14,13 @@ namespace ft
 {
 /************************** [ MAP CLASS ] **************************/
 
-/*
-for the implementation of std::map::value_compare, the keyword
-friend is allowed
-*/
 	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
 		public:
 			typedef Key												key_type;
 			typedef T												mapped_type;
-			typedef pair<const key_type, mapped_type>			value_type;
+			typedef pair<const key_type, mapped_type>				value_type;
 			typedef	Compare											key_compare;
 			// value_compare
 			typedef Allocator										allocator_type;
@@ -40,6 +36,22 @@ friend is allowed
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			typedef	std::ptrdiff_t											difference_type;
 			typedef std::size_t												size_type;
+
+			class value_compare {
+				friend class map;
+
+				protected:
+					key_compare		_comp;
+					value_compare(key_compare c) : _comp(c) {}
+
+				public:	
+					typedef bool			result_type;
+					typedef value_type		first_argument_type;
+					typedef value_type		second_argument_type;
+
+					bool operator() (const value_type &x, const value_type &y) const
+					{ return (comp(x.first, y.first)); }
+			};
 
 		private:
 			tree<T, Compare, Allocator>		_tree;
@@ -141,7 +153,7 @@ friend is allowed
 
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{
-				_tree.insert(value);
+				return (_tree.insert(value));
 			}
 
 			iterator insert(const_iterator it, const value_type &x);

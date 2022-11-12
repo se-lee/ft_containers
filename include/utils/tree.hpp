@@ -9,7 +9,7 @@
 
 namespace ft
 {
-template<class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > 
+template<class Key, class T, class Compare, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > 
 class tree
 {
 	public:
@@ -170,14 +170,14 @@ class tree
 
 		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root/*root*/, const value_type &value)
 		{
-			while (true) {
-				if (_value_compare(value, root->_pair_value)) { //when value < root; to the left
+			while (true) { //std::less<int>()(2, 3)
+				if (value_compare() (value.first, root->_pair_value.first)) {
 					if (root->_left != NULL)
 						root = root->_left;
 					else // if root has no left child
 						return (root->_left); //null
 				}
-				else if (_value_compare(root->_pair_value, value)) { //when root < value; to the right
+				else if (value_compare() (root->_pair_value, value)) {
 					if (root->_right != NULL)
 						root = root->_right;
 					else
@@ -205,10 +205,9 @@ class tree
 				_size++;
 				return (ft::pair<iterator, bool>(iterator(new_node), true));
 			}
-			new_node = find_inser_place(_root_node, value);
+			new_node = find_insert_place(_root_node, value);
 			
-			
-			
+		
 
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
 
