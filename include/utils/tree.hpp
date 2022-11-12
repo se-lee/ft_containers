@@ -9,7 +9,7 @@
 
 namespace ft
 {
-template<class Key, class T, class Compare, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > 
+template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > 
 class tree
 {
 	public:
@@ -171,13 +171,13 @@ class tree
 		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root/*root*/, const value_type &value)
 		{
 			while (true) { //std::less<int>()(2, 3)
-				if (value_compare() (value.first, root->_pair_value.first)) {
+				if (_value_compare(value.first, root->_pair_value.first)) {
 					if (root->_left != NULL)
 						root = root->_left;
 					else // if root has no left child
 						return (root->_left); //null
 				}
-				else if (value_compare() (root->_pair_value, value)) {
+				else if (_value_compare(root->_pair_value, value)) {
 					if (root->_right != NULL)
 						root = root->_right;
 					else
