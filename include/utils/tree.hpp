@@ -31,17 +31,17 @@ class tree
 		pointer					_begin;
 		pointer					_end;
 		size_t					_size;
-		allocator_type			_allocator;
 		value_compare			_value_compare;
+		allocator_type			_allocator;
 
 	public:
 		tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
-		explicit tree(const value_compare &comp) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
-		{ _value_compare = comp; }
-		explicit tree(const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
-		{ _allocator = a; }
-		tree(const value_compare &comp, const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0), _allocator(a), _value_compare(comp) {}
-
+		tree(const value_compare &comp, const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
+		{ 
+			_value_compare = comp; 
+			_allocator = a;
+		}
+	
 		template<class InputIterator>
 		tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc)
 		{

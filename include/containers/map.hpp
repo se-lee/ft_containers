@@ -47,6 +47,8 @@ namespace ft
 					value_compare(key_compare c) : _comp(c) {}
 
 				public:	
+					value_compare() {}
+
 					typedef bool			result_type;
 					typedef value_type		first_argument_type;
 					typedef value_type		second_argument_type;
@@ -58,20 +60,16 @@ namespace ft
 
 		private:
 			value_compare	_vcompare;
+			allocator_type	_allocator;
 			tree<value_type, value_compare, tree_alloc>		_tree;
 
 		public:
 /* --- [ Constructors ] --- */
-			// map() : _tree(_vcompare) {}
-
-			explicit map(const key_compare &comp, const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _tree(_vcompare, alloc)
-			{
-				// _key_comp = comp;
-				// _alloc = alloc;
-			}
+			explicit map(const key_compare &comp = key_compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(_vcompare, alloc)
+			{ }
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _tree(first, last, _vcompare, alloc)
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(first, last, _vcompare, alloc)
 			{
 				// _key_comp = comp;
 				// _alloc = alloc;
