@@ -9,20 +9,17 @@
 
 namespace ft
 {
-template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > 
+// template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > ;
+
+
+template<class Type, class Compare, class Allocator = std::allocator<ft::tree_node<Type> > >
 class tree
 {
 	public:
-		typedef	Key												key_type;
-		typedef T												mapped_type;
-		typedef	typename ft::pair<const key_type, mapped_type>	value_type;
-		typedef Compare											value_compare;
-		typedef Allocator										allocator_type;
-
-		typedef	typename Allocator::pointer						pointer;
-		typedef typename Allocator::const_pointer				const_pointer;
-		typedef typename std::size_t							size_type;
-		typedef typename std::ptrdiff_t							difference_type;
+		typedef Type				value_type;
+		typedef Compare			value_compare;
+		typedef Allocator				allocator_type;
+		typedef std::size_t				size_type;
 
 		typedef tree_iterator<value_type>						iterator;
 		typedef const_tree_iterator<value_type> 				const_iterator; 
@@ -227,7 +224,7 @@ class tree
 // erase
 		iterator erase( iterator pos );
 		iterator erase( iterator first, iterator last );
-		size_type erase( const Key &key );
+		// size_type erase( const Key &key );
 
 		allocator_type get_allocator() const { return (_allocator); }
 
