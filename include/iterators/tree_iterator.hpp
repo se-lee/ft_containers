@@ -5,39 +5,37 @@ namespace ft {
 
 /************************** [ TREE NODE ] **************************/
 
-	template<class Pair>
+	template<class T>
 	struct tree_node
 	{
-		typedef	tree_node<Pair>	*pointer;
-	
-		pointer		_parent;
-		pointer		_left;
-		pointer		_right;
-		Pair		_pair_value; //first, second;
+		tree_node<T>	*_parent;
+		tree_node<T>	*_left;
+		tree_node<T>	*_right;
+		T				_pair_value; //first, second;
 
 		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _pair_value(NULL) {}
-		tree_node(const Pair &pr) : _parent(NULL), _left(NULL), _right(NULL), _pair_value(pr) {}
+		tree_node(const T &pr) : _parent(NULL), _left(NULL), _right(NULL), _pair_value(pr) {}
 
 	};
 
 
 /************************** [ TREE ITER ] **************************/
-	template<class Pair>
+	template<class T>
 	class tree_iterator
 	{
 		public:
 			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Pair								value_type;
+			typedef T									value_type;
 			typedef ptrdiff_t							difference_type;
-			typedef Pair&								reference;
-			typedef Pair*								pointer;
+			typedef T&									reference;
+			typedef T*									pointer;
 
 		private:
-			tree_node<Pair>	*_current;
+			tree_node<value_type>	*_current;
 
 		public:
-			tree_iterator() : _current(NULL) {}
-			tree_iterator(tree_node<Pair> *ptr) : _current(ptr) {}
+			// tree_iterator() : _current(NULL) {}
+			tree_iterator(tree_node<value_type> *ptr) : _current(ptr) {}
 			tree_iterator(const tree_iterator &other) : _current(other._current) {}
 			tree_iterator &operator=(const tree_iterator &other)
 			{	
@@ -163,22 +161,22 @@ namespace ft {
 
 /************************** [ CONST TREE ITER ] **************************/
 
-	template<class Pair>
+	template<class T>
 	class const_tree_iterator
 	{
 		public:
 			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef Pair								value_type;
+			typedef T								value_type;
 			typedef ptrdiff_t							difference_type;
-			typedef Pair&								reference;
-			typedef Pair*								pointer;
+			typedef T&								reference;
+			typedef T*								pointer;
 
 		private:
-			tree_node<Pair>	*_current;
+			tree_node<T>	*_current;
 
 		public:
 			const_tree_iterator() : _current(NULL) {}
-			const_tree_iterator(tree_node<Pair> *ptr) :_current(ptr) {}
+			const_tree_iterator(tree_node<T> *ptr) :_current(ptr) {}
 			const_tree_iterator(const_tree_iterator &other) : _current(other._current) {}
 			const_tree_iterator &operator=(const_tree_iterator &other)
 			{	

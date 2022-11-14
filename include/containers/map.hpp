@@ -14,6 +14,7 @@ namespace ft
 {
 /************************** [ MAP CLASS ] **************************/
 
+	// template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<tree_node<pair<const Key, T> > >
 	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
@@ -30,8 +31,8 @@ namespace ft
 
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef tree_iterator<tree_node<value_type> >		iterator;
-			typedef const_tree_iterator<tree_node<value_type> >	const_iterator;
+			typedef ft::tree_iterator<tree_node<value_type> >			iterator;
+			typedef ft::const_tree_iterator<tree_node<value_type> >		const_iterator;
 
 			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;

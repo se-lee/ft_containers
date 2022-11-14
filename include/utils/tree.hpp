@@ -11,7 +11,6 @@ namespace ft
 {
 // template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > ;
 
-
 template<class Type, class Compare = std::less<Type>, class Allocator = std::allocator<ft::tree_node<Type> > >
 class tree
 {
@@ -20,11 +19,11 @@ class tree
 		typedef Compare							value_compare;
 		typedef Allocator						allocator_type;
 		typedef std::size_t						size_type;
-		typedef tree_node<value_type>*			pointer;
-		typedef	const tree_node<value_type>*	const_pointer;
+		typedef ft::tree_node<value_type>*			pointer;
+		typedef	const ft::tree_node<value_type>*	const_pointer;
 
-		typedef tree_iterator<value_type>			iterator;
-		typedef const_tree_iterator<value_type> 	const_iterator; 
+		typedef tree_iterator<ft::tree_node<value_type> >			iterator;
+		typedef const_tree_iterator<ft::tree_node<value_type> > 	const_iterator; 
 
 	private:
 		pointer					_root;
@@ -180,18 +179,18 @@ class tree
 
 		pointer find_insert_place(pointer root, const value_type &value)
 		{
-			while (true) { //std::less<int>()(2, 3)
+			while (true) {
 				if (_value_compare(value.first, root->_pair_value.first)) {
 					if (root->_left != NULL)
 						root = root->_left;
-					else // if root has no left child
-						return (root->_left); //null
+					else
+						return (root->_left);
 				}
 				else if (_value_compare(root->_pair_value, value)) {
 					if (root->_right != NULL)
 						root = root->_right;
 					else
-						return (root->_right); //null
+						return (root->_right);
 				}
 				else {
 					return (root);
@@ -213,19 +212,16 @@ class tree
 				_begin = _root;
 				_end = _root;
 				_size++;
-				return (ft::pair<iterator, bool>(iterator(new_node), true));
+				return (ft::pair<iterator, bool>(new_node, true));
 			}
 			new_node = find_insert_place(_root, value);
-			
-		
-
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
 
 			// if key doesnt exist, create a new node
 			// if there is no root node, set new node as the root;
 			// else, search for the place to insert new_node;
 
-			return (ft::pair<iterator, bool>(iterator(new_node), true));
+			return (ft::pair<iterator, bool>(new_node, true));
 		}
 
 
