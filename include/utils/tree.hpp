@@ -178,7 +178,7 @@ class tree
 		// 	return (parent->_left);
 		// }
 
-		pointer find_insert_place(pointer root/*root*/, const value_type &value)
+		pointer find_insert_place(pointer root, const value_type &value)
 		{
 			while (true) { //std::less<int>()(2, 3)
 				if (_value_compare(value.first, root->_pair_value.first)) {
