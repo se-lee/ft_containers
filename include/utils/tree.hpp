@@ -22,7 +22,7 @@ class tree
 		typedef ft::tree_node<value_type>*							pointer;
 		typedef	const ft::tree_node<value_type>*					const_pointer;
 		typedef tree_iterator<ft::tree_node<value_type> >			iterator;
-		typedef const_tree_iterator<ft::tree_node<value_type> > 	const_iterator; 
+		typedef const_tree_iterator<ft::tree_node<value_type> > 	const_iterator;
 
 	private:
 		pointer					_root;
@@ -113,8 +113,6 @@ class tree
 		void swap();
 
 
-
-
 		template<class value_type>
 		bool is_left_child(pointer x) const
 		{ return (x == x->_parent->_left); }
@@ -197,35 +195,26 @@ class tree
 			}
 		}
 
-	/*
-		挿入された場合には、first に挿入された要素へのイテレータ、 second に true が設定される。
-		挿入されなかった場合には、 first に x と等価のキーを持つ要素へのイテレータ、 second に false が設定される。
-	*/
 		ft::pair<iterator, bool>	insert(const value_type &value)
 		{
-			pointer new_node;
+			tree_node<value_type>	*new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
-			if (_root == NULL) { // first node insertion
+			if (_root == NULL)
+			{
 				_root = new_node;
-				_begin = _root;
-				_end = _root;
+				_begin = new_node;
+				_end = new_node;
 				_size++;
-				return (ft::pair<iterator, bool>(new_node, true));
+				return (ft::pair<iterator, bool> (new_node, true));
 			}
 			new_node = find_insert_place(_root, value);
-			
-		
-
+			return (ft::pair<iterator, bool> (new_node, true));
+		}
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
-
 			// if key doesnt exist, create a new node
 			// if there is no root node, set new node as the root;
 			// else, search for the place to insert new_node;
-
-			return (ft::pair<iterator, bool>(new_node, true));
-		}
-
 
 		iterator insert(const_iterator it, const value_type &x);
 
