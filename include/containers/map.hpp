@@ -44,8 +44,8 @@ namespace ft
 				friend class map;
 
 				protected:
-					key_compare		_comp;
-					value_compare(key_compare c) : _comp(c) {}
+					Compare		comp;
+					value_compare(Compare c) : comp(c) {}
 
 				public:	
 					value_compare() {}
@@ -67,10 +67,10 @@ namespace ft
 		public:
 /* --- [ Constructors ] --- */
 			explicit map(const key_compare &comp = key_compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(_vcompare, alloc)
-			{ }
+			{}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(first, last, _vcompare, alloc)
+			map (InputIterator first, InputIterator last, const Compare &comp = value_compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(first, last, _vcompare, alloc)
 			{
 				// _key_comp = comp;
 				// _alloc = alloc;

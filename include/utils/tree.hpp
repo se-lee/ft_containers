@@ -9,19 +9,18 @@
 
 namespace ft
 {
-// template<class Key, class T, class Compare = std::less<ft::pair<Key, T> >, class Allocator = std::allocator<ft::tree_node<ft::pair<const Key, T> > > > ;
 
-template<class Type, class Compare = std::less<Type>, class Allocator = std::allocator<ft::tree_node<Type> > >
+template<class Type, class Compare = std::less<Type>, class Allocator = std::allocator<tree_node<Type> > >
 class tree
 {
 	public:
-		typedef Type							value_type;
-		typedef Compare							value_compare;
-		typedef Allocator						allocator_type;
-		typedef std::size_t						size_type;
-		typedef ft::tree_node<value_type>*			pointer;
-		typedef	const ft::tree_node<value_type>*	const_pointer;
-
+		typedef Type												value_type;
+		typedef Compare												value_compare;
+		typedef Allocator											allocator_type;
+		typedef typename Allocator::template rebind<tree_node<Type> >::other node_allocator;
+		typedef std::size_t											size_type;
+		typedef ft::tree_node<value_type>*							pointer;
+		typedef	const ft::tree_node<value_type>*					const_pointer;
 		typedef tree_iterator<ft::tree_node<value_type> >			iterator;
 		typedef const_tree_iterator<ft::tree_node<value_type> > 	const_iterator; 
 
@@ -180,13 +179,13 @@ class tree
 		pointer find_insert_place(pointer root, const value_type &value)
 		{
 			while (true) {
-				if (_value_compare(value.first, root->_pair_value.first)) {
+				if (value_compare() (value.first, root->_pair_value.first)) {
 					if (root->_left != NULL)
 						root = root->_left;
 					else
 						return (root->_left);
 				}
-				else if (_value_compare(root->_pair_value, value)) {
+				else if (value_compare() (root->_pair_value, value)) {
 					if (root->_right != NULL)
 						root = root->_right;
 					else
@@ -215,6 +214,9 @@ class tree
 				return (ft::pair<iterator, bool>(new_node, true));
 			}
 			new_node = find_insert_place(_root, value);
+			
+		
+
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
 
 			// if key doesnt exist, create a new node
