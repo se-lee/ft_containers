@@ -3,8 +3,7 @@
 
 # include <memory>
 # include <functional>
-# include "pair.hpp"
-# include "../iterators/bidirectional_iterator.hpp"
+# include "./pair.hpp"
 # include "../iterators/tree_iterator.hpp"
 
 namespace ft
@@ -19,15 +18,13 @@ class tree
 		typedef Allocator											allocator_type;
 		typedef typename Allocator::template rebind<tree_node<Type> >::other node_allocator;
 		typedef std::size_t											size_type;
-		typedef ft::tree_node<value_type>*							pointer;
-		typedef	const ft::tree_node<value_type>*					const_pointer;
-		typedef tree_iterator<ft::tree_node<value_type> >			iterator;
-		typedef const_tree_iterator<ft::tree_node<value_type> > 	const_iterator;
+		typedef tree_iterator<value_type>			iterator;
+		typedef const_tree_iterator<value_type> 	const_iterator;
 
 	private:
-		pointer					_root;
-		pointer					_begin;
-		pointer					_end;
+		tree_node<value_type>	*_root;
+		tree_node<value_type>	*_begin;
+		tree_node<value_type>	*_end;
 		size_t					_size;
 		value_compare			_value_compare;
 		allocator_type			_allocator;
@@ -105,7 +102,7 @@ class tree
 
 		void clear_all_elements()
 		{
-			for (pointer ptr = _begin; ptr != _end; ptr++)
+			for (tree_node<value_type> *ptr = _begin; ptr != _end; ptr++)
 				_allocator.destroy(ptr);
 			_size = 0;
 		}
@@ -114,22 +111,22 @@ class tree
 
 
 		template<class value_type>
-		bool is_left_child(pointer x) const
+		bool is_left_child(tree_node<value_type> *x) const
 		{ return (x == x->_parent->_left); }
 
 		template<class value_type>
-		bool is_right_child(pointer x) const
+		bool is_right_child(tree_node<value_type> *x) const
 		{ return (x == x->_parent->_right); }
 
 		template<class value_type>
-		void set_parent(pointer x, pointer p)
+		void set_parent(tree_node<value_type> *x, tree_node<value_type> *p)
 		{ x->_parent = p; }
 
 
 		template<class value_type>
-		void	tree_left_rotate(pointer x) const
+		void	tree_left_rotate(tree_node<value_type> *x) const
 		{
-			pointer y = x->_right;
+			tree_node<value_type> *y = x->_right;
 
 			x->_right = y->_left;
 			if (x->_right != NULL)
@@ -174,7 +171,15 @@ class tree
 		// 	return (parent->_left);
 		// }
 
-		pointer find_insert_place(pointer root, const value_type &value)
+		bool	has_duplicate_value(const value_type &value, iterator &it)
+		{
+			for (it = begin(); it != end(); it++)
+				if (!_value_compare(*it, value) && !_value_compare(value, *it))
+					return (true);
+			return (false);
+		}
+
+		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root, const value_type &value)
 		{
 			while (true) {
 				if (value_compare() (value.first, root->_pair_value.first)) {
@@ -195,7 +200,7 @@ class tree
 			}
 		}
 
-		ft::pair<iterator, bool>	insert(const value_type &value)
+		tree_node<value_type>	*insert(const value_type &value)
 		{
 			tree_node<value_type>	*new_node;
 			new_node = _allocator.allocate(1);
@@ -206,11 +211,13 @@ class tree
 				_begin = new_node;
 				_end = new_node;
 				_size++;
-				return (ft::pair<iterator, bool> (new_node, true));
 			}
-			new_node = find_insert_place(_root, value);
-			return (ft::pair<iterator, bool> (new_node, true));
+			else
+				new_node = find_insert_place(_root, value);
+			return (new_node);
 		}
+
+
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
 			// if key doesnt exist, create a new node
 			// if there is no root node, set new node as the root;

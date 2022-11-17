@@ -25,6 +25,7 @@ namespace ft
 			typedef	Compare											key_compare;
 			// value_compare
 			typedef Allocator										allocator_type;
+			typedef typename Allocator::template rebind<tree_node<value_type> >::other node_allocator;
 			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
 			typedef value_type&										reference;
 			typedef const value_type&								const_reference;
@@ -153,7 +154,11 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{
-				return (_tree.insert(value));
+				iterator it;
+				if (_tree.has_duplicate_value(value, it))
+					return (ft::make_pair<iterator, bool>(it, false));
+				tree_node<value_type> *new_node = _tree.insert(value);
+				return (ft::make_pair<iterator, bool>(it, true));
 			}
 
 			iterator insert(const_iterator it, const value_type &x);

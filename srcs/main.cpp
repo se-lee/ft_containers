@@ -64,8 +64,8 @@ int main()
 
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
-		ft::map<std::string, int> m;
-		m.insert(ft::make_pair("CPU", 10));
+		ft::map<char, int> m;
+		m.insert(ft::make_pair('C', 10));
 
 	}
 

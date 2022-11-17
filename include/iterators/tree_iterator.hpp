@@ -34,9 +34,9 @@ namespace ft {
 			tree_node<value_type>	*_current;
 
 		public:
-			// tree_iterator() : _current(NULL) {}
+			tree_iterator() {}
 			tree_iterator(tree_node<value_type> *ptr) : _current(ptr) {}
-			tree_iterator(const tree_iterator &other) : _current(other._current) {}
+			tree_iterator(tree_iterator const &other) : _current(other._current) {}
 			tree_iterator &operator=(const tree_iterator &other)
 			{	
 				_current = other._current;
@@ -44,7 +44,7 @@ namespace ft {
 			}
 			~tree_iterator() {}
 
-			reference operator*() const { return (*_current); }
+			reference operator*() const { return (*_current->_pair_value); }
 			pointer operator->() const { return (&(operator*())); }
 
 
@@ -175,7 +175,7 @@ namespace ft {
 			tree_node<T>	*_current;
 
 		public:
-			const_tree_iterator() : _current(NULL) {}
+			const_tree_iterator() {}
 			const_tree_iterator(tree_node<T> *ptr) :_current(ptr) {}
 			const_tree_iterator(const_tree_iterator &other) : _current(other._current) {}
 			const_tree_iterator &operator=(const_tree_iterator &other)
