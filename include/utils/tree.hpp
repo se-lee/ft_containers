@@ -79,10 +79,18 @@ class tree
 		{ return (const_iterator(_begin)); }
 
 		iterator end() 
-		{ return (iterator(_end)); }
+		{
+			if (_end == NULL)
+				return (begin());
+			return (iterator(_end)); 
+		}
 		
 		const_iterator end() const 
-		{ return (const_itertor(_end)); }
+		{ 
+			if (_end == NULL)
+				return (begin());
+			return (const_itertor(_end)); 
+		}
 
 		iterator root() 
 		{ return (iterator(_root)); }
@@ -139,37 +147,6 @@ class tree
 				y->_left = x;
 				x->set_parent(y);
 		}
-
-		// tree_node<value_type>	*find_insert_place(tree_node<value_type> *parent, const value_type &value)
-		// {
-		// 	tree_node<value_type> *sub_root = parent;
-		// 	if (sub_root != NULL) {
-		// 		while (true){
-		// 			if (value_compare() (value, sub_root->_value)) { // to the left
-		// 				if (sub_root->left != NULL)
-		// 					sub_root = sub_root->left;
-		// 				else {
-		// 					parent = sub_root;
-		// 					return (parent._left);
-		// 				}
-		// 			}
-		// 			else if (value_compare() (sub_root->pair_value, value)) { // to the right
-		// 				if (sub_root->right != NULL)
-		// 					sub_root = sub_root->right;
-		// 				else {
-		// 					parent = sub_root;
-		// 					return (sub_root->right);
-		// 				}
-		// 			}
-		// 			else { 
-		// 				parent = sub_root;
-		// 				return (parent);
-		// 			}
-		// 		}
-		// 	}
-		// 	parent = _end_node;
-		// 	return (parent->_left);
-		// }
 
 		bool	has_duplicate_value(const value_type &value, iterator &it)
 		{
@@ -232,7 +209,11 @@ class tree
 			_allocator.construct(new_node, value);
 			new_node->_parent = insert_pos;
 			if (insert_pos == NULL)
+			{
 				_root = new_node;
+				_begin = new_node;
+				_end = new_node;
+			}
 			else if (_value_compare(new_node->_value, insert_pos->_value))
 				insert_pos->_left = new_node;
 			else if (_value_compare(insert_pos->_value, new_node->_value))
@@ -244,8 +225,18 @@ class tree
 				return (ft::make_pair(iterator(insert_pos), false));
 			}
 			// check balance;
+			if (_value_compare(new_node->_value, _begin->_value))
+				_begin = new_node;
+			if (_value_compare(_end->_value, new_node->_value))
+				_end = new_node;
 			_size++;
 			return (ft::make_pair(iterator(new_node), true));
+		}
+
+		void	update_begin(tree_node<value_type> *inserted_node)
+		{
+			if (_begin == _end || _value_compare(inserted_node->_value, _begin->_value))
+				_begin = inserted_node;
 		}
 
 		ft::pair<iterator, bool> insert(const value_type &value)

@@ -44,8 +44,8 @@ namespace ft {
 			}
 			~tree_iterator() {}
 
-			reference operator*() const { return (*_current->_value); }
-			pointer operator->() const { return (&(operator*())); }
+			reference operator*() const { return (_current->_value); }
+			pointer operator->() const { return (&_current->_value); }
 
 
 /*************[ お試し ]**************************/

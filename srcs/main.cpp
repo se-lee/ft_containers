@@ -19,12 +19,12 @@ void	print_map(std::string_view comment, const std::map<std::string, int> &m)
 	std::cout << std::endl;
 }
 
-// void	print_ft_map(std::string_view comment, const ft::map<std::string, int> &m)
+// void	print_ft_map(std::string_view comment, const ft::map<char, int> &m)
 // {
 // 	std::cout << comment;
-// 	for (ft::map<std::string, int>::const_iterator it = m.begin(); it != m.end(); ++it)
-// 		std::cout << '[' << it->_pair_value.first << "] = " << it->_pair_value.second << "; ";
-
+// 	for (ft::map<char, int>::const_iterator it = m.begin(); it != m.end(); ++it)
+// 		std::cout << '[' << (*it).first << "] = " << (*it).second << "; ";
+// 		// it->_value.first << "] = " << it->_value.second << "; "
 // 	std::cout << std::endl;
 // }
 
@@ -66,6 +66,9 @@ int main()
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::map<char, int> m;
 		m.insert(ft::make_pair('C', 10));
+		ft::map<char, int>::iterator it;
+		it = m.begin();
+		std::cout << "begin: " << it->first << std::endl;
 
 	}
 
