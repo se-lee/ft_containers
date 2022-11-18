@@ -145,7 +145,7 @@ class tree
 		// 	tree_node<value_type> *sub_root = parent;
 		// 	if (sub_root != NULL) {
 		// 		while (true){
-		// 			if (value_compare() (value, sub_root->_pair_value)) { // to the left
+		// 			if (value_compare() (value, sub_root->_value)) { // to the left
 		// 				if (sub_root->left != NULL)
 		// 					sub_root = sub_root->left;
 		// 				else {
@@ -182,13 +182,13 @@ class tree
 		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root, const value_type &value)
 		{
 			while (true) {
-				if (value_compare() (value.first, root->_pair_value.first)) {
+				if (value_compare() (value.first, root->_value.first)) {
 					if (root->_left != NULL)
 						root = root->_left;
 					else
 						return (root->_left);
 				}
-				else if (value_compare() (root->_pair_value, value)) {
+				else if (value_compare() (root->_value, value)) {
 					if (root->_right != NULL)
 						root = root->_right;
 					else
@@ -200,21 +200,59 @@ class tree
 			}
 		}
 
-		tree_node<value_type>	*insert(const value_type &value)
+		tree_node<value_type>	*find_insert_position(const value_type &value)
+		{
+			tree_node<value_type> *parent_node = NULL;
+			tree_node<value_type> *current_node = _root;
+			while (current_node != NULL)
+			{
+				parent_node = current_node;
+				if (_value_compare(value, current_node->_value)) {
+					if (current_node->_left == NULL)
+						return (current_node->_left);
+					else // current_node->_left != NULL
+						current_node = current_node->_left;
+				}
+				else if (_value_compare(current_node->_value, value)) {
+					if (current_node->_right == NULL)
+						return (current_node->_right);
+					else
+						current_node = current_node->_right;
+				}
+				else // if value == current_node value
+					return (current_node);
+			}
+			return (parent_node);
+		}
+
+		ft::pair<iterator, bool> insert_node(const value_type &value, tree_node<value_type> *insert_pos)
 		{
 			tree_node<value_type>	*new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
-			if (_root == NULL)
-			{
+			new_node->_parent = insert_pos;
+			if (insert_pos == NULL)
 				_root = new_node;
-				_begin = new_node;
-				_end = new_node;
-				_size++;
+			else if (_value_compare(new_node->_value, insert_pos->_value))
+				insert_pos->_left = new_node;
+			else if (_value_compare(insert_pos->_value, new_node->_value))
+				insert_pos->_right = new_node;
+			else //duplicate
+			{
+				_allocator.destroy(new_node);
+				_allocator.deallocate(new_node, 1);
+				return (ft::make_pair(iterator(insert_pos), false));
 			}
-			else
-				new_node = find_insert_place(_root, value);
-			return (new_node);
+			// check balance;
+			_size++;
+			return (ft::make_pair(iterator(new_node), true));
+		}
+
+		tree_node<value_type>	*insert(const value_type &value)
+		{
+			tree_node<value_type>	*new_node_pos;
+			new_node_pos = find_insert_position(value);
+			return (insert_node(value, new_node_pos));
 		}
 
 

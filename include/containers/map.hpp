@@ -155,11 +155,7 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{
-				iterator it;
-				if (_tree.has_duplicate_value(value, it))
-					return (ft::make_pair<iterator, bool>(it, false));
-				tree_node<value_type> *new_node = _tree.insert(value);
-				return (ft::make_pair<iterator, bool>(it, true));
+				return (_tree.insert(value));
 			}
 
 			iterator insert(const_iterator it, const value_type &x);

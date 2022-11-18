@@ -11,10 +11,10 @@ namespace ft {
 		tree_node<T>	*_parent;
 		tree_node<T>	*_left;
 		tree_node<T>	*_right;
-		T				_pair_value; //first, second;
+		T				_value; //first, second;
 
-		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _pair_value(NULL) {}
-		tree_node(const T &pr) : _parent(NULL), _left(NULL), _right(NULL), _pair_value(pr) {}
+		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _value(NULL) {}
+		tree_node(const T &pr) : _parent(NULL), _left(NULL), _right(NULL), _value(pr) {}
 
 	};
 
@@ -44,7 +44,7 @@ namespace ft {
 			}
 			~tree_iterator() {}
 
-			reference operator*() const { return (*_current->_pair_value); }
+			reference operator*() const { return (*_current->_value); }
 			pointer operator->() const { return (&(operator*())); }
 
 
