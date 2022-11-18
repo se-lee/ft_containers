@@ -248,7 +248,7 @@ class tree
 			return (ft::make_pair(iterator(new_node), true));
 		}
 
-		tree_node<value_type>	*insert(const value_type &value)
+		ft::pair<iterator, bool> insert(const value_type &value)
 		{
 			tree_node<value_type>	*new_node_pos;
 			new_node_pos = find_insert_position(value);
