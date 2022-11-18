@@ -25,20 +25,11 @@ namespace ft
 			typedef	Compare											key_compare;
 			// value_compare
 			typedef Allocator										allocator_type;
-			typedef typename Allocator::template rebind<tree_node<value_type> >::other node_allocator;
+			// typedef typename Allocator::template rebind<tree_node<value_type> >::other node_allocator;
 			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
 			typedef value_type&										reference;
 			typedef const value_type&								const_reference;
 
-			typedef typename Allocator::pointer						pointer;
-			typedef typename Allocator::const_pointer				const_pointer;
-			typedef ft::tree_iterator<tree_node<value_type> >			iterator;
-			typedef ft::const_tree_iterator<tree_node<value_type> >		const_iterator;
-
-			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
-			typedef	std::ptrdiff_t											difference_type;
-			typedef std::size_t												size_type;
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			 {
@@ -59,6 +50,16 @@ namespace ft
 					{ return (comp(x.first, y.first)); }
 
 			};
+
+			typedef typename Allocator::pointer													pointer;
+			typedef typename Allocator::const_pointer											const_pointer;
+			typedef typename ft::tree<value_type, value_compare, tree_alloc>::iterator			iterator;
+			typedef typename ft::tree<value_type, value_compare, tree_alloc>::const_iterator	const_iterator;
+
+			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef	std::ptrdiff_t											difference_type;
+			typedef std::size_t												size_type;
 
 		private:
 			value_compare	_vcompare;
