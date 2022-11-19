@@ -49,6 +49,12 @@ namespace ft {
 
 
 /*************[ お試し ]**************************/
+
+			bool is_left_child(tree_node<value_type> *x) const
+			{
+				return (x = x->_parent->_left);
+			}
+
 			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
@@ -81,10 +87,10 @@ namespace ft {
 			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
-					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
+					return (tree_min(x->_right));
 				while (!is_left_child(x))
 					x = x->_parent;
-				return (static_cast<tree_node<value_type> >(x->_parent));
+				return (x->_parent);
 			}
 
 			template<class value_type>
@@ -92,7 +98,7 @@ namespace ft {
 			{
 				if (x->_left != NULL)
 					return (tree_max(x->_left));
-				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
+				tree_node<value_type> *y = x;
 				while (is_left_child(y))
 					y = x->_parent;
 				return (y->_parent);
@@ -148,15 +154,19 @@ namespace ft {
 				--(*this);
 				return (temp);
 			}
+
+			tree_node<value_type> *base() const
+			{ return (_current); }
+
 	};
 
 	template<class Iterator1, class Iterator2>
 	bool operator==(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (x == y); }
+	{ return (x.base() == y.base()); }
 
 	template<class Iterator1, class Iterator2>
 	bool operator!=(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (!(x == y)); }
+	{ return (!(x.base() == y.base())); }
 
 
 /************************** [ CONST TREE ITER ] **************************/
@@ -189,6 +199,11 @@ namespace ft {
 			pointer operator->() const { return (&(operator*())); }
 
 /*************[ お試し ]**************************/
+			bool is_left_child(tree_node<value_type> *x) const
+			{
+				return (x = x->_parent->_left);
+			}
+
 			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
@@ -221,10 +236,10 @@ namespace ft {
 			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
-					return (static_cast<tree_node<value_type> >(tree_min(x->_right)));
+					return (tree_min(x->_right));
 				while (!is_left_child(x))
 					x = x->_parent;
-				return (static_cast<tree_node<value_type> >(x->_parent));
+				return (x->_parent);
 			}
 
 			template<class value_type>
@@ -232,7 +247,7 @@ namespace ft {
 			{
 				if (x->_left != NULL)
 					return (tree_max(x->_left));
-				tree_node<value_type> *y = static_cast<tree_node<value_type> >(x);
+				tree_node<value_type> *y = x;
 				while (is_left_child(y))
 					y = x->_parent;
 				return (y->_parent);
@@ -276,7 +291,6 @@ namespace ft {
 
 			const_tree_iterator &operator--()
 			{
-				//tree_prev_iter
 				_current = tree_prev_iter(_current);
 				return (*this);
 			}
@@ -287,15 +301,19 @@ namespace ft {
 				--(*this);
 				return (temp);
 			}
+
+			tree_node<value_type> *base() const
+			{ return (_current); }
+
 	};
 
 	template<class Iterator1, class Iterator2>
 	bool operator==(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (x == y); }
+	{ return (x.base() == y.base()); }
 
 	template<class Iterator1, class Iterator2>
 	bool operator!=(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (!(x == y)); }
+	{ return (!(x.base() == y.base())); }
 
 }
 

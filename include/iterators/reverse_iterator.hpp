@@ -25,7 +25,7 @@ namespace ft
 			typedef typename	ft::iterator_traits<Iterator>::reference			reference;
 		
 
-			reverse_iterator() : _current() {}
+			reverse_iterator() {}
 			explicit reverse_iterator(iterator_type x) : _current(x) {}
 			template <class U>
 			reverse_iterator(const reverse_iterator<U> &other) : _current(other.base()) {}
@@ -109,23 +109,23 @@ namespace ft
 
 	template <class Iterator1, class Iterator2>
 	bool operator!= (const ft::reverse_iterator<Iterator1> &lhs, const ft::reverse_iterator<Iterator2> &rhs)
-	{ return (lhs != rhs); };
+	{ return (lhs.base() != rhs.base()); };
 
 	template <class Iterator1, class Iterator2>
 	bool operator< (const ft::reverse_iterator<Iterator1> &lhs, const ft::reverse_iterator<Iterator2> &rhs)
-	{ return (lhs < rhs); };
+	{ return (lhs.base() < rhs.base()); };
 
 	template <class Iterator1, class Iterator2>
 	bool operator<= (const ft::reverse_iterator<Iterator1> &lhs, const ft::reverse_iterator<Iterator2> &rhs)
-	{ return (lhs <= rhs); };
+	{ return (lhs.base() <= rhs.base()); };
 
 	template <class Iterator1, class Iterator2>
 	bool operator> (const ft::reverse_iterator<Iterator1> &lhs, const ft::reverse_iterator<Iterator2> &rhs)
-	{ return (lhs > rhs); };
+	{ return (lhs.base() > rhs.base()); };
 	
 	template <class Iterator1, class Iterator2>
 	bool operator>= (const ft::reverse_iterator<Iterator1> &lhs, const ft::reverse_iterator<Iterator2> &rhs)
-	{ return (lhs >= rhs); };
+	{ return (lhs.base() >= rhs.base()); };
 
 	/* operator+ */
 	template <class Iterator>
