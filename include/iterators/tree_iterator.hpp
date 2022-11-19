@@ -52,10 +52,12 @@ namespace ft {
 
 			bool is_left_child(tree_node<value_type> *x) const
 			{
-				return (x = x->_parent->_left);
+				if (x->_parent != NULL)
+					return (x == x->_parent->_left);
+				else
+					return false;
 			}
 
-			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
 				while (x->_left != NULL)
@@ -64,7 +66,6 @@ namespace ft {
 			}
 
 			// returns pointer to the right-most node under x node
-			template<class value_type>
 			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
 			{
 				while(x->_right != NULL)
@@ -73,7 +74,6 @@ namespace ft {
 			}
 
 			// returns pointer to the next in-order node after x
-			template<class value_type>
 			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
@@ -83,7 +83,6 @@ namespace ft {
 				return (x->_parent);
 			}
 
-			template<class value_type>
 			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
@@ -91,9 +90,9 @@ namespace ft {
 				while (!is_left_child(x))
 					x = x->_parent;
 				return (x->_parent);
+				
 			}
 
-			template<class value_type>
 			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
 			{
 				if (x->_left != NULL)
@@ -104,7 +103,6 @@ namespace ft {
 				return (y->_parent);
 			}
 
-			template<class value_type>
 			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
 			{
 				while (true)
@@ -132,11 +130,14 @@ namespace ft {
 			tree_iterator &operator++() 
 			{
 				_current = tree_next_iter(_current);
+				// std::cout <<"_current: " << _current << " | parent: " << _current->_parent<< std::endl;
+
 				return (*this);
 			}
 
 			tree_iterator operator++(int)
 			{
+				// std::cout <<"_current: " << _current << " | parent: " << _current->_parent<< std::endl;
 				tree_iterator temp = *this;
 				++(*this);
 				return (temp);
@@ -195,16 +196,17 @@ namespace ft {
 			}
 			~const_tree_iterator() {}
 
-			reference operator*() const { return (*_current); }
-			pointer operator->() const { return (&(operator*())); }
+			reference operator*() const { return (_current->_value); }
+			pointer operator->() const { return (&_current->_value); }
 
 /*************[ お試し ]**************************/
 			bool is_left_child(tree_node<value_type> *x) const
 			{
-				return (x = x->_parent->_left);
+				if (x->_parent != NULL)
+					return (x = x->_parent->_left);
+				else
+					return (false);
 			}
-
-			template<class value_type>
 			tree_node<value_type>	*tree_min(tree_node<value_type> *x) const
 			{
 				while (x->_left != NULL)
@@ -213,7 +215,6 @@ namespace ft {
 			}
 
 			// returns pointer to the right-most node under x node
-			template<class value_type>
 			tree_node<value_type>	*tree_max(tree_node<value_type> *x) const
 			{
 				while(x->_right != NULL)
@@ -222,7 +223,6 @@ namespace ft {
 			}
 
 			// returns pointer to the next in-order node after x
-			template<class value_type>
 			tree_node<value_type>	*tree_next(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
@@ -232,17 +232,18 @@ namespace ft {
 				return (x->_parent);
 			}
 
-			template<class value_type>
 			tree_node<value_type>	*tree_next_iter(tree_node<value_type> *x) const
 			{
 				if (x->_right != NULL)
 					return (tree_min(x->_right));
 				while (!is_left_child(x))
 					x = x->_parent;
-				return (x->_parent);
+				if (x->_parent)
+					return (x->_parent);
+				else
+					return (NULL);
 			}
 
-			template<class value_type>
 			tree_node<value_type> *tree_prev_iter(tree_node<value_type> *x) const
 			{
 				if (x->_left != NULL)
@@ -253,7 +254,6 @@ namespace ft {
 				return (y->_parent);
 			}
 
-			template<class value_type>
 			tree_node<value_type>	*tree_leaf(tree_node<value_type> x) const
 			{
 				while (true)
@@ -279,6 +279,7 @@ namespace ft {
 			const_tree_iterator &operator++() 
 			{
 				_current = tree_next_iter(_current);
+				std::cout << "const _current: " << &_current << std::endl;
 				return (*this);
 			}
 

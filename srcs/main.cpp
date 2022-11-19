@@ -60,7 +60,6 @@ int main()
 		// m.insert(std::make_pair("AB", 100));
 		// print_map("5) Updated map: ", m);
 		std::map<char, int> mymap;
-		std::map<char, int> mymap2;
 
 		mymap.insert(std::make_pair<char, int>('a', 10)); //Insert Simple Values
 		mymap.insert(std::make_pair<char, int>('b', 20));
@@ -74,27 +73,18 @@ int main()
 		for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
 		std::cout << std::endl;
-
-		std::cout << "Every node of map 2, from first to last:" << std::endl;
-		for (std::map<char, int>::iterator it = mymap2.begin(); it != mymap2.end(); ++it)
-			std::cout << it->first << "=>" << it->second << std::endl; // Shows that insert with two iterators works;
-		std::cout << std::endl;
-
-		std::cout << "Every node, from last to first:" << std::endl;
-		for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
-		{
-			std::cout << it->first << "=>" << it->second << std::endl;
-		}
-		std::cout << std::endl;
-
-
+		// std::cout << "Every node, from last to first:" << std::endl;
+		// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+		// {
+		// 	std::cout << it->first << "=>" << it->second << std::endl;
+		// }
+		// std::cout << std::endl;
 		
 	}
 
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::map<char, int> mymap;
-		ft::map<char, int> mymap2;
 
 		mymap.insert(ft::make_pair<char, int>('a', 10)); //Insert Simple Values
 		mymap.insert(ft::make_pair<char, int>('b', 20));
@@ -106,22 +96,18 @@ int main()
 
 		std::cout << "Every node, from first to last:" << std::endl;
 		for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
-		std::cout << std::endl;
-
-		std::cout << "Every node of map 2, from first to last:" << std::endl;
-		for (ft::map<char, int>::iterator it = mymap2.begin(); it != mymap2.end(); ++it)
-			std::cout << it->first << "=>" << it->second << std::endl; // Shows that insert with two iterators works;
-		std::cout << std::endl;
-
-		std::cout << "Every node, from last to first:" << std::endl;
-		for (ft::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
 		{
-			std::cout << it->first << "=>" << it->second << std::endl;
+			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
+		
 		}
 		std::cout << std::endl;
 
-
+		// std::cout << "Every node, from last to first:" << std::endl;
+		// for (ft::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+		// {
+		// 	std::cout << it->first << "=>" << it->second << std::endl;
+		// }
+		// std::cout << std::endl;
 	}
 
 	return 0;

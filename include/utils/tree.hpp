@@ -82,14 +82,14 @@ class tree
 		{
 			if (_end == NULL)
 				return (begin());
-			return (iterator(_end)); 
+			return (iterator(_end->_right)); 
 		}
 		
 		const_iterator end() const 
 		{ 
 			if (_end == NULL)
 				return (begin());
-			return (const_itertor(_end)); 
+			return (const_itertor(_end->_right)); 
 		}
 
 		iterator root() 
@@ -117,21 +117,20 @@ class tree
 
 		void swap();
 
-
-		template<class value_type>
 		bool is_left_child(tree_node<value_type> *x) const
-		{ return (x == x->_parent->_left); }
+		{ 
+			if (x->_parent)
+				return (x == x->_parent->_left); 
+			else
+				return (false);
+		}
 
-		template<class value_type>
 		bool is_right_child(tree_node<value_type> *x) const
 		{ return (x == x->_parent->_right); }
 
-		template<class value_type>
 		void set_parent(tree_node<value_type> *x, tree_node<value_type> *p)
 		{ x->_parent = p; }
 
-
-		template<class value_type>
 		void	tree_left_rotate(tree_node<value_type> *x) const
 		{
 			tree_node<value_type> *y = x->_right;
@@ -184,17 +183,26 @@ class tree
 			while (current_node != NULL)
 			{
 				parent_node = current_node;
+				// std::cout << "parent_node: " << parent_node << "| current_node: " << current_node << std::endl;
 				if (_value_compare(value, current_node->_value)) {
 					if (current_node->_left == NULL)
-						return (current_node->_left);
+					{
+						return (current_node);
+					}
 					else // current_node->_left != NULL
+					{
 						current_node = current_node->_left;
+					}
 				}
 				else if (_value_compare(current_node->_value, value)) {
 					if (current_node->_right == NULL)
-						return (current_node->_right);
+					{
+						return (current_node);
+					}
 					else
+					{
 						current_node = current_node->_right;
+					}
 				}
 				else // if value == current_node value
 					return (current_node);
@@ -202,12 +210,16 @@ class tree
 			return (parent_node);
 		}
 
+
+
 		ft::pair<iterator, bool> insert_node(const value_type &value, tree_node<value_type> *insert_pos)
 		{
+			// std::cout << "insert_pos: " << insert_pos << std::endl; 
 			tree_node<value_type>	*new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
 			new_node->_parent = insert_pos;
+			std::cout << "new_node: " << new_node << "| parent: " << new_node->_parent << " | insert_pos: " << insert_pos << std::endl;
 			if (insert_pos == NULL)
 			{
 				_root = new_node;
@@ -215,9 +227,13 @@ class tree
 				_end = new_node;
 			}
 			else if (_value_compare(new_node->_value, insert_pos->_value))
+			{
 				insert_pos->_left = new_node;
+			}
 			else if (_value_compare(insert_pos->_value, new_node->_value))
+			{
 				insert_pos->_right = new_node;
+			}
 			else //duplicate
 			{
 				_allocator.destroy(new_node);
@@ -225,11 +241,14 @@ class tree
 				return (ft::make_pair(iterator(insert_pos), false));
 			}
 			// check balance;
+			std::cout << std::boolalpha;
+			std::cout << "left: " << is_left_child(new_node) << std::endl;
 			if (_value_compare(new_node->_value, _begin->_value))
 				_begin = new_node;
 			if (_value_compare(_end->_value, new_node->_value))
 				_end = new_node;
 			_size++;
+			// std::cout << "_begin: " << _begin << " | _end: " << _end << std::endl;
 			return (ft::make_pair(iterator(new_node), true));
 		}
 
