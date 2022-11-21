@@ -67,7 +67,7 @@ class tree
 			return (*this);
 		}
 
-		size_t	size()
+		size_t	size() const
 		{ return (_size); }
 
 		bool empty() const { return (!_size); }
@@ -82,14 +82,14 @@ class tree
 		{
 			if (_end == NULL)
 				return (begin());
-			return (iterator(_end->_right)); 
+			return (iterator(_end)); 
 		}
 		
 		const_iterator end() const 
 		{ 
 			if (_end == NULL)
 				return (begin());
-			return (const_itertor(_end->_right)); 
+			return (const_itertor(_end)); 
 		}
 
 		iterator root() 

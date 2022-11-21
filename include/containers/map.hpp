@@ -135,7 +135,7 @@ namespace ft
 		
 /* --- [ Capacity ] --- */
 			bool empty() const 
-			{ return ( _tree.empty); }
+			{ return ( _tree.empty()); }
 
 			size_type size() const
 			{ return (_tree.size()); }

@@ -9,11 +9,18 @@ namespace ft
 	class random_access_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		public:
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type		value_type; 
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category	iterator_category;
-			typedef T*	pointer;
-			typedef T&	reference;
+			typedef	T																			iterator_type;
+			// typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type		value_type; 
+			// typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
+			// typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category	iterator_category;
+			typedef typename ft::iterator_traits<T>::iterator_category	iterator_category;
+			typedef typename ft::iterator_traits<T>::difference_type	difference_type;
+			typedef typename ft::iterator_traits<T>::pointer			pointer;
+			typedef typename ft::iterator_traits<T>::reference			reference;
+
+			
+			// typedef T*	pointer;
+			// typedef T&	reference;
 
 		protected:
 			pointer	_current;
@@ -79,13 +86,13 @@ namespace ft
 				return (random_access_iterator(_current - n));
 			}
 
-			random_access_iterator &operator+=(difference_type n) const
+			random_access_iterator &operator+=(difference_type n)
 			{
 				_current += n;
 				return (*this);
 			}
 
-			random_access_iterator &operator-=(difference_type n) const
+			random_access_iterator &operator-=(difference_type n)
 			{
 				_current -= n;
 				return (*this);

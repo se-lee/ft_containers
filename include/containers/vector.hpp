@@ -14,7 +14,7 @@ namespace ft
 	{
 		public:
 			typedef	T												value_type;
-			typedef	Allocator											allocator_type;
+			typedef	Allocator										allocator_type;
 			typedef std::size_t										size_type;
 			typedef	std::ptrdiff_t									difference_type;
 			typedef	T&												reference;
@@ -164,23 +164,6 @@ implementation limitations */
 		}
 	}
 
-	// void resize(size_type count, T value = T())
-	// {
-	// 	if (size() > count)
-	// 	{
-	// 		size_type diff = size() - count;
-	// 		for (size_type i = 0; i < diff; i++)
-	// 			_allocator.destroy(_first + count + i);
-	// 		_last = _first + count;
-	// 	}
-	// 	else if (size() < count)
-	// 	{
-	// 		reserve(count);
-	// 		for (; _last != _capacity_last; _last++)
-	// 			_allocator.construct(_last, value);
-	// 	}
-	// }
-
 	void resize(size_type count, const value_type& value)
 	{
 		if (size() > count)
@@ -309,8 +292,17 @@ implementation limitations */
 	}
 
 /* insert */
-	iterator insert (iterator poisiton, const value_type &val);
-	void	insert (iterator position, size_type n, const value_type &val);
+	iterator insert (iterator position, const value_type &val)
+	{
+		size_type	diff = position - begin();
+		insert(position, 1, val);
+		return (begin() + diff);
+
+	}
+	// void	insert (iterator position, size_type n, const value_type &val)
+	// {
+
+	// }
 
 	template <class InputIterator>
 	void insert (iterator position, InputIterator first, InputIterator last);
