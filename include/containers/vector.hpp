@@ -32,13 +32,13 @@ namespace ft
 			allocator_type		_allocator;
 			pointer				_begin;
 			pointer				_end;
-			pointer				_capacity_last;
+			pointer				_capacity_end;
 
 	public:
 
 /* --- [ Constructors ] --- */
 /* empty container constructor (default constructor) */
-	explicit vector (const allocator_type &alloc = allocator_type()) : _allocator(alloc), _begin(NULL), _end(NULL), _capacity_last(NULL) {}
+	explicit vector (const allocator_type &alloc = allocator_type()) : _allocator(alloc), _begin(NULL), _end(NULL), _capacity_end(NULL) {}
 
 /* fill constructor */
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
@@ -46,7 +46,7 @@ namespace ft
 		_allocator = alloc;
 		_begin = _allocator.allocate(n);
 		_end = _begin + n;
-		_capacity_last = _end;
+		_capacity_end = _end;
 
 		if (n > 0)
 		{
@@ -59,10 +59,12 @@ namespace ft
 	template <class InputIterator>
 	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
-	: _allocator(alloc), _begin(first), _end(last), _capacity_last(last)
+	: _allocator(alloc), _begin(first), _end(last), _capacity_end(last)
 	{
 		size_type	range_size = last - first;
 		_begin = _allocator.allocate(range_size);
+		_end = _begin + range_size;
+		_capacity_end = _end;
 
 		for (size_type i = 0; i < range_size; ++i, ++first)
 			_allocator.construct(_begin + i, first);
@@ -73,6 +75,8 @@ namespace ft
 	{
 		_allocator = x._allocator;
 		_begin = _allocator.allocate(x.capacity());
+		_end = _begin + x.capacity();
+		_capacity_end = _end;
 	
 		if (x.size() > 0)
 		{
@@ -161,7 +165,7 @@ implementation limitations */
 		{
 			reserve(count);
 			//_last以降のデータを初期化
-			for (; _end != _capacity_last; _end++)
+			for (; _end != _capacity_end; _end++)
 				_allocator.construct(_end);		
 		}
 	}
@@ -178,7 +182,7 @@ implementation limitations */
 		else if (size() < count)
 		{
 			reserve(count);
-			for (; _end != _capacity_last; _end++)
+			for (; _end != _capacity_end; _end++)
 				_allocator.construct(_end, value);
 		}
 	}
@@ -186,7 +190,7 @@ implementation limitations */
 /* capacity :capacity of the currently allocated storage */
 
 	size_type capacity() const
-	{ return (_capacity_last - _begin); }
+	{ return (_capacity_end - _begin); }
 
 /* empty : [true] if the container is empty, [false] if not empty */
 	bool empty() const
@@ -204,7 +208,7 @@ implementation limitations */
 
 		_begin = new_alloc;
 		_end = _begin;
-		_capacity_last = _begin + new_cap;
+		_capacity_end = _begin + new_cap;
 
 		//copy old data
 		for (pointer iter = temp_first; iter != temp_last; iter++, _end++)
@@ -324,17 +328,17 @@ implementation limitations */
 		allocator_type temp_alloc = _allocator;
 		pointer temp_first = _begin;
 		pointer temp_last = _end;
-		pointer temp_capacity_last = _capacity_last;
+		pointer temp_capacity_last = _capacity_end;
 	
 		_allocator = other._allocator;
 		_begin = other._begin;
 		_end = other._end;
-		_capacity_last = other._capacity_last;
+		_capacity_end = other._capacity_end;
 
 		other._allocator = temp_alloc;
 		other._begin = temp_first;
 		other._end = temp_last;
-		other._capacity_last = temp_capacity_last;
+		other._capacity_end = temp_capacity_last;
 	}
 
 /* clear : erases all elements from the container, size() returns zero*/
