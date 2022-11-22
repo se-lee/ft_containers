@@ -75,7 +75,6 @@ namespace ft
 	{
 		_allocator = x._allocator;
 		_begin = _allocator.allocate(x.capacity());
-		// _end = _begin + x.capacity();
 		_end = _begin + x.size();
 		_capacity_end = _begin + x.capacity();
 	
@@ -268,8 +267,20 @@ implementation limitations */
 /* assign : replaces the contents with count copies of value [value] */
 	void	assign(size_type count, const T &value)
 	{
+		size_t	old_size = size();
 		clear();
-		resize(count, value);
+		if (old_size > count)
+		{
+			for (size_type i = 0; i < count; i++)
+				_allocator.construct(_begin + i, value);
+			_end = _begin + count;
+		}
+		else if (old_size < count)
+		{
+			reserve(count);
+			for (; _end != _capacity_end; _end++)
+				_allocator.construct(_end, value);
+		}
 	}
 
 	template<class InputIterator>
