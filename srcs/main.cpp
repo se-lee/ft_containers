@@ -76,6 +76,16 @@ int main()
 
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
+
+		std::cout << std::endl << "[ look up ]" << std::endl;
+		std::map<char, int>::iterator itlow, itup;
+
+		itlow = mymap.lower_bound('b');
+		itup = mymap.upper_bound('d');
+		std::cout << "itlow: " << itlow->first << "=>" << itlow->second << std::endl;
+		std::cout << "itup : " << itup->first << "=>" << itup->second << std::endl;
+	
+
 		// std::cout << "Every node, from last to first:" << std::endl;
 		// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
 		// {
@@ -107,7 +117,14 @@ int main()
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
+		std::cout << std::endl << "[ look up ]" << std::endl;
+		ft::map<char, int>::iterator itlow, itup;
 
+		itlow = mymap.lower_bound('b');
+		itup = mymap.upper_bound('d');
+		std::cout << "itlow: " << itlow->first << "=>" << itlow->second << std::endl;
+		std::cout << "itup : " << itup->first << "=>" << itup->second << std::endl;
+	
 
 		// std::cout << "Every node, from last to first:" << std::endl;
 		// for (ft::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)

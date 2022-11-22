@@ -23,9 +23,7 @@ namespace ft
 			typedef T												mapped_type;
 			typedef pair<const key_type, mapped_type>				value_type;
 			typedef	Compare											key_compare;
-			// value_compare
 			typedef Allocator										allocator_type;
-			// typedef typename Allocator::template rebind<tree_node<value_type> >::other node_allocator;
 			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
 			typedef value_type&										reference;
 			typedef const value_type&								const_reference;
@@ -66,7 +64,7 @@ namespace ft
 		private:
 			value_compare	_vcompare;
 			allocator_type	_allocator;
-			tree<value_type, value_compare, tree_alloc>		_tree;
+			tree<key_type, value_type, value_compare, tree_alloc>		_tree;
 
 		public:
 /* --- [ Constructors ] --- */
@@ -167,9 +165,14 @@ namespace ft
 			template<class InputIterator>
 			void insert(InputIterator first, InputIterator last);
 
-			iterator erase( iterator pos );
-			iterator erase( iterator first, iterator last );
-			size_type erase( const Key &key );
+			iterator erase(iterator position)
+			{
+				_tree.erase(position);
+			}
+
+			size_type erase(const key_type &k);
+
+			iterator erase(iterator first, iterator last);
 			
 			void swap( map &other );
 
@@ -187,11 +190,24 @@ namespace ft
 			ft::pair<iterator, iterator> equal_range( const Key &key );
 			ft::pair<const_iterator, const_iterator> equal_range( const Key &key ) const;
 
-			iterator lower_bound( const Key &key );
-			const_iterator lower_bound(const Key &key ) const;
+			iterator lower_bound( const Key &key )
+			{
+				return (_tree.lower_bound(make_pair(key, mapped_type())));
+			}
+			const_iterator lower_bound(const Key &key ) const
+			{
+				return (_tree.lower_bound(make_pair(key, mapped_type())));
+			}
 
-			iterator upper_bound( const Key &key );
-			const_iterator upper_bound( const Key &key ) const;
+			iterator upper_bound( const Key &key )
+			{
+				return (_tree.upper_bound(make_pair(key, mapped_type())));
+			}
+
+			const_iterator upper_bound( const Key &key ) const
+			{
+				return (_tree.upper_bound(make_pair(key, mapped_type())));
+			}
 
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const { return (_tree.get_allocator()); }

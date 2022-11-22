@@ -9,22 +9,25 @@
 namespace ft
 {
 
-template<class Type, class Compare = std::less<Type>, class Allocator = std::allocator<tree_node<Type> > >
+template<class Key, class Type, class Compare = std::less<Type>, class Allocator = std::allocator<tree_node<Type> > >
 class tree
 {
 	public:
+		typedef Key													key_type;
 		typedef Type												value_type;
 		typedef Compare												value_compare;
+		typedef	std::less<Key>										key_compare;
 		typedef Allocator											allocator_type;
 		typedef typename Allocator::template rebind<tree_node<Type> >::other node_allocator;
 		typedef std::size_t											size_type;
 		typedef tree_iterator<value_type>							iterator;
 		typedef const_tree_iterator<value_type> 					const_iterator;
+		typedef tree_node<value_type>*								node_pointer;
 
 	private:
-		tree_node<value_type>	*_root;
-		tree_node<value_type>	*_begin;
-		tree_node<value_type>	*_end;
+		node_pointer			_root;
+		node_pointer			_begin;
+		node_pointer			_end;
 		size_t					_size;
 		value_compare			_value_compare;
 		allocator_type			_allocator;
@@ -110,14 +113,14 @@ class tree
 
 		void clear_all_elements()
 		{
-			for (tree_node<value_type> *ptr = _begin; ptr != _end; ptr++)
+			for (node_pointer ptr = _begin; ptr != _end; ptr++)
 				_allocator.destroy(ptr);
 			_size = 0;
 		}
 
 		void swap();
 
-		bool is_left_child(tree_node<value_type> *x) const
+		bool is_left_child(node_pointer x) const
 		{ 
 			if (x->_parent)
 				return (x == x->_parent->_left); 
@@ -125,15 +128,15 @@ class tree
 				return (false);
 		}
 
-		bool is_right_child(tree_node<value_type> *x) const
+		bool is_right_child(node_pointer x) const
 		{ return (x == x->_parent->_right); }
 
-		void set_parent(tree_node<value_type> *x, tree_node<value_type> *p)
+		void set_parent(node_pointer x, node_pointer p)
 		{ x->_parent = p; }
 
-		void	tree_left_rotate(tree_node<value_type> *x) const
+		void	tree_left_rotate(node_pointer x) const
 		{
-			tree_node<value_type> *y = x->_right;
+			node_pointer y = x->_right;
 
 			x->_right = y->_left;
 			if (x->_right != NULL)
@@ -155,7 +158,7 @@ class tree
 			return (false);
 		}
 
-		tree_node<value_type>	*find_insert_place(tree_node<value_type> *root, const value_type &value)
+		node_pointer find_insert_place(node_pointer root, const value_type &value)
 		{
 			while (true) {
 				if (value_compare() (value.first, root->_value.first)) {
@@ -176,10 +179,10 @@ class tree
 			}
 		}
 
-		tree_node<value_type>	*find_insert_position(const value_type &value)
+		node_pointer find_insert_position(const value_type &value)
 		{
-			tree_node<value_type> *parent_node = NULL;
-			tree_node<value_type> *current_node = _root;
+			node_pointer parent_node = NULL;
+			node_pointer current_node = _root;
 			while (current_node != NULL)
 			{
 				parent_node = current_node;
@@ -210,14 +213,14 @@ class tree
 			return (parent_node);
 		}
 
-		ft::pair<iterator, bool> insert_node(const value_type &value, tree_node<value_type> *insert_pos)
+		ft::pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
 		{
 			// std::cout << "insert_pos: " << insert_pos << std::endl; 
-			tree_node<value_type>	*new_node;
+			node_pointer new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
 			new_node->_parent = insert_pos;
-			std::cout << "new_node: " << new_node << "| parent: " << new_node->_parent << " | insert_pos: " << insert_pos << std::endl;
+			// std::cout << "new_node: " << new_node << "| parent: " << new_node->_parent << " | insert_pos: " << insert_pos << std::endl;
 			if (insert_pos == NULL)
 			{
 				_root = new_node;
@@ -239,8 +242,8 @@ class tree
 				return (ft::make_pair(iterator(_root, insert_pos), false));
 			}
 			// check balance;
-			std::cout << std::boolalpha;
-			std::cout << "left: " << is_left_child(new_node) << std::endl;
+			// std::cout << std::boolalpha;
+			// std::cout << "left: " << is_left_child(new_node) << std::endl;
 			if (_value_compare(new_node->_value, _begin->_value))
 				_begin = new_node;
 			if (_value_compare(_end->_value, new_node->_value))
@@ -250,7 +253,7 @@ class tree
 			return (ft::make_pair(iterator(_root, new_node), true));
 		}
 
-		void	update_begin(tree_node<value_type> *inserted_node)
+		void	update_begin(node_pointer inserted_node)
 		{
 			if (_begin == _end || _value_compare(inserted_node->_value, _begin->_value))
 				_begin = inserted_node;
@@ -258,10 +261,12 @@ class tree
 
 		ft::pair<iterator, bool> insert(const value_type &value)
 		{
-			tree_node<value_type>	*new_node_pos;
+			node_pointer new_node_pos;
 			new_node_pos = find_insert_position(value);
 			return (insert_node(value, new_node_pos));
 		}
+
+		iterator	find(value_type &value);
 
 
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
@@ -274,16 +279,94 @@ class tree
 		template<class InputIterator>
 		void insert(InputIterator first, InputIterator last);
 
+
+		void	remove(node_pointer root, node_pointer *ptr);
+
+
 // erase
-		iterator erase( iterator pos );
-		iterator erase( iterator first, iterator last );
-		// size_type erase( const Key &key );
+		iterator	erase(iterator poistion);
+
+		size_type	erase(const value_type &k);
+
+		iterator	erase(iterator first, iterator last);
 
 		allocator_type get_allocator() const { return (_allocator); }
 
 // rotate
 
 
+
+
+// look up
+
+		iterator lower_bound(const value_type &value)
+		{
+			iterator it;
+			node_pointer temp = _root;
+			while (temp != NULL)
+			{
+				if (!_value_compare(temp->_value, value))
+				{
+					it = iterator(_root, temp);
+					temp = temp->_left;
+				}
+				else
+					temp = temp->_right;
+			}
+			return (it);
+		}
+	
+		const_iterator lower_bound(const value_type &value) const
+		{
+			const_iterator it;
+			node_pointer temp = _root;
+			while (temp != NULL)
+			{
+				if (!_value_compare(temp->_value, value))
+				{
+					it = const_iterator(_root, temp);
+					temp = temp->_left;
+				}
+				else
+					temp = temp->_right;
+			}
+			return (it);
+		}
+
+		iterator upper_bound( const value_type &value )
+		{
+			iterator it;
+			node_pointer temp = _root;
+			while (temp != NULL)
+			{
+				if (_value_compare(value, temp->_value))
+				{
+					it = iterator(_root, temp);
+					temp = temp->_left;
+				}
+				else
+					temp = temp->_right;
+			}
+			return (it);
+		}
+
+
+		const_iterator upper_bound( const value_type &value ) const
+		{
+			const_iterator it;
+			node_pointer temp = _root;
+			while (temp != NULL)
+			{
+				if (_value_compare(value, temp->_value))
+				{
+					it = iterator(_root, temp);
+					temp = temp->_left;
+				}
+				else
+					temp = temp->_right;
+			}
+			return (it);
+		}
 };
 
 }

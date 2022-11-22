@@ -253,7 +253,6 @@ namespace ft {
 
 			tree_node<value_type> *base() const
 			{ return (_current); }
-
 	};
 
 	template<class Iterator1, class Iterator2>
@@ -263,7 +262,6 @@ namespace ft {
 	template<class Iterator1, class Iterator2>
 	bool operator!=(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
 	{ return (!(x.base() == y.base())); }
-
 }
 
 
