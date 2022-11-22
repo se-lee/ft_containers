@@ -82,14 +82,14 @@ class tree
 		{
 			if (_end == NULL)
 				return (begin());
-			return (iterator(_end)); 
+			return (iterator(_end->_right)); 
 		}
 		
 		const_iterator end() const 
 		{ 
 			if (_end == NULL)
 				return (begin());
-			return (const_itertor(_end)); 
+			return (const_itertor(_end->_right)); 
 		}
 
 		iterator root() 
