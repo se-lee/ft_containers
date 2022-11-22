@@ -311,17 +311,9 @@ implementation limitations */
 	}
 
 /* insert */
-	iterator insert (iterator position, const value_type &val)
-	{
-		size_type	diff = position - begin();
-		insert(position, 1, val);
-		return (begin() + diff);
+	iterator insert (iterator position, const value_type &val);
 
-	}
-	// void	insert (iterator position, size_type n, const value_type &val)
-	// {
-
-	// }
+	void	insert (iterator position, size_type n, const value_type &val);
 
 	template <class InputIterator>
 	void insert (iterator position, InputIterator first, InputIterator last);
@@ -338,43 +330,17 @@ implementation limitations */
 /* erase : removes the element at [pos] / in the range [first, last]*/
 	iterator	erase(iterator pos)
 	{
-		difference_type	diff = pos - begin();
-		pointer	ptr = _begin + diff;
-		_allocator.destroy(ptr);
-		_end--;
-		return (iterator(ptr));
+		return (erase(pos, pos + 1));
 	}
-
 
 	iterator	erase(iterator first, iterator last)
 	{
 		difference_type diff = last - first;
-		pointer ptr = _begin + (last - begin());
-		while (ptr != (_begin + (first - begin())))
-		{
-			_allocator.destroy(--ptr);
-			_end--;
-		}
-		return (iterator(ptr));	
+		for (iterator it = first; it + diff != end(); it++)
+			*it = *(it + diff);
+		destruct_at_end(_end - diff);
+		return (iterator(first));	
 	}
-
-
-	// iterator erase(iterator position)
-	// {
-	// 	return erase(position, position + 1);
-	// }
-	// iterator erase(iterator first, iterator last)
-	// {
-	// 	difference_type offset = std::distance(first, last);
-	// 	for (iterator iter = first; iter + offset != end(); ++iter)
-	// 	{
-	// 		*iter = *(iter + offset);
-	// 	}
-	// 	destruct_at_end(last_ - offset);
-	// 	return first;
-	// }
-
-
 
 /* swap : コンテナの交換 exchanges the contents of the container with those of other */
 	void	swap(vector &other)

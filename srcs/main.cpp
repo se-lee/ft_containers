@@ -323,32 +323,41 @@ int main()
 
 	//ERASE
 	std::cout << "[ Erase ]" << std::endl;
-	std_vect5.erase(std_vect5.begin() + 2);
-	vect5.erase(vect5.begin() + 2);
-	displayStdVect(std_vect5, "vect5");
-	displayVect(vect5, "vect5");
-	std::cout	<< "std::vect5 size = " << std_vect5.size()
-				<< " vect5 capacity = " << std_vect5.capacity()
-				<< " vect5 max_size = " << std_vect5.max_size() << std::endl;
-	std::cout	<< "ft:: vect5 size = " << vect5.size()
-				<< " vect5 capacity = " << vect5.capacity()
-				<< " vect5 max_size = " << vect5.max_size() << std::endl;
+	std::vector<int> std_vect6;
+	ft::vector<int> vect6;
+	for (int i = 0; i < 10; i++)
+	{
+		std_vect6.push_back(i);
+		vect6.push_back(i);
+	}
+
+	// std_vect5.erase(std_vect5.begin() + );
+	std_vect6.erase(std_vect6.begin() + 2, std_vect6.begin() + 4);
+	vect6.erase(vect6.begin() + 2, vect6.begin() + 4);
+	displayStdVect(std_vect6, "vect6");
+	displayVect(vect6, "vect6");
+	std::cout	<< "std::vect6 size = " << std_vect6.size()
+				<< " vect6 capacity = " << std_vect6.capacity()
+				<< " vect6 max_size = " << std_vect6.max_size() << std::endl;
+	std::cout	<< "ft:: vect5 size = " << vect6.size()
+				<< " vect6 capacity = " << vect6.capacity()
+				<< " vect6 max_size = " << vect6.max_size() << std::endl;
 	std::cout << std::endl;
 
-	// //SWAP
-	// std::cout << "Before swap : " << std::endl;
-	// displayVect(vect4, "vect4");
-	// displayVect(vect5, "vect5");
-	// swap(vect5, vect4);
-	// std::cout << "After swap : " << std::endl;
-	// displayVect(vect4, "vect4");
-	// displayVect(vect5, "vect5");
-	// std::cout << std::endl;
+	//SWAP
+	std::cout << "Before swap : " << std::endl;
+	displayVect(vect4, "vect4");
+	displayVect(vect5, "vect5");
+	swap(vect5, vect4);
+	std::cout << "After swap : " << std::endl;
+	displayVect(vect4, "vect4");
+	displayVect(vect5, "vect5");
+	std::cout << std::endl;
 
 	//CONST_ITERATORS
-	const ft::vector<int> vect6(10, 20);
+	const ft::vector<int> vect7(10, 20);
 	std::cout << "Const test" << std::endl;
-	for (ft::vector<int>::const_iterator const_it = vect6.begin(); const_it != vect6.end(); const_it++)
+	for (ft::vector<int>::const_iterator const_it = vect7.begin(); const_it != vect7.end(); const_it++)
 	{
 		// *const_it = 5;
 		std::cout << *const_it << " ";
