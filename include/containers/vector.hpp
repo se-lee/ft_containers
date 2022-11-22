@@ -75,8 +75,9 @@ namespace ft
 	{
 		_allocator = x._allocator;
 		_begin = _allocator.allocate(x.capacity());
-		_end = _begin + x.capacity();
-		_capacity_end = _end;
+		// _end = _begin + x.capacity();
+		_end = _begin + x.size();
+		_capacity_end = _begin + x.capacity();
 	
 		if (x.size() > 0)
 		{
@@ -143,7 +144,7 @@ namespace ft
 /* --- [ Capacity ] --- */
 /* size : number of elements in the container */
 	size_type size() const
-	{ return (end() - begin()); }
+	{ return (_end - _begin); }
 
 
 /* max_size : the maximum number of elements the container is able to hold due to system or library 
@@ -169,6 +170,7 @@ implementation limitations */
 				_allocator.construct(_end);		
 		}
 	}
+
 
 	void resize(size_type count, const value_type& value)
 	{
@@ -313,14 +315,55 @@ implementation limitations */
 	template <class InputIterator>
 	void insert (iterator position, InputIterator first, InputIterator last);
 
+	//destroy from end to new_last
+	void	destruct_at_end(pointer new_last)
+	{
+		pointer	ptr = _end;
+		while (ptr != new_last)
+			_allocator.destroy(--ptr);
+		_end = new_last;
+	}
+
 /* erase : removes the element at [pos] / in the range [first, last]*/
-	iterator	erase(iterator pos);
+	iterator	erase(iterator pos)
+	{
+		difference_type	diff = pos - begin();
+		pointer	ptr = _begin + diff;
+		_allocator.destroy(ptr);
+		_end--;
+		return (iterator(ptr));
+	}
 
-	iterator	erase(const_iterator pos);
 
-	iterator	erase(iterator first, iterator last);
+	iterator	erase(iterator first, iterator last)
+	{
+		difference_type diff = last - first;
+		pointer ptr = _begin + (last - begin());
+		while (ptr != (_begin + (first - begin())))
+		{
+			_allocator.destroy(--ptr);
+			_end--;
+		}
+		return (iterator(ptr));	
+	}
 
-	iterator	erase(const_iterator first, const_iterator last);
+
+	// iterator erase(iterator position)
+	// {
+	// 	return erase(position, position + 1);
+	// }
+	// iterator erase(iterator first, iterator last)
+	// {
+	// 	difference_type offset = std::distance(first, last);
+	// 	for (iterator iter = first; iter + offset != end(); ++iter)
+	// 	{
+	// 		*iter = *(iter + offset);
+	// 	}
+	// 	destruct_at_end(last_ - offset);
+	// 	return first;
+	// }
+
+
 
 /* swap : コンテナの交換 exchanges the contents of the container with those of other */
 	void	swap(vector &other)

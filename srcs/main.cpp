@@ -145,6 +145,21 @@ void	displayVect(ft::vector<T> vect, std::string name)
 //VECTORS
 int main()
 {
+
+	std::vector<int> myvector;
+	for (int i = 0; i < 10; i++)
+		myvector.push_back(i);
+	
+	displayStdVect(myvector, "1) ");
+	std::cout	<< "std::vect1 size = " << myvector.size()
+				<< " vect1 capacity = " << myvector.capacity()
+				<< " vect1 max_size = " << myvector.max_size() << std::endl;
+	myvector.erase(myvector.begin() + 2, myvector.begin() + 5);
+	displayStdVect(myvector, "2) ");
+		std::cout	<< "std::vect1 size = " << myvector.size()
+				<< " vect1 capacity = " << myvector.capacity()
+				<< " vect1 max_size = " << myvector.max_size() << std::endl;
+
 	// CONSTRUCTORS
 	std::cout << "[ Empty Constructor ]" << std::endl;
 	std::vector<int> std_vect1;
@@ -211,6 +226,7 @@ int main()
 	std::cout << "[ Copy Constructor ]" << std::endl;
 	std::vector<int> std_vect3(std_vect2);
 	ft::vector<int> vect3(vect2);
+	displayStdVect(std_vect3, "vect3");
 	displayVect(vect3, "vect3");
 	std::cout	<< "std::vect3 size = " << std_vect3.size()
 				<< " vect3 capacity = " << std_vect3.capacity()
@@ -232,6 +248,7 @@ int main()
 	std::cout << "[ Fill Constructor ]" << std::endl;
 	std::vector<int>std_vect4(10, 42);
 	ft::vector<int> vect4(10, 42);
+	displayStdVect(std_vect4, "vect4");
 	displayVect(vect4, "vect4");
 	std::cout	<< "std::vect4 size = " << std_vect4.size()
 				<< " vect4 capacity = " << std_vect4.capacity()
@@ -245,6 +262,7 @@ int main()
 	std::cout << "[ Assign ]" << std::endl;
 	std_vect4.assign(5, 84);
 	vect4.assign(5, 84);
+	displayStdVect(std_vect4, "vect4");
 	displayVect(vect4, "vect4");
 	std::cout	<< "std::vect4 size = " << std_vect4.size()
 				<< " vect4 capacity = " << std_vect4.capacity()
@@ -255,12 +273,31 @@ int main()
 	std::cout << std::endl;
 
 	//ITERATORS
+	std::cout << "[ Iterators ]" << std::endl;
+	std::vector<int> std_vect5;
+	std_vect5.push_back(1);
+	std_vect5.push_back(2);
+	std_vect5.push_back(3);
+	std_vect5.push_back(4);
+	std_vect5.push_back(5);
+	std::cout << "---- std ----" << std::endl;
+	std::reverse_iterator<std::vector<int>::iterator> std_rev_it(std_vect5.end());
+	std::cout	<< "rev_it[3] = " << std_rev_it[3] << std::endl;
+	std::cout	<< "rev_it = " << *std_rev_it << std::endl;
+	std_rev_it += 2;
+	std::cout	<< "rev_it += 2" << std::endl << "rev_it = " << *std_rev_it << std::endl;
+	std_rev_it--;
+	std::cout	<< "rev_it--" << std::endl << "rev_it = " << *std_rev_it << std::endl;
+	std::cout << std::endl;
+
+
 	ft::vector<int> vect5;
 	vect5.push_back(1);
 	vect5.push_back(2);
 	vect5.push_back(3);
 	vect5.push_back(4);
 	vect5.push_back(5);
+	std::cout << "---- ft ----" << std::endl;
 	ft::reverse_iterator<ft::vector<int>::iterator> rev_it(vect5.end());
 	std::cout	<< "rev_it[3] = " << rev_it[3] << std::endl;
 	std::cout	<< "rev_it = " << *rev_it << std::endl;
@@ -271,20 +308,32 @@ int main()
 	std::cout << std::endl;
 
 	//POP_BACK
+	std::cout << "[ Pop back ]" << std::endl;
+	std_vect5.pop_back();
 	vect5.pop_back();
+	displayStdVect(std_vect5, "vect5");
 	displayVect(vect5, "vect5");
-	std::cout	<< "vect5 size = " << vect5.size()
+	std::cout	<< "std::vect5 size = " << std_vect5.size()
+				<< " vect5 capacity = " << std_vect5.capacity()
+				<< " vect5 max_size = " << std_vect5.max_size() << std::endl;
+	std::cout	<< "ft:: vect5 size = " << vect5.size()
 				<< " vect5 capacity = " << vect5.capacity()
 				<< " vect5 max_size = " << vect5.max_size() << std::endl;
 	std::cout << std::endl;
 
 	//ERASE
-	// vect5.erase(vect5.begin() + 2);
-	// displayVect(vect5, "vect5");
-	// std::cout	<< "vect5 size = " << vect5.size()
-	// 			<< " vect5 capacity = " << vect5.capacity()
-	// 			<< " vect5 max_size = " << vect5.max_size() << std::endl;
-	// std::cout << std::endl;
+	std::cout << "[ Erase ]" << std::endl;
+	std_vect5.erase(std_vect5.begin() + 2);
+	vect5.erase(vect5.begin() + 2);
+	displayStdVect(std_vect5, "vect5");
+	displayVect(vect5, "vect5");
+	std::cout	<< "std::vect5 size = " << std_vect5.size()
+				<< " vect5 capacity = " << std_vect5.capacity()
+				<< " vect5 max_size = " << std_vect5.max_size() << std::endl;
+	std::cout	<< "ft:: vect5 size = " << vect5.size()
+				<< " vect5 capacity = " << vect5.capacity()
+				<< " vect5 max_size = " << vect5.max_size() << std::endl;
+	std::cout << std::endl;
 
 	// //SWAP
 	// std::cout << "Before swap : " << std::endl;
