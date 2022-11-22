@@ -78,12 +78,12 @@ int main()
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
 		std::cout << std::endl << "[ look up ]" << std::endl;
-		std::map<char, int>::iterator itlow, itup;
+		std::map<char, int>::iterator it, it2;
 
-		itlow = mymap.lower_bound('b');
-		itup = mymap.upper_bound('d');
-		std::cout << "itlow: " << itlow->first << "=>" << itlow->second << std::endl;
-		std::cout << "itup : " << itup->first << "=>" << itup->second << std::endl;
+		it = mymap.find('b');
+		it2 = mymap.find('d');
+		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
+		std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
 	
 
 		// std::cout << "Every node, from last to first:" << std::endl;
@@ -118,12 +118,12 @@ int main()
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
 		std::cout << std::endl << "[ look up ]" << std::endl;
-		ft::map<char, int>::iterator itlow, itup;
+		ft::map<char, int>::iterator it, it2;
 
-		itlow = mymap.lower_bound('b');
-		itup = mymap.upper_bound('d');
-		std::cout << "itlow: " << itlow->first << "=>" << itlow->second << std::endl;
-		std::cout << "itup : " << itup->first << "=>" << itup->second << std::endl;
+		it = mymap.find('b');
+		it2 = mymap.find('d');
+		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
+		std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
 	
 
 		// std::cout << "Every node, from last to first:" << std::endl;

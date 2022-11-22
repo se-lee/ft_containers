@@ -299,6 +299,24 @@ class tree
 
 // look up
 
+
+		iterator find(const value_type &value)
+		{
+			iterator it = lower_bound(value);
+			if (it != end() && !_value_compare(value, *it))
+				return (it);
+			return (end());
+		}
+
+		const_iterator find(const value_type &value) const
+		{
+			const_iterator it = lower_bound(value);
+			if (it != end() && !_value_compare(value, *it))
+				return (it);
+			return (end());			
+		}
+
+
 		iterator lower_bound(const value_type &value)
 		{
 			iterator it;

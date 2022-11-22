@@ -184,7 +184,10 @@ namespace ft
 /* --- [ Operations / Lookup ] --- */
 			size_type	count( const Key &key ) const;
 
-			iterator find( const Key &key );
+			iterator find( const Key &key )
+			{
+				return (_tree.find(make_pair(key, mapped_type())));
+			}
 			const_iterator find( const Key &key ) const;
 
 			ft::pair<iterator, iterator> equal_range( const Key &key );
