@@ -81,9 +81,15 @@ int main()
 		std::map<char, int>::iterator it, it2;
 
 		it = mymap.find('b');
-		it2 = mymap.find('d');
+		it2 = mymap.find('z');
 		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
-		std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
+		if (it2 == mymap.end())
+			std::cout << "it2 end" << std::endl;
+		else
+			std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
+		std::cout << "count [a]: " << mymap.count('a') << std::endl;
+		std::cout << "count [z]: " << mymap.count('z') << std::endl;
+		std::cout << "count [b]: " << mymap.count('b') << std::endl;
 	
 
 		// std::cout << "Every node, from last to first:" << std::endl;
@@ -121,10 +127,15 @@ int main()
 		ft::map<char, int>::iterator it, it2;
 
 		it = mymap.find('b');
-		it2 = mymap.find('d');
+		it2 = mymap.find('z');
 		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
-		std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
-	
+		if (it2 == mymap.end())
+			std::cout << "it2 end" << std::endl;
+		else
+			std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
+		std::cout << "count [a]: " << mymap.count('a') << std::endl;
+		std::cout << "count [z]: " << mymap.count('z') << std::endl;
+		std::cout << "count [b]: " << mymap.count('b') << std::endl;	
 
 		// std::cout << "Every node, from last to first:" << std::endl;
 		// for (ft::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)

@@ -135,12 +135,12 @@ namespace ft {
 	};
 
 	template<class Iterator1, class Iterator2>
-	bool operator==(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (x.base() == y.base()); }
+	bool operator==(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
+	{ return (lhs.base() == rhs.base()); }
 
 	template<class Iterator1, class Iterator2>
-	bool operator!=(const ft::tree_iterator<Iterator1> &x, const ft::tree_iterator<Iterator2> &y)
-	{ return (!(x.base() == y.base())); }
+	bool operator!=(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
+	{ return (!(lhs.base() == rhs.base())); }
 
 
 /************************** [ CONST TREE ITER ] **************************/
@@ -151,7 +151,7 @@ namespace ft {
 		public:
 			typedef ft::bidirectional_iterator_tag		iterator_category;
 			typedef T								value_type;
-			typedef ptrdiff_t							difference_type;
+			typedef std::ptrdiff_t							difference_type;
 			typedef T&								reference;
 			typedef T*								pointer;
 
@@ -162,8 +162,8 @@ namespace ft {
 		public:
 			const_tree_iterator() {}
 			const_tree_iterator(tree_node<T> *rt, tree_node<T> *ptr) : _root(rt), _current(ptr) {}
-			const_tree_iterator(const_tree_iterator &other) : _root(other._root), _current(other._current) {}
-			const_tree_iterator &operator=(const_tree_iterator &other)
+			const_tree_iterator(const_tree_iterator const &other) : _root(other._root), _current(other._current) {}
+			const_tree_iterator &operator=(const_tree_iterator const &other)
 			{	
 				_root = other._root;
 				_current = other._current;
@@ -256,12 +256,12 @@ namespace ft {
 	};
 
 	template<class Iterator1, class Iterator2>
-	bool operator==(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (x.base() == y.base()); }
+	bool operator==(const ft::const_tree_iterator<Iterator1> &lhs, const ft::const_tree_iterator<Iterator2> &rhs)
+	{ return (lhs.base() == rhs.base()); }
 
 	template<class Iterator1, class Iterator2>
-	bool operator!=(const ft::const_tree_iterator<Iterator1> &x, const ft::const_tree_iterator<Iterator2> &y)
-	{ return (!(x.base() == y.base())); }
+	bool operator!=(const ft::const_tree_iterator<Iterator1> &lhs, const ft::const_tree_iterator<Iterator2> &rhs)
+	{ return (!(lhs.base() == rhs.base())); }
 }
 
 

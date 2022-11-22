@@ -182,7 +182,13 @@ namespace ft
 			// map::value_compare value_comp() const;
 
 /* --- [ Operations / Lookup ] --- */
-			size_type	count( const Key &key ) const;
+			size_type	count( const Key &key ) const
+			{
+				const_iterator it = _tree.find(make_pair(key, mapped_type()));
+				if (it == _tree.end())
+					return (0);
+				return (1);
+			}
 
 			iterator find( const Key &key )
 			{

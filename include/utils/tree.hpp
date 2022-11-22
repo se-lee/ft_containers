@@ -92,7 +92,7 @@ class tree
 		{ 
 			if (_end == NULL)
 				return (begin());
-			return (const_itertor(_root, NULL)); 
+			return (const_iterator(_root, NULL)); 
 		}
 
 		iterator root() 
@@ -189,23 +189,15 @@ class tree
 				// std::cout << "parent_node: " << parent_node << "| current_node: " << current_node << std::endl;
 				if (_value_compare(value, current_node->_value)) {
 					if (current_node->_left == NULL)
-					{
 						return (current_node);
-					}
 					else // current_node->_left != NULL
-					{
 						current_node = current_node->_left;
-					}
 				}
 				else if (_value_compare(current_node->_value, value)) {
 					if (current_node->_right == NULL)
-					{
 						return (current_node);
-					}
 					else
-					{
 						current_node = current_node->_right;
-					}
 				}
 				else // if value == current_node value
 					return (current_node);
@@ -299,11 +291,18 @@ class tree
 
 // look up
 
+		// size_type	count( const value_type &value ) const
+		// {
+		// 	const_iterator it = find(value);
+		// 	if (it == end())
+		// 		return (0);
+		// 	return (1);
+		// }
 
 		iterator find(const value_type &value)
 		{
 			iterator it = lower_bound(value);
-			if (it != end() && !_value_compare(value, *it))
+			if (it != end() && !_value_compare(value, *it) && !_value_compare(*it, value))
 				return (it);
 			return (end());
 		}
@@ -311,7 +310,7 @@ class tree
 		const_iterator find(const value_type &value) const
 		{
 			const_iterator it = lower_bound(value);
-			if (it != end() && !_value_compare(value, *it))
+			if (it != end() && !_value_compare(value, *it) && !_value_compare(*it, value))
 				return (it);
 			return (end());			
 		}
