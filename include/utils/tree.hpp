@@ -18,8 +18,8 @@ class tree
 		typedef Allocator											allocator_type;
 		typedef typename Allocator::template rebind<tree_node<Type> >::other node_allocator;
 		typedef std::size_t											size_type;
-		typedef tree_iterator<value_type>			iterator;
-		typedef const_tree_iterator<value_type> 	const_iterator;
+		typedef tree_iterator<value_type>							iterator;
+		typedef const_tree_iterator<value_type> 					const_iterator;
 
 	private:
 		tree_node<value_type>	*_root;
@@ -73,23 +73,23 @@ class tree
 		bool empty() const { return (!_size); }
 
 		iterator begin() 
-		{ return (iterator(_begin)); }
+		{ return (iterator(_root, _begin)); }
 
 		const_iterator begin() const 
-		{ return (const_iterator(_begin)); }
+		{ return (const_iterator(_root, _begin)); }
 
 		iterator end() 
 		{
 			if (_end == NULL)
 				return (begin());
-			return (iterator(_end->_right)); 
+			return (iterator(_root, NULL)); 
 		}
 		
 		const_iterator end() const 
 		{ 
 			if (_end == NULL)
 				return (begin());
-			return (const_itertor(_end->_right)); 
+			return (const_itertor(_root, NULL)); 
 		}
 
 		iterator root() 
@@ -139,7 +139,7 @@ class tree
 			if (x->_right != NULL)
 				x->_right -> set_parent(x);
 			y->parent = x->_parent;
-			if (is_left_child(x))
+			if (x->_is_left_child)
 				x->_parent->_left = y;
 			else
 				x->_parent->_right = y;
@@ -210,8 +210,6 @@ class tree
 			return (parent_node);
 		}
 
-
-
 		ft::pair<iterator, bool> insert_node(const value_type &value, tree_node<value_type> *insert_pos)
 		{
 			// std::cout << "insert_pos: " << insert_pos << std::endl; 
@@ -238,7 +236,7 @@ class tree
 			{
 				_allocator.destroy(new_node);
 				_allocator.deallocate(new_node, 1);
-				return (ft::make_pair(iterator(insert_pos), false));
+				return (ft::make_pair(iterator(_root, insert_pos), false));
 			}
 			// check balance;
 			std::cout << std::boolalpha;
@@ -249,7 +247,7 @@ class tree
 				_end = new_node;
 			_size++;
 			// std::cout << "_begin: " << _begin << " | _end: " << _end << std::endl;
-			return (ft::make_pair(iterator(new_node), true));
+			return (ft::make_pair(iterator(_root, new_node), true));
 		}
 
 		void	update_begin(tree_node<value_type> *inserted_node)
