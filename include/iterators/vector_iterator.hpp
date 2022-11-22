@@ -6,7 +6,7 @@
 namespace ft 
 {
 	template<class Iterator>
-	class vector_iterator
+	class vector_iterator : public std::iterator<std::random_access_iterator_tag, Iterator>
 	{
 		public:
 			typedef Iterator													iterator_type;
