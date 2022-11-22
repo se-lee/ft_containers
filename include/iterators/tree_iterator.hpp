@@ -58,12 +58,22 @@ namespace ft {
 				return (x == x->_parent->_left);
 			}
 
-			tree_node<value_type>	*tree_min(tree_node<value_type> *x, tree_node<value_type> *nul_node)
-			{
-				while (x->_left != nul_node)
-					x = x->_left;
-				return (x);
-			}
+			// tree_node<value_type>	*tree_min(tree_node<value_type> *x, tree_node<value_type> *nul_node)
+			// {
+			// 	while (x->_left != nul_node)
+			// 		x = x->_left;
+			// 	return (x);
+			// }
+
+			// // returns pointer to the next in-order node after x
+			// tree_node<value_type>	*tree_next(tree_node<value_type> *x, tree_node<value_type> *nul_node)
+			// {
+			// 	if (x->_right != nul_node)
+			// 		return (tree_min(x->_right, nul_node));
+			// 	while (!is_left_child(x))
+			// 		x = x->_parent;
+			// 	return (x->_parent);
+			// }
 
 			// returns pointer to the right-most node under x node
 			tree_node<value_type>	*tree_max(tree_node<value_type> *x, tree_node<value_type> *nul_node)
@@ -73,15 +83,6 @@ namespace ft {
 				return (x);
 			}
 
-			// returns pointer to the next in-order node after x
-			tree_node<value_type>	*tree_next(tree_node<value_type> *x, tree_node<value_type> *nul_node)
-			{
-				if (x->_right != nul_node)
-					return (tree_min(x->_right, nul_node));
-				while (!is_left_child(x))
-					x = x->_parent;
-				return (x->_parent);
-			}
 
 			tree_node<value_type> *tree_prev_node(tree_node<value_type> *x, tree_node<value_type> *nul_node)
 			{
@@ -116,11 +117,46 @@ namespace ft {
 /*************[ お試し ]**************************/
 
 
-			tree_iterator &operator++() 
-			{
-				_current = tree_next(_current, _root);
-				// std::cout <<"_current: " << _current << " | parent: " << _current->_parent<< std::endl;
 
+			// tree_node<value_type>	*tree_min(tree_node<value_type> *x, tree_node<value_type> *nul_node)
+			// {
+			// 	while (x->_left != nul_node)
+			// 		x = x->_left;
+			// 	return (x);
+			// }
+
+			// // returns pointer to the next in-order node after x
+			// tree_node<value_type>	*tree_next(tree_node<value_type> *x, tree_node<value_type> *nul_node)
+			// {
+			// 	if (x->_right != nul_node)
+			// 		return (tree_min(x->_right, nul_node));
+			// 	while (!is_left_child(x))
+			// 		x = x->_parent;
+			// 	return (x->_parent);
+			// }
+
+
+			tree_iterator &operator++()
+			{
+				if (_current->_right != NULL)
+				{
+					_current = _current->_right;
+					while (_current->_left != NULL)
+						_current = _current->_left;
+				}
+				else
+				{
+					while (_current->_parent && (_current == _current->_parent->_right))
+						_current = _current->_parent;
+					if (_current->_parent)
+						_current = _current->_parent;
+					else
+						_current = NULL;
+
+					// _current = tree_next(_current, _root);
+					// std::cout <<"_current: " << _current << " | parent: " << _current->_parent<< std::endl;
+
+				}
 				return (*this);
 			}
 
@@ -134,7 +170,21 @@ namespace ft {
 
 			tree_iterator &operator--()
 			{
-				_current = tree_prev_node(_current, _root);
+				if (_current->_left != NULL)
+				{
+					_current = _current->_left;
+					while(_current->_right != NULL)
+						_current = _current->_right;
+				}
+				else
+				{
+					while (_current->_parent && (_current == _current->_parent->_left))
+						_current = _current->_parent;
+					if (_current->_parent)
+						_current = _current->_parent;
+					else
+						_current = NULL;
+				}
 				return (*this);
 			}
 
