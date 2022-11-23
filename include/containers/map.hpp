@@ -49,35 +49,28 @@ namespace ft
 
 			};
 
-			typedef typename Allocator::pointer													pointer;
-			typedef typename Allocator::const_pointer											const_pointer;
-			// typedef typename ft::tree<value_type, value_compare, tree_alloc>::iterator			iterator;
-			// typedef typename ft::tree<value_type, value_compare, tree_alloc>::const_iterator	const_iterator;
-
-			typedef tree_iterator<value_type>								iterator;
-			typedef const_tree_iterator<value_type> 						const_iterator;
-			typedef	typename ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
-			typedef	std::ptrdiff_t											difference_type;
-			typedef std::size_t												size_type;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
+			typedef tree_iterator<value_type>						iterator;
+			typedef const_tree_iterator<value_type> 				const_iterator;
+			typedef	typename ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef	std::ptrdiff_t									difference_type;
+			typedef std::size_t										size_type;
 
 		private:
-			value_compare	_vcompare;
+			value_compare	_value_comp;
 			allocator_type	_allocator;
-			tree<key_type, value_type, value_compare, tree_alloc>		_tree;
+			tree<key_type, value_type, value_compare, tree_alloc>	_tree;
 
 		public:
 /* --- [ Constructors ] --- */
-			explicit map(const key_compare &comp = key_compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(_vcompare, alloc)
+			explicit map(const key_compare &comp = key_compare(), const tree_alloc &alloc = tree_alloc()) : _value_comp(comp), _allocator(alloc), _tree(_value_comp, alloc)
 			{}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = value_compare(), const tree_alloc &alloc = tree_alloc()) : _vcompare(comp), _allocator(alloc), _tree(first, last, _vcompare, alloc)
-			{
-				// _key_comp = comp;
-				// _alloc = alloc;
-				// insert(first, last);
-			}
+			map (InputIterator first, InputIterator last, const Compare &comp = value_compare(), const tree_alloc &alloc = tree_alloc()) : _value_comp(comp), _allocator(alloc), _tree(first, last, _value_comp, alloc)
+			{}
 			
 			map(const map &other) 
 			{
@@ -87,21 +80,14 @@ namespace ft
 
 /* --- [ Destructor ] --- */
 			~map() 
-			{
-				_tree.~tree();
-				/*
-				This destroys all container elements, 
-				and deallocates all the storage capacity allocated 
-				by the map container using its allocator.*/
-			}
+			{ _tree.~tree(); }
 
 /* --- [ Operator= ] --- */
 			map &operator=(const map &other)
 			{
+				_value_comp = other._value_comp;
+				_allocator = other._allocator;
 				_tree = other._tree;
-				// _key_comp = other._key_comp;
-				// _alloc = other._alloc;
-				/* copy every element of [other] to [this] */
 				return (*this);
 			}
 
@@ -154,16 +140,15 @@ namespace ft
 			
 
 			ft::pair<iterator, bool> insert(const value_type &value)
-			{
-				return (_tree.insert(value));
-			}
+			{ return (_tree.insert(value)); }
 
-			iterator insert(const_iterator it, const value_type &x);
+			iterator insert(iterator position, const value_type &value);
+			// { return (_tree.insert(position, value)); }
 
 			// template<class InputIterator>
 			// void insert(std::initializer_list<value_type> init_list); 
-			template<class InputIterator>
-			void insert(InputIterator first, InputIterator last);
+			// template<class InputIterator>
+			// void insert(InputIterator first, InputIterator last);
 
 			iterator erase(iterator position)
 			{
@@ -179,16 +164,11 @@ namespace ft
 
 /* --- [ Observers ] --- */
 			key_compare key_comp() const;
-			// map::value_compare value_comp() const;
+			value_compare value_comp() const;
 
 /* --- [ Operations / Lookup ] --- */
 			size_type	count( const Key &key ) const
-			{
-				const_iterator it = _tree.find(make_pair(key, mapped_type()));
-				if (it == _tree.end())
-					return (0);
-				return (1);
-			}
+			{ return (_tree.count(make_pair(key, mapped_type()))); }
 
 			iterator find( const Key &key )
 			{
@@ -220,6 +200,12 @@ namespace ft
 
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const { return (_tree.get_allocator()); }
+
+
+			void printTree()
+			{
+				_tree.printAVL("", _tree.get_root(), false);
+			}
 
 
 	};

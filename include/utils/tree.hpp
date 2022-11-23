@@ -99,7 +99,7 @@ class tree
 		{ return (iterator(_root)); }
 		
 		const_iterator root() const 
-		{ return (iterator(_root)); }
+		{ return (const_iterator(_root)); }
 
 		size_type max_size();
 
@@ -158,26 +158,26 @@ class tree
 			return (false);
 		}
 
-		node_pointer find_insert_place(node_pointer root, const value_type &value)
-		{
-			while (true) {
-				if (value_compare() (value.first, root->_value.first)) {
-					if (root->_left != NULL)
-						root = root->_left;
-					else
-						return (root->_left);
-				}
-				else if (value_compare() (root->_value, value)) {
-					if (root->_right != NULL)
-						root = root->_right;
-					else
-						return (root->_right);
-				}
-				else {
-					return (root);
-				}
-			}
-		}
+		// node_pointer find_insert_place(node_pointer root, const value_type &value)
+		// {
+		// 	while (true) {
+		// 		if (value_compare() (value.first, root->_value.first)) {
+		// 			if (root->_left != NULL)
+		// 				root = root->_left;
+		// 			else
+		// 				return (root->_left);
+		// 		}
+		// 		else if (value_compare() (root->_value, value)) {
+		// 			if (root->_right != NULL)
+		// 				root = root->_right;
+		// 			else
+		// 				return (root->_right);
+		// 		}
+		// 		else {
+		// 			return (root);
+		// 		}
+		// 	}
+		// }
 
 		node_pointer find_insert_position(const value_type &value)
 		{
@@ -220,13 +220,9 @@ class tree
 				_end = new_node;
 			}
 			else if (_value_compare(new_node->_value, insert_pos->_value))
-			{
 				insert_pos->_left = new_node;
-			}
 			else if (_value_compare(insert_pos->_value, new_node->_value))
-			{
 				insert_pos->_right = new_node;
-			}
 			else //duplicate
 			{
 				_allocator.destroy(new_node);
@@ -234,14 +230,11 @@ class tree
 				return (ft::make_pair(iterator(_root, insert_pos), false));
 			}
 			// check balance;
-			// std::cout << std::boolalpha;
-			// std::cout << "left: " << is_left_child(new_node) << std::endl;
 			if (_value_compare(new_node->_value, _begin->_value))
 				_begin = new_node;
 			if (_value_compare(_end->_value, new_node->_value))
 				_end = new_node;
 			_size++;
-			// std::cout << "_begin: " << _begin << " | _end: " << _end << std::endl;
 			return (ft::make_pair(iterator(_root, new_node), true));
 		}
 
@@ -253,12 +246,10 @@ class tree
 
 		ft::pair<iterator, bool> insert(const value_type &value)
 		{
-			node_pointer new_node_pos;
-			new_node_pos = find_insert_position(value);
-			return (insert_node(value, new_node_pos));
+			node_pointer new_node;
+			new_node = find_insert_position(value);
+			return (insert_node(value, new_node));
 		}
-
-		iterator	find(value_type &value);
 
 
 // new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
@@ -266,11 +257,17 @@ class tree
 			// if there is no root node, set new node as the root;
 			// else, search for the place to insert new_node;
 
-		iterator insert(const_iterator it, const value_type &x);
+		// insert with hint
+		// iterator insert(iterator position, const value_type &value)
+		// {
+		// 	node_pointer new_node;
+		// 	// check position
+		// 	return (insert_node(value, new_node).first);
+		// }
+
 
 		template<class InputIterator>
 		void insert(InputIterator first, InputIterator last);
-
 
 		void	remove(node_pointer root, node_pointer *ptr);
 
@@ -284,20 +281,46 @@ class tree
 
 		allocator_type get_allocator() const { return (_allocator); }
 
-// rotate
+// rotate & check balance
+		// left-heavy
+		void	right_rotate();
+		void	left_right_rotate();
 
+		// right-heavy
+		void	left_rotate();
+		void	right_left_rotate();
 
+		// check balance
+		int	get_height(node_pointer node)
+		{
+			if (node == NULL)
+				return (-1);
+			else if (node->_left == NULL && node->_right == NULL)
+				return (0);
+			return (std::max(get_height(node->_left), get_height(node->_right)) + 1);
+		}
+
+		int	get_balance_factor(node_pointer node)
+		{
+			if (node == NULL)
+				return (-1);
+			else if (node->_left == NULL && node->_right == NULL)
+				return (0);
+			return (get_height(node->_left) - get_height(node->_right));
+		}
+
+		int	check_balance()
 
 
 // look up
 
-		// size_type	count( const value_type &value ) const
-		// {
-		// 	const_iterator it = find(value);
-		// 	if (it == end())
-		// 		return (0);
-		// 	return (1);
-		// }
+		size_type	count(const value_type &value) const
+		{
+			const_iterator it = find(value);
+			if (it == end())
+				return (0);
+			return (1);
+		}
 
 		iterator find(const value_type &value)
 		{
@@ -384,6 +407,32 @@ class tree
 			}
 			return (it);
 		}
+
+			void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
+			{
+				if(node != NULL)
+				{
+					std::cout << prefix;
+					std::cout << (isLeft ? "└──L:" : "└──R:" );
+					// print the value of the node
+					std::cout << "[" << node->_value.first << " -- ";
+					std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) << "] "<< std::endl;
+					// enter the next tree level - left and right branch
+					printAVL( prefix + (isLeft ? "│   " : "    "), node->_left, true);
+					printAVL( prefix + (isLeft ? "│   " : "    "), node->_right, false);
+				}
+			}
+
+			node_pointer get_root()
+			{ return (_root); }
+
+			// void printTree()
+			// {
+			// 	printAVL("", _root, false);
+			// }
+
+
+
 };
 
 }

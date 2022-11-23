@@ -33,32 +33,6 @@ int main()
 {
 	{
 		std::cout << "======== [ std::map ] ========" << std::endl;
-
-		// std::map<std::string, int> m;
-		// // {{"CPU", 10}, {"GPU", 15}, {"RAM", 20}};
-		// m.insert(std::make_pair("CPU", 10));
-		// m.insert(std::make_pair("GPU", 15));
-		// m.insert(std::make_pair("RAM", 20));
-
-		// print_map("1) Initial map: " , m);
-
-		// // m["CPU"] = 25;
-		// m["SSD"] = 30;
-		// print_map("2) Updated map: ", m);
-
-		// std::cout << "3) m[UPS] = " << m["UPS"] << std::endl;
-		// print_map("4) Updated map: ", m);
-
-
-		// std::map<std::string, int>::iterator it;
-		// it = m.begin();
-		// std::cout << "map::begin: " << it->first << " | " << it->second << std::endl;
-
-		// m.insert(std::make_pair("CP", 10));
-		// print_map("4) Updated map: ", m);
-
-		// m.insert(std::make_pair("AB", 100));
-		// print_map("5) Updated map: ", m);
 		std::map<char, int> mymap;
 
 		mymap.insert(std::make_pair<char, int>('a', 10)); //Insert Simple Values
@@ -69,6 +43,13 @@ int main()
 		mymap.insert(std::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
 		mymap.insert(std::make_pair<char, int>('e', 30));
 
+		std::cout << "count[b]: " << mymap.count('b') << std::endl;
+		std::cout << "count[z]: " << mymap.count('z') << std::endl;
+
+		std::map<char,int>::iterator it = mymap.begin();
+		mymap.insert (it, std::pair<char,int>('f',300));  // max efficiency inserting
+		mymap.insert (it, std::pair<char,int>('2',400)); 
+
 		std::cout << "Every node, from first to last:" << std::endl;
 		for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
@@ -77,19 +58,6 @@ int main()
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
-		std::cout << std::endl << "[ look up ]" << std::endl;
-		std::map<char, int>::iterator it, it2;
-
-		it = mymap.find('b');
-		it2 = mymap.find('z');
-		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
-		if (it2 == mymap.end())
-			std::cout << "it2 end" << std::endl;
-		else
-			std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
-		std::cout << "count [a]: " << mymap.count('a') << std::endl;
-		std::cout << "count [z]: " << mymap.count('z') << std::endl;
-		std::cout << "count [b]: " << mymap.count('b') << std::endl;
 	
 
 		// std::cout << "Every node, from last to first:" << std::endl;
@@ -113,6 +81,13 @@ int main()
 		mymap.insert(ft::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
 		mymap.insert(ft::make_pair<char, int>('e', 30));
 
+		// ft::map<char,int>::iterator it = mymap.begin();
+		// mymap.insert(it, ft::make_pair<char, int>('f',300));  // max efficiency inserting
+		// mymap.insert(it, ft::make_pair<char, int>('2',400)); 
+
+		std::cout << "count[b]: " << mymap.count('b') << std::endl;
+		std::cout << "count[z]: " << mymap.count('z') << std::endl;
+
 		std::cout << "Every node, from first to last:" << std::endl;
 		for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
 		{
@@ -123,20 +98,8 @@ int main()
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
-		std::cout << std::endl << "[ look up ]" << std::endl;
-		ft::map<char, int>::iterator it, it2;
-
-		it = mymap.find('b');
-		it2 = mymap.find('z');
-		std::cout << "it  : " << it->first << "=>" << it->second << std::endl;
-		if (it2 == mymap.end())
-			std::cout << "it2 end" << std::endl;
-		else
-			std::cout << "it2 : " << it2->first << "=>" << it2->second << std::endl;
-		std::cout << "count [a]: " << mymap.count('a') << std::endl;
-		std::cout << "count [z]: " << mymap.count('z') << std::endl;
-		std::cout << "count [b]: " << mymap.count('b') << std::endl;	
-
+		std::cout << std::endl;
+		mymap.printTree();
 		// std::cout << "Every node, from last to first:" << std::endl;
 		// for (ft::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
 		// {
