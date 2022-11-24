@@ -282,13 +282,38 @@ class tree
 		allocator_type get_allocator() const { return (_allocator); }
 
 // rotate & check balance
-		// left-heavy
-		void	right_rotate();
-		void	left_right_rotate();
+		node_pointer	right_rotate(node_pointer node) // when left heavy
+		{
+			node_pointer temp = node->_left;
+			node = node->_left->_right;
+			node->_left = temp->_right;
+			node->_parent = temp;
+			
+			return (temp);
+		}
 
-		// right-heavy
-		void	left_rotate();
-		void	right_left_rotate();
+
+		node_pointer	left_rotate(node_pointer node) // when right heavy
+		{
+			node_pointer temp = node->_right;
+			node = node->_right->_left;
+			node->_right = temp->_left;
+			node->_parent = temp;
+
+			return (temp);
+		}
+
+		node_pointer	left_right_rotate(node_pointer node)
+		{
+			left_rotate(node->_left);
+			return (right_rotate(node));
+		}
+
+		node_pointer	right_left_rotate(node_pointer node)
+		{
+			right_rotate(node->_right);
+			return (left_rotate(node));
+		}
 
 		// check balance
 		int	get_height(node_pointer node)
@@ -309,8 +334,13 @@ class tree
 			return (get_height(node->_left) - get_height(node->_right));
 		}
 
-		int	check_balance()
+		bool	is_balanced(node_pointer node)
+		{ return (std::abs(get_balance_factor(node)) < 2); }
 
+		void	fix_balance(node_pointer node)
+		{
+
+		}
 
 // look up
 
@@ -416,7 +446,8 @@ class tree
 					std::cout << (isLeft ? "└──L:" : "└──R:" );
 					// print the value of the node
 					std::cout << "[" << node->_value.first << " -- ";
-					std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) << "] "<< std::endl;
+					std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) 
+									<< " " << std::boolalpha << is_balanced(node) << " ] "<< std::endl;
 					// enter the next tree level - left and right branch
 					printAVL( prefix + (isLeft ? "│   " : "    "), node->_left, true);
 					printAVL( prefix + (isLeft ? "│   " : "    "), node->_right, false);
@@ -430,9 +461,6 @@ class tree
 			// {
 			// 	printAVL("", _root, false);
 			// }
-
-
-
 };
 
 }
