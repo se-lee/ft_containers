@@ -205,6 +205,7 @@ namespace ft
 			void printTree()
 			{
 				_tree.printAVL("", _tree.get_root(), false);
+				std::cout << std::endl;
 			}
 
 
