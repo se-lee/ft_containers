@@ -1,8 +1,11 @@
 !include/*
 !main.cpp
+*.*
 
+FT_CONTAINERS_42_tester/*.*
 .gitignore
 ft_containers
+
 
 .vscode
 

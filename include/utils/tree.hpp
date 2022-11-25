@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <functional>
+# include <algorithm>
 # include "./pair.hpp"
 # include "../iterators/tree_iterator.hpp"
 
