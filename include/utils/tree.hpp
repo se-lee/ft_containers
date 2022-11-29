@@ -71,6 +71,127 @@ class tree
 			return (*this);
 		}
 
+// rotate & check balance
+		node_pointer	right_rotate(node_pointer node)
+		{
+			node_pointer temp = node->_left;
+			node->_left = temp->_right;
+			if (temp->_right)
+			{
+				// node->_left = temp->_right;
+				temp->_right->_parent = node;
+			}
+			if (node->_parent == NULL)
+			{
+				temp->_parent = NULL;
+				_root = temp;
+			}
+			else
+			{
+				node->_parent->_left = temp;
+				temp->_parent = node->_parent;
+			}
+			temp->_right = node;
+			node->_parent = temp;
+			
+			return (temp);
+		}
+
+		node_pointer	left_rotate(node_pointer node)
+		{ 	// eg: node == c; node->right == d;
+			node_pointer temp = node->_right;
+			node->_right = temp->_left;
+			if (temp->_left)
+			{
+				// node->_right = temp->_left;
+				temp->_left->_parent = node;
+			}
+			if (node->_parent == NULL)
+			{
+				temp->_parent = NULL;
+				_root = temp;
+			}
+			else
+			{
+				node->_parent->_right = temp;
+				temp->_parent = node->_parent;
+			}
+			temp->_left = node;
+			node->_parent = temp;
+
+			return (temp);
+		}
+
+		node_pointer	left_right_rotate(node_pointer node)
+		{
+			node->_left = left_rotate(node->_left);
+			return (right_rotate(node));
+		}
+
+		node_pointer	right_left_rotate(node_pointer node)
+		{
+			right_rotate(node->_right);
+			return (left_rotate(node));
+		}
+
+		int	get_height(node_pointer node)
+		{
+			if (node == NULL)
+				return (-1);
+			else if (node->_left == NULL && node->_right == NULL)
+				return (0);
+			return (std::max(get_height(node->_left), get_height(node->_right)) + 1);
+		}
+
+		int	get_balance_factor(node_pointer node)
+		{
+			if (node == NULL)
+				return (-1);
+			else if (node->_left == NULL && node->_right == NULL)
+				return (0);
+			return (get_height(node->_left) - get_height(node->_right));
+		}
+
+		bool	is_balanced(node_pointer node)
+		{ return (std::abs(get_balance_factor(node)) < 2); }
+
+		void fix_balance(node_pointer node)
+		{
+			if (node == NULL)
+				return ;
+ 			if (!is_balanced(node))
+			{
+				if (get_balance_factor(node) > 0) // left-heavy
+				{
+					if (get_balance_factor(node->_left) > 0)
+					{
+						std::cout << node->_value.first << " :right rotate" << std::endl;
+						right_rotate(node);
+					}
+					else// if (get_balance_factor(node->_left) < 0)
+					{
+						std::cout << node->_value.first << ": left-right" << std::endl;
+						left_right_rotate(node);
+					}
+				}
+				else// if (get_balance_factor(node) < 0) // right-heavy
+				{
+					if (get_balance_factor(node->_right) < 0 )
+					{
+						std::cout << node->_value.first << ": left rotate" << std::endl;
+						left_rotate(node);
+					}
+					else// if (get_balance_factor(node->_right) > 0 )
+					{
+						std::cout << node->_value.first << ": right left" << std::endl;
+						right_left_rotate(node);
+					}
+				}
+			}
+			return (fix_balance(node->_parent));
+		}
+
+
 		size_t	size() const
 		{ return (_size); }
 
@@ -151,27 +272,6 @@ class tree
 				x->set_parent(y);
 		}
 
-		// node_pointer find_insert_place(node_pointer root, const value_type &value)
-		// {
-		// 	while (true) {
-		// 		if (value_compare() (value.first, root->_value.first)) {
-		// 			if (root->_left != NULL)
-		// 				root = root->_left;
-		// 			else
-		// 				return (root->_left);
-		// 		}
-		// 		else if (value_compare() (root->_value, value)) {
-		// 			if (root->_right != NULL)
-		// 				root = root->_right;
-		// 			else
-		// 				return (root->_right);
-		// 		}
-		// 		else {
-		// 			return (root);
-		// 		}
-		// 	}
-		// }
-
 		node_pointer find_insert_position(const value_type &value)
 		{
 			node_pointer parent_node = NULL;
@@ -200,12 +300,10 @@ class tree
 
 		ft::pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
 		{
-			// std::cout << "insert_pos: " << insert_pos << std::endl; 
 			node_pointer new_node;
 			new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, value);
 			new_node->_parent = insert_pos;
-			// std::cout << "new_node: " << new_node << "| parent: " << new_node->_parent << " | insert_pos: " << insert_pos << std::endl;
 			if (insert_pos == NULL)
 			{
 				_root = new_node;
@@ -216,7 +314,7 @@ class tree
 				insert_pos->_left = new_node;
 			else if (_value_compare(insert_pos->_value, new_node->_value))
 				insert_pos->_right = new_node;
-			else //duplicate
+			else
 			{
 				_allocator.destroy(new_node);
 				_allocator.deallocate(new_node, 1);
@@ -251,19 +349,32 @@ class tree
 			// else, search for the place to insert new_node;
 
 		// insert with hint
-		// iterator insert(iterator position, const value_type &value)
-		// {
-		// 	node_pointer new_node;
-		// 	// check position
-		// 	return (insert_node(value, new_node).first);
-		// }
-
+		iterator insert(iterator position, const value_type &value)
+		{
+			node_pointer current_node = _root;
+			if (current_node->_parent == NULL || position.base() == current_node)
+				return (insert(value));
+			else
+			{
+				while(current_node != position.base() && current_node != NULL)
+				{
+					if (_value_compare(current_node->_value, value))
+						current_node = current_node->_left;
+					else
+						current_node = current_node->_right;
+				}
+				return (insert(value));
+			}
+		}
 
 		template<class InputIterator>
-		void insert(InputIterator first, InputIterator last);
+		void	insert(InputIterator first, InputIterator last) // typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+		{
+			for (InputIterator it = first; it != last; ++it)
+				insert(it.base()->_value);
+		}
 
 		void	remove(node_pointer root, node_pointer *ptr);
-
 
 // erase
 		iterator	erase(iterator poistion);
@@ -273,110 +384,6 @@ class tree
 		iterator	erase(iterator first, iterator last);
 
 		allocator_type get_allocator() const { return (_allocator); }
-
-// rotate & check balance
-		node_pointer	right_rotate(node_pointer node)
-		{
-			node_pointer temp = node->_left;
-			node->_left = temp->_right;
-			if (temp->_right)
-			{
-				node->_left = temp->_right;
-				temp->_right->_parent = node;
-			}
-			if (node->_parent == NULL)
-			{
-				temp->_parent = NULL;
-				_root = temp;
-			}
-			else
-				temp->_parent = node->_parent;
-			temp->_right = node;
-			node->_parent = temp;
-			
-			return (temp);
-		}
-
-
-		node_pointer	left_rotate(node_pointer node)
-		{
-			node_pointer temp = node->_right;
-			node->_right = temp->_left;
-			if (temp->_left)
-			{
-				node->_right = temp->_left;
-				temp->_left->_parent = node;
-			}
-			if (node->_parent == NULL)
-			{
-				temp->_parent = NULL;
-				_root = temp;
-			}
-			else
-				temp->_parent = node->_parent;
-			temp->_left = node;
-			node->_parent = temp;
-			
-			return (temp);
-		}
-
-		node_pointer	left_right_rotate(node_pointer node)
-		{
-			node->_left = left_rotate(node->_left);
-			return (right_rotate(node));
-		}
-
-		node_pointer	right_left_rotate(node_pointer node)
-		{
-			right_rotate(node->_right);
-			return (left_rotate(node));
-		}
-
-		// check balance
-		int	get_height(node_pointer node)
-		{
-			if (node == NULL)
-				return (-1);
-			else if (node->_left == NULL && node->_right == NULL)
-				return (0);
-			return (std::max(get_height(node->_left), get_height(node->_right)) + 1);
-		}
-
-		int	get_balance_factor(node_pointer node)
-		{
-			if (node == NULL)
-				return (-1);
-			else if (node->_left == NULL && node->_right == NULL)
-				return (0);
-			return (get_height(node->_left) - get_height(node->_right));
-		}
-
-		bool	is_balanced(node_pointer node)
-		{ return (std::abs(get_balance_factor(node)) < 2); }
-
-		void fix_balance(node_pointer node)
-		{
-			if (node == NULL)
-				return ;
- 			if (!is_balanced(node))
-			{
-				if (get_balance_factor(node) > 0) // left-heavy
-				{
-					if (get_balance_factor(node->_left) > 0)
-						right_rotate(node);
-					else// if (get_balance_factor(node->_left) < 0)
-						left_right_rotate(node);
-				}
-				else// if (get_balance_factor(node) < 0) // right-heavy
-				{
-					if (get_balance_factor(node->_right) < 0 )
-						left_rotate(node);
-					else// if (get_balance_factor(node->_right) > 0 )
-						right_left_rotate(node);
-				}
-			}
-			return (fix_balance(node->_parent));
-		}
 
 // look up
 
@@ -403,7 +410,6 @@ class tree
 				return (it);
 			return (end());			
 		}
-
 
 		iterator lower_bound(const value_type &value)
 		{
@@ -456,7 +462,6 @@ class tree
 			return (it);
 		}
 
-
 		const_iterator upper_bound( const value_type &value ) const
 		{
 			const_iterator it;
@@ -473,6 +478,10 @@ class tree
 			}
 			return (it);
 		}
+
+		ft::pair<iterator, iterator> equal_range( const value_type &value);
+
+		ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const;
 
 			void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
 			{
@@ -493,10 +502,6 @@ class tree
 			node_pointer get_root()
 			{ return (_root); }
 
-			// void printTree()
-			// {
-			// 	printAVL("", _root, false);
-			// }
 };
 
 }

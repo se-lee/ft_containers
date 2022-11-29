@@ -13,8 +13,6 @@
 namespace ft
 {
 /************************** [ MAP CLASS ] **************************/
-
-	// template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<tree_node<pair<const Key, T> > >
 	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
@@ -142,13 +140,14 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{ return (_tree.insert(value)); }
 
-			iterator insert(iterator position, const value_type &value);
-			// { return (_tree.insert(position, value)); }
+			iterator insert(iterator position, const value_type &value)
+			{ return (_tree.insert(position, value)); }
 
-			// template<class InputIterator>
-			// void insert(std::initializer_list<value_type> init_list); 
-			// template<class InputIterator>
-			// void insert(InputIterator first, InputIterator last);
+			template<class InputIterator>
+			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+			{
+				return (_tree.insert(first, last));
+			}
 
 			iterator erase(iterator position)
 			{
@@ -171,10 +170,10 @@ namespace ft
 			{ return (_tree.count(make_pair(key, mapped_type()))); }
 
 			iterator find( const Key &key )
-			{
-				return (_tree.find(make_pair(key, mapped_type())));
-			}
-			const_iterator find( const Key &key ) const;
+			{ return (_tree.find(make_pair(key, mapped_type()))); }
+
+			const_iterator find( const Key &key ) const
+			{ return (_tree.find(make_pair(key, mapped_type()))); }
 
 			ft::pair<iterator, iterator> equal_range( const Key &key );
 			ft::pair<const_iterator, const_iterator> equal_range( const Key &key ) const;
