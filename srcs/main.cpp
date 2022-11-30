@@ -43,29 +43,25 @@ int main()
 		mymap.insert(std::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
 		mymap.insert(std::make_pair<char, int>('e', 30));
 
-		std::cout << "count[b]: " << mymap.count('b') << std::endl;
-		std::cout << "count[z]: " << mymap.count('z') << std::endl;
-
-		std::map<char,int>::iterator it = mymap.begin();
-		mymap.insert (it, std::pair<char,int>('f',300));  // max efficiency inserting
-		mymap.insert (it, std::pair<char,int>('2',400)); 
-
 		std::cout << "Every node, from first to last:" << std::endl;
 		for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
 		std::cout << std::endl;
-
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
-
+		
+		std::map<char, int>::iterator lower = mymap.lower_bound('b');
+		std::cout << "lower bound: " << lower->first << std::endl;
+		std::map<char, int>::iterator upper = mymap.upper_bound('b');
+		std::cout << "lower bound: " << lower->first << std::endl;
 	
 
-		std::cout << "Every node, from last to first:" << std::endl;
-		for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
-		{
-			std::cout << it->first << "=>" << it->second << std::endl;
-		}
-		std::cout << std::endl;
+		// std::cout << "Every node, from last to first:" << std::endl;
+		// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+		// {
+		// 	std::cout << it->first << "=>" << it->second << std::endl;
+		// }
+		// std::cout << std::endl;
 		
 	}
 
@@ -74,33 +70,36 @@ int main()
 		ft::map<char, int> mymap;
 
 		mymap.insert(ft::make_pair<char, int>('a', 10)); //Insert Simple Values
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('b', 20));
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('c', 30));
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('d', 3)); // Insert does sort by first ('d') and not (3)
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('1', 100));
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
-		mymap.printTree();
+		// mymap.printTree();
 		mymap.insert(ft::make_pair<char, int>('e', 30));
+		// mymap.printTree();
+
+		ft::map<char,int>::iterator it = mymap.begin();
+		mymap.insert(it, ft::make_pair<char, int>('f',300));  // max efficiency inserting
+		mymap.insert(it, ft::make_pair<char, int>('2',400)); 
+
 		mymap.printTree();
 
-		// ft::map<char,int>::iterator it = mymap.begin();
-		// mymap.insert(it, ft::make_pair<char, int>('f',300));  // max efficiency inserting
-		// mymap.insert(it, ft::make_pair<char, int>('2',400)); 
 
-		// std::cout << "Every node, from first to last:" << std::endl;
-		// for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-		// {
-		// 	std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works
-		// }
-		// std::cout << std::endl;
+		std::cout << "Every node, from first to last:" << std::endl;
+		for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+		{
+			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works
+		}
+		std::cout << std::endl;
 
-		// std::cout << "size: " << mymap.size() << std::endl;
-		// std::cout << "max: " << mymap.max_size() << std::endl;
+		std::cout << "size: " << mymap.size() << std::endl;
+		std::cout << "max: " << mymap.max_size() << std::endl;
 
 		// std::cout << std::endl;
 		// mymap.printTree();

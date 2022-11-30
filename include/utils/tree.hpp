@@ -73,7 +73,7 @@ class tree
 
 // rotate & check balance
 		node_pointer	right_rotate(node_pointer node)
-		{
+		{ //eg. node == 1; no
 			node_pointer temp = node->_left;
 			node->_left = temp->_right;
 			if (temp->_right)
@@ -122,15 +122,27 @@ class tree
 			return (temp);
 		}
 
+		// node_pointer	left_right_rotate(node_pointer node)
+		// {
+		// 	node->_left = left_rotate(node->_left);
+		// 	return (right_rotate(node));
+		// }
+
+		// node_pointer	right_left_rotate(node_pointer node)
+		// {
+		// 	node->_right = right_rotate(node->_right);
+		// 	return (left_rotate(node));
+		// }
+
 		node_pointer	left_right_rotate(node_pointer node)
 		{
-			node->_left = left_rotate(node->_left);
+			node->_right = left_rotate(node->_left);
 			return (right_rotate(node));
 		}
 
 		node_pointer	right_left_rotate(node_pointer node)
 		{
-			right_rotate(node->_right);
+			node->_left = right_rotate(node->_right);
 			return (left_rotate(node));
 		}
 
@@ -170,8 +182,10 @@ class tree
 					}
 					else// if (get_balance_factor(node->_left) < 0)
 					{
-						std::cout << node->_value.first << ": left-right" << std::endl;
-						left_right_rotate(node);
+						// std::cout << node->_value.first << ": left-right" << std::endl;
+						// left_right_rotate(node);
+						std::cout << node->_value.first << ": right left" << std::endl;
+						right_left_rotate(node);
 					}
 				}
 				else// if (get_balance_factor(node) < 0) // right-heavy
@@ -183,8 +197,10 @@ class tree
 					}
 					else// if (get_balance_factor(node->_right) > 0 )
 					{
-						std::cout << node->_value.first << ": right left" << std::endl;
-						right_left_rotate(node);
+						// std::cout << node->_value.first << ": right left" << std::endl;
+						// right_left_rotate(node);
+						std::cout << node->_value.first << ": left-right" << std::endl;
+						left_right_rotate(node);
 					}
 				}
 			}
@@ -240,7 +256,30 @@ class tree
 			_size = 0;
 		}
 
-		void swap();
+		void swap(tree	&other)
+		{
+			node_pointer	temp_root = _root;
+			node_pointer	temp_begin = _begin;
+			node_pointer	temp_end = _end;
+			size_t			temp_size = _size;
+			value_compare	_value_compare;
+			allocator_type	temp_allocator = _allocator;
+
+			_root = other._root;
+			_begin = other._begin;
+			_end = other._end;
+			_size = other._size;
+			_value_compare = other._value_compare;
+			_allocator = other._allocator;
+
+			other._root = temp_root;
+			other._begin = temp_begin;
+			other._end = temp_end;
+			other._size = temp_size;
+			other._value_compare = temp._value_compare;
+			other._allocator = temp_allocator;
+
+		}
 
 		bool is_left_child(node_pointer x) const
 		{ 
@@ -279,7 +318,6 @@ class tree
 			while (current_node != NULL)
 			{
 				parent_node = current_node;
-				// std::cout << "parent_node: " << parent_node << "| current_node: " << current_node << std::endl;
 				if (_value_compare(value, current_node->_value)) {
 					if (current_node->_left == NULL)
 						return (current_node);
@@ -298,6 +336,7 @@ class tree
 			return (parent_node);
 		}
 
+// どのノードの下に入るか、Insert positionはNew Nodeの親； 関数呼び出すときに親となるノードを引数としてパスする
 		ft::pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
 		{
 			node_pointer new_node;
@@ -320,7 +359,7 @@ class tree
 				_allocator.deallocate(new_node, 1);
 				return (ft::make_pair(iterator(_root, insert_pos), false));
 			}
-			fix_balance(new_node);
+			// fix_balance(new_node);
 			if (_value_compare(new_node->_value, _begin->_value))
 				_begin = new_node;
 			if (_value_compare(_end->_value, new_node->_value))
@@ -348,31 +387,49 @@ class tree
 			// if there is no root node, set new node as the root;
 			// else, search for the place to insert new_node;
 
-		// insert with hint
+// 本家__tree より __find_equal（挿入のポジション探すFunction)、ヒントありとなし（通常）バージョンがある。 この場合ヒントありを参考に作成
+// _rootから探す代わりにPositionから探す
+// Inserts value in the position as close as possible to the position just prior to pos
+
 		iterator insert(iterator position, const value_type &value)
 		{
-			node_pointer current_node = _root;
-			if (current_node->_parent == NULL || position.base() == current_node)
-				return (insert(value));
-			else
+			node_pointer new_node;
+			if (_value_compare(value, *position)) //value < position
 			{
-				while(current_node != position.base() && current_node != NULL)
+				if (position == begin())
+					new_node = find_insert_position(value, _begin);
+				else 
 				{
-					if (_value_compare(current_node->_value, value))
-						current_node = current_node->_left;
-					else
-						current_node = current_node->_right;
-				}
-				return (insert(value));
+					iterator temp = position;
+					--temp;
+					if (_value_compare(*temp, value))
+					{
+						if (temp.base()->_right == NULL)
+							new_node = find_insert_position
+						else
+							new_node = 
+					}
+
+                // if (compare_(*prev, value))
+                // {
+                //     if (prev.base()->right == nil_)
+                //         return insert_node(value, prev.base()).first;
+                //     else
+                //         return insert_node(value, position.base()).first;
+                // }
+				// 	new_node = find_insert_position(value);
+				// }
 			}
+			else if (_value_compare(*position, value))
+			{
+
+				new_node = find_insert_position(value, _root);
+			}
+			return (insert_node(value, new_node).first);
 		}
 
 		template<class InputIterator>
-		void	insert(InputIterator first, InputIterator last) // typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
-		{
-			for (InputIterator it = first; it != last; ++it)
-				insert(it.base()->_value);
-		}
+		void	insert(InputIterator first, InputIterator last); // typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 
 		void	remove(node_pointer root, node_pointer *ptr);
 
@@ -410,7 +467,7 @@ class tree
 				return (it);
 			return (end());			
 		}
-
+//与えられた値より小さくない最初の要素へのイテレータを取得する == イコールも含む
 		iterator lower_bound(const value_type &value)
 		{
 			iterator it;
@@ -445,6 +502,7 @@ class tree
 			return (it);
 		}
 
+//特定の値よりも大きい最初の要素へのイテレータを取得する
 		iterator upper_bound( const value_type &value )
 		{
 			iterator it;
@@ -479,28 +537,30 @@ class tree
 			return (it);
 		}
 
-		ft::pair<iterator, iterator> equal_range( const value_type &value);
+		ft::pair<iterator, iterator> equal_range(const value_type &value)
+		{ return (make_pair(find(value), upper_bound(value))); }
 
-		ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const;
+		ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const
+		{ return (make_pair(find(value,), upper_bound(value))); }
 
-			void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
+		void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
+		{
+			if(node != NULL)
 			{
-				if(node != NULL)
-				{
-					std::cout << prefix;
-					std::cout << (isLeft ? "└──L:" : "└──R:" );
-					// print the value of the node
-					std::cout << "[" << node->_value.first << " -- ";
-					std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) 
-									<< " " << std::boolalpha << is_balanced(node) << " ] "<< std::endl;
-					// enter the next tree level - left and right branch
-					printAVL( prefix + (isLeft ? "│   " : "    "), node->_left, true);
-					printAVL( prefix + (isLeft ? "│   " : "    "), node->_right, false);
-				}
+				std::cout << prefix;
+				std::cout << (isLeft ? "└──L:" : "└──R:" );
+				// print the value of the node
+				std::cout << "[" << node->_value.first << " -- ";
+				std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) 
+								<< " " << std::boolalpha << is_balanced(node) << " ] "<< std::endl;
+				// enter the next tree level - left and right branch
+				printAVL( prefix + (isLeft ? "│   " : "    "), node->_left, true);
+				printAVL( prefix + (isLeft ? "│   " : "    "), node->_right, false);
 			}
+		}
 
-			node_pointer get_root()
-			{ return (_root); }
+		node_pointer get_root()
+		{ return (_root); }
 
 };
 
