@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include <memory> // allocator<T>
+# include <algorithm>
 # include "../iterators/iterator_traits.hpp"
 # include "../iterators/reverse_iterator.hpp"
 // # include "../iterators/random_access_iterator.hpp"
@@ -311,12 +312,46 @@ implementation limitations */
 	}
 
 /* insert */
-	iterator insert (iterator position, const value_type &val);
+	iterator insert (iterator position, const value_type &value)
+	{
+		size_type	pos_count = position - begin();
+		insert(position, 1, value);
+		return (begin() + pos_count);
+	}
 
-	void	insert (iterator position, size_type n, const value_type &val);
+	void	insert(iterator position, size_type n, const value_type &value)
+	{
+		size_type	new_size = size() + n;
+		size_type	old_size = size();
+		size_type	pos_count = position - begin();
+		if (capacity() < new_size)
+			reserve(new_size);
+		// 後ろからいれる
+		for (size_type i = 0; i < new_size - (pos_count + n); i++)
+			_begin[new_size - 1 - i] = _begin[old_size - 1 - i];
+		for (size_type i = 0; i < n; i++)
+			_begin[pos_count + i] = value;
+		_end = _end + n;
+	}
 
 	template <class InputIterator>
-	void insert (iterator position, InputIterator first, InputIterator last);
+	void insert (iterator position, InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+	{ // iterator first から lastまでの同じ値を挿入（FirstからLastまでリストをコピー）
+		size_type diff = last - first;
+		size_type new_size = size() + diff;
+		size_type old_size = size();
+		size_type pos_count = position - begin();
+		
+		if (capacity() < new_size)
+			reserve(new_size);
+		for (size_type i = 0; i < new_size - (pos_count + diff); i++)
+			_begin[new_size - 1 - i] = _begin[old_size - 1 - i];
+		for (size_type i = 0; i < diff; i++, first++)
+			_begin[pos_count + i] = *first;
+		_end = _end + diff;
+	}
+
 
 	//destroy from end to new_last
 	void	destruct_at_end(pointer new_last)

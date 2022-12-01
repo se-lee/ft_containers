@@ -158,7 +158,10 @@ namespace ft
 
 			iterator erase(iterator first, iterator last);
 			
-			void swap( map &other );
+			void swap( map &other )
+			{
+				_tree.swap(other._tree);
+			}
 
 
 /* --- [ Observers ] --- */

@@ -262,7 +262,7 @@ class tree
 			node_pointer	temp_begin = _begin;
 			node_pointer	temp_end = _end;
 			size_t			temp_size = _size;
-			value_compare	_value_compare;
+			value_compare	temp_value_compare = _value_compare;
 			allocator_type	temp_allocator = _allocator;
 
 			_root = other._root;
@@ -276,7 +276,7 @@ class tree
 			other._begin = temp_begin;
 			other._end = temp_end;
 			other._size = temp_size;
-			other._value_compare = temp._value_compare;
+			other._value_compare = temp_value_compare;
 			other._allocator = temp_allocator;
 
 		}
@@ -391,42 +391,41 @@ class tree
 // _rootから探す代わりにPositionから探す
 // Inserts value in the position as close as possible to the position just prior to pos
 
-		iterator insert(iterator position, const value_type &value)
-		{
-			node_pointer new_node;
-			if (_value_compare(value, *position)) //value < position
-			{
-				if (position == begin())
-					new_node = find_insert_position(value, _begin);
-				else 
-				{
-					iterator temp = position;
-					--temp;
-					if (_value_compare(*temp, value))
-					{
-						if (temp.base()->_right == NULL)
-							new_node = find_insert_position
-						else
-							new_node = 
-					}
+		// iterator insert(iterator position, const value_type &value)
+		// {
+		// 	node_pointer new_node;
+		// 	if (_value_compare(value, *position)) //value < position
+		// 	{
+		// 		if (position == begin())
+		// 			new_node = find_insert_position(value, _begin);
+		// 		else 
+		// 		{
+		// 			iterator temp = position;
+		// 			--temp;
+		// 			if (_value_compare(*temp, value))
+		// 			{
+		// 				if (temp.base()->_right == NULL)
+		// 					new_node = find_insert_position
+		// 				else
+		// 					new_node = 
+		// 			}
 
-                // if (compare_(*prev, value))
-                // {
-                //     if (prev.base()->right == nil_)
-                //         return insert_node(value, prev.base()).first;
-                //     else
-                //         return insert_node(value, position.base()).first;
-                // }
-				// 	new_node = find_insert_position(value);
-				// }
-			}
-			else if (_value_compare(*position, value))
-			{
-
-				new_node = find_insert_position(value, _root);
-			}
-			return (insert_node(value, new_node).first);
-		}
+        //         // if (compare_(*prev, value))
+        //         // {
+        //         //     if (prev.base()->right == nil_)
+        //         //         return insert_node(value, prev.base()).first;
+        //         //     else
+        //         //         return insert_node(value, position.base()).first;
+        //         // }
+		// 		// 	new_node = find_insert_position(value);
+		// 		// }
+		// 	}
+		// 	else if (_value_compare(*position, value))
+		// 	{
+		// 		new_node = find_insert_position(value, _root);
+		// 	}
+		// 	return (insert_node(value, new_node).first);
+		// }
 
 		template<class InputIterator>
 		void	insert(InputIterator first, InputIterator last); // typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
@@ -541,7 +540,7 @@ class tree
 		{ return (make_pair(find(value), upper_bound(value))); }
 
 		ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const
-		{ return (make_pair(find(value,), upper_bound(value))); }
+		{ return (make_pair(find(value), upper_bound(value))); }
 
 		void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
 		{
