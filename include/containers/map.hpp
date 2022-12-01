@@ -73,8 +73,10 @@ namespace ft
 			
 			map(const map &other) 
 			{
-				*this = other;
-				return (*this);
+				// *this = other;
+				_value_comp = other._value_comp;
+				_allocator = other._allocator;
+				_tree = other._tree;
 			}
 
 /* --- [ Destructor ] --- */

@@ -21,6 +21,13 @@ namespace ft
 		
 		protected:
 			Container	_stack;
+
+			template<class T1, class Container1>
+			friend bool operator==(const stack<T1, Container1> &lhs, const stack<T1, Container1> &rhs);
+
+			template<class T1, class Container1>
+			friend bool operator<(const stack<T1, Container1> &lhs, const stack<T1, Container1> &rhs);
+
 		
 		public:
 
@@ -64,32 +71,38 @@ namespace ft
 	// pop back
 	void	pop()
 	{ _stack.pop_back(); }
+
 	};
 
 /* --- [ Non-member function overloads ] --- */
 	template<class T, class Container>
 	bool operator==(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs == rhs); };
+	{ return (lhs._stack == rhs._stack); };
 
 	template<class T, class Container>
 	bool operator!=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs != rhs); };
+	{ return (!(lhs == rhs)); };
 
 	template<class T, class Container>
 	bool operator<(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs < rhs); };
+	{ return (lhs._stack < rhs._stack); };
 
 	template<class T, class Container>
 	bool operator<=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs <= rhs); };
+	{ return ((lhs < rhs) || (lhs == rhs)); };
 
 	template<class T, class Container>
 	bool operator>(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs > rhs); };
+	{ return (!(lhs <= rhs)); };
 
 	template<class T, class Container>
 	bool operator>=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
-	{ return (lhs >= rhs); };
+	{ return ((lhs > rhs) || (lhs == rhs)); };
+
+	template<class T, class Container>
+	void swap(stack<T, Container> &lhs, stack<T, Container> &rhs )
+	{ lhs._stack.swap(rhs); }
+
 
 }
 

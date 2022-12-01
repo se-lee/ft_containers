@@ -3,7 +3,8 @@
 
 # include <memory> // allocator<T>
 # include <algorithm>
-# include "../iterators/iterator_traits.hpp"
+# include <iterator>
+// # include "../iterators/iterator_traits.hpp"
 # include "../iterators/reverse_iterator.hpp"
 # include "../iterators/vector_iterator.hpp"
 # include "../utils/sfinae.hpp"
@@ -27,7 +28,7 @@ namespace ft
 			typedef vector_iterator<const value_type>							const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-			typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			typedef typename std::ptrdiff_t								difference_type;
 			typedef std::size_t											size_type;
 
 		protected:
@@ -40,7 +41,14 @@ namespace ft
 
 /* --- [ Constructors ] --- */
 /* empty container constructor (default constructor) */
-	explicit vector (const allocator_type &alloc = allocator_type()) : _allocator(alloc), _begin(NULL), _end(NULL), _capacity_end(NULL) {}
+	explicit vector (const allocator_type &alloc = allocator_type()) 
+	{
+		_allocator = alloc;
+		_begin = NULL;
+		_end = NULL;
+		_capacity_end = NULL;
+	}
+	//  : _allocator(alloc), _begin(NULL), _end(NULL), _capacity_end(NULL) {}
 
 /* fill constructor */
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
@@ -64,6 +72,7 @@ namespace ft
 	: _allocator(alloc)
 	{
 		size_type	range_size = last - first;
+		// difference_type	dist = std::distance(first, last);
 		_begin = _allocator.allocate(range_size);
 		_end = _begin + range_size;
 		_capacity_end = _end;
@@ -107,11 +116,8 @@ namespace ft
 	vector	&operator= (const vector &x)
 	{
 		_allocator = x._allocator;
-		_begin = x._begin;
-		_end = x._end;
-		_capacity_end = x._capacity_end;
-		for (size_type i = 0; i < x.size(); i++)
-			_allocator.construct(_begin + i, x[i]);
+		reserve(x.capacity());
+		assign(x.begin(), x.end());
 
 		return (*this);
 	}
@@ -210,22 +216,23 @@ implementation limitations */
 		if (capacity() >= new_cap)
 			return ;
 		pointer new_alloc = _allocator.allocate(new_cap);
-		pointer temp_first = _begin;
+		// pointer temp_first = _begin;
 		pointer temp_last = _end;
 		size_type temp_capacity = capacity();
 
-		_begin = new_alloc;
-		_end = _begin;
-		_capacity_end = _begin + new_cap;
+		// _begin = new_alloc;
+		_end = new_alloc;
+		_capacity_end = new_alloc + new_cap;
 
 		//copy old data
-		for (pointer iter = temp_first; iter != temp_last; iter++, _end++)
+		for (pointer iter = _begin; iter != temp_last; iter++, _end++)
 			_allocator.construct(_end, *iter);
 	
 		//destroy & deallocate old data
-		for (pointer iter = temp_first; iter != temp_last; iter++)
+		for (pointer iter = _begin; iter != temp_last; iter++)
 			_allocator.destroy(iter);
-		_allocator.deallocate(temp_first, temp_capacity);
+		_allocator.deallocate(_begin, temp_capacity);
+		_begin = new_alloc;
 	}
 
 /* --- [ Element access ] --- */
