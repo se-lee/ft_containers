@@ -449,3 +449,65 @@ int main()
 	return 0;
 
 */
+
+/*
+
+	std::vector<int> std_vect2(4, 101);
+	ft::vector<int> vect2(4, 101);
+
+	//PUSHBACKS
+	std::cout << "[ Push back ]" << std::endl;
+	std_vect2.push_back(12);
+	vect2.push_back(12);
+	displayStdVect(std_vect2, "vect2");
+	displayVect(vect2, "vect2");
+	std::cout	<< "std::vect2 size = " << std_vect2.size()
+				<< " vect2 capacity = " << std_vect2.capacity()
+				<< " vect2 max_size = " << std_vect2.max_size() << std::endl;
+	std::cout	<< "ft:: vect2 size = " << vect2.size()
+				<< " vect2 capacity = " << vect2.capacity()
+				<< " vect2 max_size = " << vect2.max_size() << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "[ insert 1 ]" << std::endl;
+	std::vector<int>::iterator it = std_vect2.begin() + 2;
+	std_vect2.insert(it, 98);
+	displayStdVect(std_vect2, "vect2");
+
+	ft::vector<int>::iterator ft_it = vect2.begin() + 2;
+	vect2.insert(ft_it, 98);
+	displayVect(vect2, "vect2");
+	std::cout	<< "std::vect2 size = " << std_vect2.size()
+				<< " vect2 capacity = " << std_vect2.capacity()
+				<< " vect2 max_size = " << std_vect2.max_size() << std::endl;
+	std::cout	<< "ft:: vect2 size = " << vect2.size()
+				<< " vect2 capacity = " << vect2.capacity()
+				<< " vect2 max_size = " << vect2.max_size() << std::endl;
+
+	std::cout << std::endl;
+
+	std::cout << "[ insert 2 ]" << std::endl;
+	std::vector<int> x;
+	x.push_back(1);
+	x.push_back(2);
+	x.push_back(3);
+	std_vect2.insert(std_vect2.begin() + 2, x.begin(), x.end());
+	displayStdVect(std_vect2, "vect2");
+
+	ft::vector<int> y;
+	y.push_back(1);
+	y.push_back(2);
+	y.push_back(3);
+	vect2.insert(vect2.begin() + 2, y.begin(), y.end());
+	displayVect(vect2, "vect2");
+	std::cout	<< "std::vect2 size = " << std_vect2.size()
+				<< " vect2 capacity = " << std_vect2.capacity()
+				<< " vect2 max_size = " << std_vect2.max_size() << std::endl;
+	std::cout	<< "ft:: vect2 size = " << vect2.size()
+				<< " vect2 capacity = " << vect2.capacity()
+				<< " vect2 max_size = " << vect2.max_size() << std::endl;
+
+	
+}
+
+*/

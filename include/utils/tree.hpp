@@ -428,16 +428,27 @@ class tree
 		// }
 
 		template<class InputIterator>
-		void	insert(InputIterator first, InputIterator last); // typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
-
-		void	remove(node_pointer root, node_pointer *ptr);
+		void	insert(InputIterator first, InputIterator last, 
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL);
 
 // erase
-		iterator	erase(iterator poistion);
 
-		size_type	erase(const value_type &k);
+		void		erase (iterator position)
+		{ // usage eg. iter = find(value); -> erase(iter);
+			if (position == end())
+				return ;
+			_allocator.destroy(position.base());
+			_allocator.deallocate(position.base(), 1);
 
-		iterator	erase(iterator first, iterator last);
+			fix_balance();//
+			
+		}
+
+		size_type	erase (const value_type &value);
+
+		void		erase(iterator first, iterator last);
+
+
 
 		allocator_type get_allocator() const { return (_allocator); }
 
