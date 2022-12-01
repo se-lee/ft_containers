@@ -85,9 +85,9 @@ namespace ft
 	vector (const vector &x)
 	{
 		_allocator = x._allocator;
-		_begin = _allocator.allocate(x.capacity());
+		_begin = _allocator.allocate(x.size());
 		_end = _begin + x.size();
-		_capacity_end = _begin + x.capacity();
+		_capacity_end = _begin + x.size();
 	
 		if (x.size() > 0)
 		{
@@ -165,7 +165,8 @@ implementation limitations */
 	{ return (_allocator.max_size()); }
 
 /* resize : resizes the container to contain [count] elements */
-	void resize(size_type count)
+
+	void resize(size_type count, value_type value = value_type())
 	{
 		if (size() > count)
 		{
@@ -176,27 +177,11 @@ implementation limitations */
 		}
 		else if (size() < count)
 		{
-			reserve(count);
-			//_last以降のデータを初期化
-			for (; _end != _capacity_end; _end++)
-				_allocator.construct(_end);		
-		}
-	}
-
-
-	void resize(size_type count, const value_type& value)
-	{
-		if (size() > count)
-		{
-			size_type diff = size() - count;
-			for (size_type i = 0; i < diff; i++)
-				_allocator.destroy(_begin + count + i);
-			_end = _begin + count;
-		}
-		else if (size() < count)
-		{
-			reserve(count);
-			for (; _end != _capacity_end; _end++)
+			if (capacity() * 2 > count)
+				reserve(capacity() * 2);
+			else
+				reserve(count);
+			for (; _end != _begin + count; _end++)
 				_allocator.construct(_end, value);
 		}
 	}
@@ -226,13 +211,22 @@ implementation limitations */
 
 		//copy old data
 		for (pointer iter = _begin; iter != temp_last; iter++, _end++)
+		{
+			std::cout << "[ reserve ]" << std::endl;
 			_allocator.construct(_end, *iter);
+		}
 	
 		//destroy & deallocate old data
 		for (pointer iter = _begin; iter != temp_last; iter++)
+		{
+			std::cout << "[ reserve 2 ]" << std::endl;
 			_allocator.destroy(iter);
+		}
+		std::cout << " ------ " << std::endl;
 		_allocator.deallocate(_begin, temp_capacity);
 		_begin = new_alloc;
+		std::cout << " ++++++++++++++++ " << std::endl;
+
 	}
 
 /* --- [ Element access ] --- */
@@ -312,9 +306,16 @@ implementation limitations */
 /* push_back : Appends the given element value to the end of the container */
 	void	push_back(const T& value)
 	{
-		reserve(size() + 1);
+		if (capacity() < size() + 1) {
+				reserve(capacity() * 2);
+				std::cout << "bug" << std::endl;
+		}
+		else
+			reserve(capacity() + 1);
+			std::cout << "test" << std::endl;
 		_allocator.construct(_end, value); 
-		_end++;
+		_end += 1;
+			std::cout << "test2" << std::endl;
 	}
 
 /* pop_back */
