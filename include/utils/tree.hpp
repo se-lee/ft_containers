@@ -15,15 +15,15 @@ template<class Key, class Type, class Compare = std::less<Type>, class Allocator
 class tree
 {
 	public:
-		typedef Key													key_type;
-		typedef Type												value_type;
-		typedef Compare												value_compare;
-		typedef	std::less<Key>										key_compare;
-		typedef Allocator											allocator_type;
-		typedef typename Allocator::template rebind<tree_node<Type> >::other node_allocator;
+		typedef Key																key_type;
+		typedef Type															value_type;
+		typedef Compare															value_compare;
+		typedef	std::less<Key>													key_compare;
+		typedef Allocator														allocator_type;
+		typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
 		typedef std::size_t											size_type;
 		typedef tree_iterator<value_type>							iterator;
-		typedef const_tree_iterator<value_type> 					const_iterator;
+		typedef const_tree_iterator<const value_type> 					const_iterator;
 		typedef tree_node<value_type>*								node_pointer;
 
 	private:

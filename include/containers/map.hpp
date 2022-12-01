@@ -3,12 +3,13 @@
 
 # include <memory> // allocator
 # include <functional> // std::less
-# include "../iterators/random_access_iterator.hpp"
+// # include "../iterators/random_access_iterator.hpp"
 # include "../iterators/reverse_iterator.hpp"
 # include "../utils/pair.hpp"
 # include "../iterators/iterator_traits.hpp"
 # include "../iterators/bidirectional_iterator.hpp"
 # include "../utils/tree.hpp"
+# include "../utils/algorithm.hpp"
 
 namespace ft
 {
@@ -152,7 +153,7 @@ namespace ft
 			void erase(iterator position)
 			{ _tree.erase(position); }
 
-			size_type erase(const key_type &k)
+			size_type erase(const key_type &key)
 			{ return (_tree.erase(make_pair(key, mapped_type()))); }
 
 			void erase(iterator first, iterator last)
@@ -213,6 +214,36 @@ namespace ft
 
 
 	};
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return (lhs != rhs); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return (!(lhs > rhs)); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ return (!(lhs < rhs)); }
+
+	template<class Key, class T, class Compare, class Alloc>
+	void swap(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{ lhs.swap(rhs); }
+
+
 }
 
 
