@@ -6,6 +6,7 @@
 # include <algorithm>
 # include "./pair.hpp"
 # include "../iterators/tree_iterator.hpp"
+# include "../utils/sfinae.hpp"
 
 namespace ft
 {
@@ -447,8 +448,6 @@ class tree
 		size_type	erase (const value_type &value);
 
 		void		erase(iterator first, iterator last);
-
-
 
 		allocator_type get_allocator() const { return (_allocator); }
 

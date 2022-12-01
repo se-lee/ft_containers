@@ -5,14 +5,13 @@
 # include <algorithm>
 # include "../iterators/iterator_traits.hpp"
 # include "../iterators/reverse_iterator.hpp"
-// # include "../iterators/random_access_iterator.hpp"
 # include "../iterators/vector_iterator.hpp"
 # include "../utils/sfinae.hpp"
 # include "../utils/algorithm.hpp"
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T> > // アロケータ：メモリの管理を請け負うクラス；生のメモリーの確保と解放を行うライブラリ
+	template <class T, class Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -22,8 +21,10 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef vector_iterator<pointer>							iterator;
-			typedef vector_iterator<const_pointer>						const_iterator;
+			// typedef vector_iterator<pointer>							iterator;
+			// typedef vector_iterator<const_pointer>						const_iterator;
+			typedef vector_iterator<value_type>									iterator;
+			typedef vector_iterator<const value_type>							const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -60,7 +61,7 @@ namespace ft
 	template <class InputIterator>
 	vector	(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
-	: _allocator(alloc), _begin(first), _end(last), _capacity_end(last)
+	: _allocator(alloc)
 	{
 		size_type	range_size = last - first;
 		_begin = _allocator.allocate(range_size);
@@ -68,7 +69,7 @@ namespace ft
 		_capacity_end = _end;
 
 		for (size_type i = 0; i < range_size; ++i, ++first)
-			_allocator.construct(_begin + i, first);
+			_allocator.construct(&_begin[i], *first);
 	}
 
 /* copy constructor */
@@ -82,7 +83,7 @@ namespace ft
 		if (x.size() > 0)
 		{
 			for(size_type i = 0; i < x.size(); i++)
-				_allocator.construct(_begin + i, x[i]);
+				_allocator.construct(&_begin[i], x[i]);
 		}
 	}
 
@@ -105,8 +106,13 @@ namespace ft
 	
 	vector	&operator= (const vector &x)
 	{
-		for (iterator ite(x.begin()); ite != x.end(); ite++)
-			push_back(ite.base());
+		_allocator = x._allocator;
+		_begin = x._begin;
+		_end = x._end;
+		_capacity_end = x._capacity_end;
+		for (size_type i = 0; i < x.size(); i++)
+			_allocator.construct(_begin + i, x[i]);
+
 		return (*this);
 	}
 
@@ -408,6 +414,7 @@ implementation limitations */
 /* get_allocator */
 	allocator_type get_allocator() const
 	{ return (_allocator); }
+
 
 	};
 

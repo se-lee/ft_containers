@@ -28,12 +28,12 @@ namespace ft
 	explicit stack (const Container &cont = Container()) : _stack(cont) {}
 
 /* --- [ Destructor ] --- */
-	~stack();
+	~stack() { }
 
 /* Operator = */
 	stack &operator= (const stack &other)
 	{ 
-		_stack = other;
+		_stack = other._stack;
 		return (*this); 
 	}
 
@@ -41,10 +41,10 @@ namespace ft
 /* --- [ Element access ] --- */
 /* top : 次の要素へアクセスする */
 	reference top ()
-	{ return (*(_stack._last)); }
+	{ return (_stack.back()); }
 
 	const_reference top () const
-	{ return (*(_stack._last)); }
+	{ return (_stack.back()); }
 
 /* --- [ Capacity ] --- */
 /* empty: */

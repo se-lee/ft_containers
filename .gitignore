@@ -1,6 +1,7 @@
-!include/*
+
+include/containers/container_tester
 !main.cpp
-*.*
+
 
 FT_CONTAINERS_42_tester/*.*
 .gitignore
