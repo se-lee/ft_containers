@@ -201,31 +201,23 @@ implementation limitations */
 		if (capacity() >= new_cap)
 			return ;
 		pointer new_alloc = _allocator.allocate(new_cap);
-		// pointer temp_first = _begin;
+		pointer temp_first = _begin;
 		pointer temp_last = _end;
 		size_type temp_capacity = capacity();
 
-		// _begin = new_alloc;
-		_end = new_alloc;
+		_begin = new_alloc;
+		_end = _begin;
 		_capacity_end = new_alloc + new_cap;
 
 		//copy old data
-		for (pointer iter = _begin; iter != temp_last; iter++, _end++)
-		{
-			std::cout << "[ reserve ]" << std::endl;
+		for (pointer iter = temp_first; iter != temp_last; iter++, _end++)
 			_allocator.construct(_end, *iter);
-		}
 	
 		//destroy & deallocate old data
-		for (pointer iter = _begin; iter != temp_last; iter++)
-		{
-			std::cout << "[ reserve 2 ]" << std::endl;
+		for (pointer iter = temp_first; iter != temp_last; iter++)
 			_allocator.destroy(iter);
-		}
-		std::cout << " ------ " << std::endl;
-		_allocator.deallocate(_begin, temp_capacity);
-		_begin = new_alloc;
-		std::cout << " ++++++++++++++++ " << std::endl;
+		_allocator.deallocate(temp_first, temp_capacity);
+		// _begin = new_alloc;
 
 	}
 
@@ -306,16 +298,17 @@ implementation limitations */
 /* push_back : Appends the given element value to the end of the container */
 	void	push_back(const T& value)
 	{
-		if (capacity() < size() + 1) {
-				reserve(capacity() * 2);
-				std::cout << "bug" << std::endl;
+		if (capacity() < size() + 1) 
+		{
+			if (size() != 0)
+				reserve(size() * 2);
+			else
+				reserve(1);
 		}
-		else
-			reserve(capacity() + 1);
-			std::cout << "test" << std::endl;
+		// else
+		// // 	reserve(capacity() + 1);
 		_allocator.construct(_end, value); 
 		_end += 1;
-			std::cout << "test2" << std::endl;
 	}
 
 /* pop_back */
