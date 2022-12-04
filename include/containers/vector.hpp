@@ -233,7 +233,11 @@ implementation limitations */
 /* at :returns a reference to the element at specified location [pos] */
 
 	reference at(size_type pos)
-	{ return (_begin[pos]); }
+	{ 
+		if (pos > size())
+			throw std::out_of_range("out of range.");
+		return (_begin[pos]); 
+	}
 
 	const_reference at(size_type pos) const
 	{ return (_begin[pos]); }
@@ -267,20 +271,12 @@ implementation limitations */
 /* assign : replaces the contents with count copies of value [value] */
 	void	assign(size_type count, const T &value)
 	{
-		size_t	old_size = size();
 		clear();
-		if (old_size > count)
-		{
-			for (size_type i = 0; i < count; i++)
-				_allocator.construct(_begin + i, value);
-			_end = _begin + count;
-		}
-		else if (old_size < count)
-		{
+		if (capacity() < count)
 			reserve(count);
-			for (; _end != _capacity_end; _end++)
-				_allocator.construct(_end, value);
-		}
+		for (size_type i = 0; i < count; i++)
+			_allocator.construct(_begin + i, value);
+		_end = _begin + count;
 	}
 
 	template<class InputIterator>
