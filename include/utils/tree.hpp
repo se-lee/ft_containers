@@ -15,6 +15,18 @@ template<class Key, class Type, class Compare = std::less<Type>, class Allocator
 class tree
 {
 	public:
+		// typedef Key																key_type;
+		// typedef Type															value_type;
+		// typedef Compare															value_compare;
+		// typedef	std::less<Key>													key_compare;
+		// typedef Allocator														allocator_type;
+		// typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
+		// typedef std::size_t											size_type;
+		// typedef tree_iterator<value_type>							iterator;
+		// // typedef const_tree_iterator<const value_type> 					const_iterator;
+		// typedef const_tree_iterator<value_type> 					const_iterator;
+		// typedef tree_node<value_type>*								node_pointer;
+
 		typedef Key																key_type;
 		typedef Type															value_type;
 		typedef Compare															value_compare;
@@ -22,16 +34,19 @@ class tree
 		typedef Allocator														allocator_type;
 		typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
 		typedef std::size_t											size_type;
-		typedef tree_iterator<value_type>							iterator;
+		typedef typename std::ptrdiff_t								difference_type;
+		typedef tree_iterator<value_type>	iterator;
+		typedef tree_iterator<const value_type> const_iterator;
+		// typedef tree_iterator<value_type>							iterator;
 		// typedef const_tree_iterator<const value_type> 					const_iterator;
-		typedef const_tree_iterator<value_type> 					const_iterator;
+		// typedef const_tree_iterator<value_type> 					const_iterator;
 		typedef tree_node<value_type>*								node_pointer;
 
 	private:
 		node_pointer			_root;
 		node_pointer			_begin;
 		node_pointer			_end;
-		size_t					_size;
+		size_type					_size;
 		value_compare			_value_compare;
 		allocator_type			_allocator;
 
@@ -64,14 +79,34 @@ class tree
 
 		tree &operator=(const tree &other)
 		{
-			_root = other._root;
-			_begin = other._begin;
-			_end = other._end;
-			_allocator = other._allocator;
-			_value_compare = other._value_compare;
+			_root = other.get_root();
+			_begin = other.get_begin();
+			_end = other.get_end();
+			_size = other.get_size();
+			_allocator = other.get_allocator();
+			_value_compare = other.get_value_compare();
 		
 			return (*this);
 		}
+
+// getters
+		node_pointer get_root() const
+		{ return (_root); }
+
+		node_pointer get_begin() const
+		{ return (_begin); }
+
+		node_pointer get_end() const
+		{ return (_end); }
+
+		size_type get_size() const
+		{ return (_size); }
+
+		value_compare get_value_compare() const
+		{ return (_value_compare); }
+
+		allocator_type get_allocator() const 
+		{ return (_allocator); }
 
 // rotate & check balance
 		node_pointer	right_rotate(node_pointer node)
@@ -449,8 +484,6 @@ class tree
 		size_type	erase (const value_type &value);
 
 		void		erase(iterator first, iterator last);
-
-		allocator_type get_allocator() const { return (_allocator); }
 
 // look up
 
