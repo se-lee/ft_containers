@@ -23,9 +23,10 @@ namespace ft
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
 			// typedef vector_iterator<pointer>							iterator;
-			// typedef vector_iterator<const_pointer>						const_iterator;
-			typedef vector_iterator<value_type>									iterator;
-			typedef vector_iterator<const value_type>							const_iterator;
+			// typedef vector_iterator<const_pointer>					const_iterator;
+			typedef vector_iterator<value_type>							iterator;
+			// typedef vector_iterator<const value_type>					const_iterator;
+			typedef const_vector_iterator<value_type>				const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename std::ptrdiff_t								difference_type;
@@ -48,7 +49,6 @@ namespace ft
 		_end = NULL;
 		_capacity_end = NULL;
 	}
-	//  : _allocator(alloc), _begin(NULL), _end(NULL), _capacity_end(NULL) {}
 
 /* fill constructor */
 	explicit vector (size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
@@ -72,7 +72,6 @@ namespace ft
 	: _allocator(alloc)
 	{
 		size_type	range_size = last - first;
-		// difference_type	dist = std::distance(first, last);
 		_begin = _allocator.allocate(range_size);
 		_end = _begin + range_size;
 		_capacity_end = _end;
@@ -135,7 +134,7 @@ namespace ft
 	{ return (iterator(_end)); }
 
 	const_iterator end() const
-	{ return (const_iterator(_end)); }
+	{ return (const_iterator( _end)); }
 
 /* rbegin */
 	reverse_iterator rbegin()

@@ -116,6 +116,105 @@ namespace ft
 			}
 	};
 
+	template<class T>
+	class const_vector_iterator
+	{
+		public:
+			typedef ft::random_access_iterator_tag	iterator_category;
+			typedef T								value_type;
+			typedef std::ptrdiff_t					difference_type;
+			typedef T&								reference;
+			typedef T*								pointer;
+			typedef T const &						const_reference;
+			typedef T const *					const_pointer;
+
+		private:
+			const_pointer		_current;
+
+		public:
+			const_vector_iterator() : _current(NULL) {}
+
+			/*explicit */const_vector_iterator(const_pointer it) : _current(it) {}
+		
+			const_vector_iterator(const const_vector_iterator &vec_it)
+			{
+				*this = vec_it;
+			}
+
+			// template<class Iter>
+			const_vector_iterator &operator=(const const_vector_iterator &vec_it)
+			{
+				_current = vec_it._current;
+				return (*this);
+			}
+
+			const_pointer	base() const
+			{ return (_current); }
+
+			const_reference	operator*() const
+			{ return (*_current); }
+
+			const_pointer	operator->() const
+			{ return (&(*_current)); }
+
+			const_vector_iterator	&operator++()
+			{
+				++_current;
+				return (*this);
+			}
+
+			const_vector_iterator operator++(int)
+			{
+				const_vector_iterator temp(*this);
+				++(*this);
+				return (temp);
+			}
+
+			const_vector_iterator &operator--()
+			{
+				--_current;
+				return (*this);
+			}
+
+			const_vector_iterator operator--(int)
+			{
+				const_vector_iterator temp(*this);
+				--(*this);
+				return (temp);
+			}
+
+			const_vector_iterator operator+(difference_type n) const
+			{
+				const_vector_iterator temp(_current + n);
+				return (temp);
+			}
+
+			const_vector_iterator &operator+=(difference_type n)
+			{
+				_current += n;
+				return (*this);
+			}
+
+			const_vector_iterator operator-(difference_type n) const
+			{
+				const_vector_iterator temp(_current - n);
+				return (temp);
+			}
+
+			const_vector_iterator &operator-=(difference_type n)
+			{
+				_current -= n;
+				return (*this);
+			}
+
+			const_reference	operator[](difference_type n) const
+			{
+				return (*(_current + n));
+			}
+	};
+
+
+
 	template<class Iter>
 	bool	operator==(const vector_iterator<Iter> &lhs, const vector_iterator<Iter> &rhs)
 	{ return (lhs.base() == rhs.base()); }
@@ -151,6 +250,44 @@ namespace ft
 	typename vector_iterator<Iter>::difference_type operator-(const vector_iterator<Iter> &lhs, const vector_iterator<Iter> &rhs)
 	{ return (lhs.base() - rhs.base()); }
 
+
+
+	// const_vector_iterator
+
+	template<class Iter>
+	bool	operator==(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() == rhs.base()); }
+
+	template<class Iter>
+	bool	operator!=(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() != rhs.base()); }
+
+	template<class Iter>
+	bool	operator<(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() < rhs.base()); }
+
+	template<class Iter>
+	bool	operator<=(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() <= rhs.base()); }
+
+	template<class Iter>
+	bool	operator>(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() > rhs.base()); }
+
+	template<class Iter>
+	bool	operator>=(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() >= rhs.base()); }
+
+	template<class Iter>
+	const_vector_iterator<Iter> operator+(typename const_vector_iterator<Iter>::difference_type n, const const_vector_iterator<Iter> &vec_it)
+	{ 
+		vec_it += n;
+		return (vec_it);
+	}
+
+	template<class Iter>
+	typename const_vector_iterator<Iter>::difference_type operator-(const const_vector_iterator<Iter> &lhs, const const_vector_iterator<Iter> &rhs)
+	{ return (lhs.base() - rhs.base()); }
 
 }
 
