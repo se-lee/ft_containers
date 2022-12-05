@@ -56,12 +56,6 @@ int main()
 		std::cout << "upper bound: " << upper->first << std::endl;
 
 
-		std::map<char, int>::iterator = decltype(m)::iterator;
-		std::pair<iterator, iterator> ret = m.equal_range("B");
-
-		for (iterator it = ret.first; it != ret.second; ++it) {
-			std::cout << it->first << "," << it->second << std::endl;
-
 		// std::cout << "Every node, from last to first:" << std::endl;
 		// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
 		// {

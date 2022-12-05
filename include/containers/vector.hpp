@@ -4,7 +4,6 @@
 # include <memory> // allocator<T>
 # include <algorithm>
 # include <iterator>
-// # include "../iterators/iterator_traits.hpp"
 # include "../iterators/reverse_iterator.hpp"
 # include "../iterators/vector_iterator.hpp"
 # include "../utils/sfinae.hpp"
@@ -22,11 +21,8 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			// typedef vector_iterator<pointer>							iterator;
-			// typedef vector_iterator<const_pointer>					const_iterator;
-			typedef vector_iterator<value_type>							iterator;
-			// typedef vector_iterator<const value_type>					const_iterator;
-			typedef const_vector_iterator<value_type>				const_iterator;
+			typedef vector_iterator<pointer>							iterator;
+			typedef vector_iterator<const_pointer>					const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename std::ptrdiff_t								difference_type;
@@ -131,10 +127,11 @@ namespace ft
 
 /* end : returns a const_iterator if the vector obeject is const-qualified */
 	iterator end()
-	{ return (iterator(_end)); }
+	{
+		return (iterator(_end)); }
 
 	const_iterator end() const
-	{ return (const_iterator( _end)); }
+	{ 		return (const_iterator( _end)); }
 
 /* rbegin */
 	reverse_iterator rbegin()

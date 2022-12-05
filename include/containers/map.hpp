@@ -3,11 +3,9 @@
 
 # include <memory> // allocator
 # include <functional> // std::less
-// # include "../iterators/random_access_iterator.hpp"
 # include "../iterators/reverse_iterator.hpp"
 # include "../utils/pair.hpp"
 # include "../iterators/iterator_traits.hpp"
-# include "../iterators/bidirectional_iterator.hpp"
 # include "../utils/tree.hpp"
 # include "../utils/algorithm.hpp"
 
@@ -223,7 +221,7 @@ namespace ft
 
 	template<class Key, class T, class Compare, class Alloc>
 	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
-	{ return (lhs != rhs); }
+	{ return (!(lhs = rhs)); }
 
 	template<class Key, class T, class Compare, class Alloc>
 	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)

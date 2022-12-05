@@ -23,7 +23,8 @@ class tree
 		typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
 		typedef std::size_t											size_type;
 		typedef tree_iterator<value_type>							iterator;
-		typedef const_tree_iterator<const value_type> 					const_iterator;
+		// typedef const_tree_iterator<const value_type> 					const_iterator;
+		typedef const_tree_iterator<value_type> 					const_iterator;
 		typedef tree_node<value_type>*								node_pointer;
 
 	private:

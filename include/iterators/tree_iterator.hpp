@@ -156,12 +156,12 @@ namespace ft {
 			typedef T*								pointer;
 
 		private:
-			tree_node<T>	*_root;
-			tree_node<T>	*_current;
+			tree_node<T> const *_root;
+			tree_node<T> const *_current;
 
 		public:
 			const_tree_iterator() {}
-			const_tree_iterator(tree_node<T> *rt, tree_node<T> *ptr) : _root(rt), _current(ptr) {}
+			const_tree_iterator(const tree_node<T> *rt, const tree_node<T> *ptr) : _root(rt), _current(ptr) {}
 			const_tree_iterator(const_tree_iterator const &other) : _root(other._root), _current(other._current) {}
 			const_tree_iterator &operator=(const_tree_iterator const &other)
 			{	
