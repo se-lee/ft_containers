@@ -322,19 +322,24 @@ implementation limitations */
 		return (begin() + pos_count);
 	}
 
-	void	insert(iterator position, size_type n, const value_type &value)
+	void	insert(iterator position, size_type count, const value_type &value)
 	{
-		size_type	new_size = size() + n;
-		size_type	old_size = size();
+		size_type	new_size = size() + count;
 		size_type	pos_count = position - begin();
-		if (capacity() < new_size)
-			reserve(new_size);
+
+		if (size() < new_size)
+		{
+			if (capacity() < new_size && size())
+				reserve(size() * 2);
+			else
+				reserve(new_size);
+		}
 		// 後ろからいれる
-		for (size_type i = 0; i < new_size - (pos_count + n); i++)
-			_begin[new_size - 1 - i] = _begin[old_size - 1 - i];
-		for (size_type i = 0; i < n; i++)
+		for (size_type i = 0; i < new_size - (pos_count + count); i++)
+			_begin[new_size - 1 - i] = _begin[size() - 1 - i];
+		for (size_type i = 0; i < count; i++)
 			_begin[pos_count + i] = value;
-		_end = _end + n;
+		_end = _end + count;
 	}
 
 	template <class InputIterator>
@@ -343,13 +348,17 @@ implementation limitations */
 	{ // iterator first から lastまでの同じ値を挿入（FirstからLastまでリストをコピー）
 		size_type diff = last - first;
 		size_type new_size = size() + diff;
-		size_type old_size = size();
 		size_type pos_count = position - begin();
 		
-		if (capacity() < new_size)
-			reserve(new_size);
+		if (size() < new_size)
+		{
+			if (capacity() < new_size && size())
+				reserve(size() * 2);
+			else
+				reserve(new_size);
+		}
 		for (size_type i = 0; i < new_size - (pos_count + diff); i++)
-			_begin[new_size - 1 - i] = _begin[old_size - 1 - i];
+			_begin[new_size - 1 - i] = _begin[size() - 1 - i];
 		for (size_type i = 0; i < diff; i++, first++)
 			_begin[pos_count + i] = *first;
 		_end = _end + diff;
