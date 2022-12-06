@@ -37,26 +37,27 @@ namespace ft
 			// typedef T&									reference;
 			// typedef T*									pointer;
 
-			typedef T												iterator_type;
+			typedef T /*pair<first, second> */						iterator_type;
 			// typedef tree_node<T>									iterator_type;
-			typedef	typename iterator_traits<T>::value_type			value_type;
-			typedef typename iterator_traits<T>::difference_type	difference_type;
-			typedef typename iterator_traits<T>::pointer			pointer;
-			typedef typename iterator_traits<T>::reference			reference;
-			typedef typename iterator_traits<T>::iterator_category	iterator_category;
+			typedef	typename iterator_traits<tree_node<T> >::value_type			value_type;
+			typedef typename iterator_traits<tree_node<T> >::difference_type	difference_type;
+			typedef typename iterator_traits<tree_node<T> >::pointer			pointer;
+			typedef typename iterator_traits<tree_node<T> >::reference			reference;
+			typedef typename iterator_traits<tree_node<T> >::iterator_category	iterator_category;
 
 
 		private:
-			// tree_node<value_type> *_root;
-			// tree_node<value_type> *_current;
+			// tree_node<T> *_root;
+			// tree_node<T> *_current;
 			iterator_type	_root;
 			iterator_type	_current;
 
 		public:
 			tree_iterator() : _root(NULL), _current(NULL) {}
 			// tree_iterator(tree_node<value_type> *rt, tree_node<value_type> *ptr) : _root(rt), _current(ptr) {}
-			tree_iterator(iterator_type rt, iterator_type ptr) : _root(rt), _current(ptr) {}
-			
+			// tree_iterator(tree_node<T> * rt, tree_node<T> *ptr) : _root(rt), _current(ptr) {}
+			tree_iterator(iterator_type ptr) : _current(ptr) {}
+		
 			template<class Iter>
 			tree_iterator(const tree_iterator<Iter> &other)
 			{
@@ -72,11 +73,6 @@ namespace ft
 			}
 			~tree_iterator() {}
 
-			// tree_node<value_type> *base() const
-			// { return (_current); }
-
-			// tree_node<value_type> *get_root() const
-			// { return (_root); }
 
 			iterator_type base() const
 			{ return (_current); }
@@ -85,27 +81,27 @@ namespace ft
 			{ return (_root); }
 
 
-			// reference operator*() const
-			// { return (_current->_value); }
-
-			// pointer operator->() const
-			// { return (&_current->_value); }
-
-
 			reference operator*() const
-			{ return (*_current); }
+			{ return (_current->_value); }
 
 			pointer operator->() const
-			{ return (&(*_current)); }
+			{ return (&_current->_value); }
+
+
+			// reference operator*() const
+			// { return (*_current); }
+
+			// pointer operator->() const
+			// { return (&(*_current)); }
 
 
 			tree_iterator &operator++()
 			{
-				if (_current._right != NULL)
+				if (_current->_right != NULL)
 				{
-					_current = _current._right;
-					while (_current._left != NULL)
-						_current = _current._left;
+					_current = _current->_right;
+					while (_current->_left != NULL)
+						_current = _current->_left;
 				}
 				else
 				{
@@ -383,23 +379,23 @@ namespace ft
 			bool empty() const { return (!_size); }
 
 			iterator begin() 
-			{ return (iterator(_root, _begin)); }
+			{ return (iterator( _begin)); }
 
 			const_iterator begin() const 
-			{ return (const_iterator(_root, _begin)); }
+			{ return (const_iterator(_begin)); }
 
 			iterator end() 
 			{
 				if (_end == NULL)
 					return (begin());
-				return (iterator(_root, NULL)); 
+				return (iterator(NULL)); 
 			}
 			
 			const_iterator end() const 
 			{ 
 				if (_end == NULL)
 					return (begin());
-				return (const_iterator(_root, NULL)); 
+				return (const_iterator(NULL)); 
 			}
 
 			iterator root() 
