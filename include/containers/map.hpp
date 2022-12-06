@@ -3,6 +3,7 @@
 
 # include <memory> // allocator
 # include <functional> // std::less
+# include <iterator> //std::bidirectional_iterator
 # include "../iterators/reverse_iterator.hpp"
 # include "../utils/pair.hpp"
 # include "../iterators/iterator_traits.hpp"
@@ -48,9 +49,12 @@ namespace ft
 
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef tree_iterator<value_type>						iterator;
+			// typedef std::bidirectional_iterator_tag<value_type>        iterator;
+			// typedef std::bidirectional_iterator_tag<const value_type>	const_iterator;
+			typedef tree_iterator<pointer>							iterator;
+			typedef tree_iterator<const_pointer>					const_iterator;
 			// typedef tree_iterator<const value_type> 				const_iterator;
-			typedef const_tree_iterator<value_type>					const_iterator;
+			// typedef const_tree_iterator<value_type>					const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;

@@ -25,18 +25,17 @@ namespace ft {
 	class tree_iterator : public std::iterator<ft::bidirectional_iterator_tag, T>
 	{
 		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
-			typedef T									value_type;
-			typedef std::ptrdiff_t						difference_type;
-			typedef T&									reference;
-			typedef T*									pointer;
-
-			// typedef T												iterator_type;
-			// typedef	typename iterator_traits<T>::value_type			value_type;
-			// typedef typename iterator_traits<T>::difference_type	difference_type;
-			// typedef typename iterator_traits<T>::pointer			pointer;
-			// typedef typename iterator_traits<T>::reference			reference;
-			// typedef typename iterator_traits<T>::iterator_category	iterator_category;
+			// typedef ft::bidirectional_iterator_tag		iterator_category;
+			// typedef T									value_type;
+			// typedef std::ptrdiff_t						difference_type;
+			// typedef T&									reference;
+			// typedef T*									pointer;
+			typedef T												iterator_type;
+			typedef	typename iterator_traits<T>::value_type			value_type;
+			typedef typename iterator_traits<T>::difference_type	difference_type;
+			typedef typename iterator_traits<T>::pointer			pointer;
+			typedef typename iterator_traits<T>::reference			reference;
+			typedef typename iterator_traits<T>::iterator_category	iterator_category;
 			
 
 		private:
@@ -51,9 +50,8 @@ namespace ft {
 			tree_iterator(const tree_iterator<Iter> &other)
 			{
 				*this = other;
-			} //: _root(other._root), _current(other._current) {}
-			
-			
+			}
+
 			template<class Iter>
 			tree_iterator &operator=(const tree_iterator<Iter> &other)
 			{	
@@ -66,30 +64,6 @@ namespace ft {
 			reference operator*() const { return (_current->_value); }
 			pointer operator->() const { return (&_current->_value); }
 
-
-/*************[ お試し ]**************************/
-
-			tree_node<value_type>	*tree_leaf(tree_node<value_type> x)
-			{
-				while (true)
-				{
-					if (x->_left != NULL)
-					{
-						x = x->_left;
-						continue ;
-					}
-					if (x->_right != NULL)
-					{
-						x = x->_right;
-						continue ;
-					}
-					break ;
-				}
-				return (x);
-			}
-
-
-/*************[ お試し ]**************************/
 
 			tree_iterator &operator++()
 			{
@@ -153,14 +127,6 @@ namespace ft {
 
 	};
 
-	template<class Iterator1, class Iterator2>
-	bool operator==(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
-	{ return (lhs.base() == rhs.base()); }
-
-	template<class Iterator1, class Iterator2>
-	bool operator!=(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
-	{ return (!(lhs.base() == rhs.base())); }
-
 
 /************************** [ CONST TREE ITER ] **************************/
 
@@ -168,55 +134,40 @@ namespace ft {
 	class const_tree_iterator
 	{
 		public:
-			typedef ft::bidirectional_iterator_tag		iterator_category;
+			typedef ft::bidirectional_iterator_tag	iterator_category;
 			typedef T								value_type;
-			typedef std::ptrdiff_t							difference_type;
+			typedef std::ptrdiff_t					difference_type;
 			typedef T&								reference;
 			typedef T*								pointer;
 			typedef const T&						const_reference;
 			typedef const T*						const_pointer;
 
 		private:
-			const tree_node<T>	*_root;
-			const tree_node<T>	*_current;
+			tree_node<T>	*_root;
+			tree_node<T>	*_current;
 
 		public:
 			const_tree_iterator() {}
-			const_tree_iterator(const tree_node<T> *rt, const tree_node<T> *ptr) : _root(rt), _current(ptr) {}
-			const_tree_iterator(const_tree_iterator const &other) : _root(other._root), _current(other._current) {}
-			const_tree_iterator &operator=(const_tree_iterator const &other)
+			const_tree_iterator(tree_node<T> *rt, tree_node<T> *ptr) : _root(rt), _current(ptr) {}
+			const_tree_iterator(const const_tree_iterator &other)
+			{
+				*this = other;
+			}
+			const_tree_iterator(const tree_iterator<value_type> &other)
+			{
+				*this = other;
+			}
+			const_tree_iterator &operator=(const const_tree_iterator &other)
 			{	
-				_root = other._root;
-				_current = other._current;
+				// _root = other._root;
+				// _current = other._current;
+				*this = other;
 				return (*this);
 			}
 			~const_tree_iterator() {}
 
 			const_reference operator*() const { return (_current->_value); }
 			const_pointer operator->() const { return (&_current->_value); }
-
-/*************[ お試し ]**************************/
-			tree_node<value_type>	*tree_leaf(tree_node<value_type> x)
-			{
-				while (true)
-				{
-					if (x->_left != NULL)
-					{
-						x = x->_left;
-						continue ;
-					}
-					if (x->_right != NULL)
-					{
-						x = x->_right;
-						continue ;
-					}
-					break ;
-				}
-				return (x);
-			}
-
-
-/*************[ お試し ]**************************/
 
 			const_tree_iterator &operator++()
 			{
@@ -274,7 +225,21 @@ namespace ft {
 
 			tree_node<value_type> *base() const
 			{ return (_current); }
+
 	};
+
+
+/************************** [ ITER NON MEMBER ] **************************/
+
+
+	template<class Iterator1, class Iterator2>
+	bool operator==(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
+	{ return (lhs.base() == rhs.base()); }
+
+	template<class Iterator1, class Iterator2>
+	bool operator!=(const ft::tree_iterator<Iterator1> &lhs, const ft::tree_iterator<Iterator2> &rhs)
+	{ return (!(lhs.base() == rhs.base())); }
+
 
 	template<class Iterator1, class Iterator2>
 	bool operator==(const ft::const_tree_iterator<Iterator1> &lhs, const ft::const_tree_iterator<Iterator2> &rhs)

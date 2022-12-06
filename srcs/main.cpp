@@ -44,7 +44,7 @@ int main()
 		mymap.insert(std::make_pair<char, int>('e', 30));
 
 		std::cout << "Every node, from first to last:" << std::endl;
-		for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+		for (std::map<char, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
 		std::cout << std::endl;
 		std::cout << "size: " << mymap.size() << std::endl;
@@ -92,7 +92,7 @@ int main()
 
 
 		std::cout << "Every node, from first to last:" << std::endl;
-		for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+		for (ft::map<char, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
 		{
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works
 		}

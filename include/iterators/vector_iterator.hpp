@@ -31,6 +31,8 @@ namespace ft
 				*this = vec_it;
 			}
 
+			~vector_iterator() {}
+
 			template<class Iter>
 			vector_iterator &operator=(const vector_iterator<Iter> &vec_it)
 			{
@@ -38,7 +40,7 @@ namespace ft
 				return (*this);
 			}
 
-			pointer	base() const
+			iterator_type	base() const
 			{ return (_current); }
 
 			reference	operator*() const
