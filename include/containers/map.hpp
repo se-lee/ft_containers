@@ -48,44 +48,40 @@ namespace ft
 
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef tree_iterator<value_type>						iterator;
-			typedef const_tree_iterator<value_type> 				const_iterator;
-			typedef	typename ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef tree_iterator<value_type *>						iterator;
+			typedef tree_iterator<const value_type *> 				const_iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;
 			typedef std::size_t										size_type;
 
 		private:
-			value_compare	_value_comp;
-			allocator_type	_allocator;
+			// value_compare	_value_comp;
+			// allocator_type	_allocator;
 			tree<key_type, value_type, value_compare, tree_alloc>	_tree;
 
 		public:
 /* --- [ Constructors ] --- */
-			explicit map(const key_compare &comp = key_compare(), const tree_alloc &alloc = tree_alloc()) : _value_comp(comp), _allocator(alloc), _tree(_value_comp, alloc)
+			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = Allocator())
+			: _tree(comp, alloc)
 			{}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = value_compare(), const tree_alloc &alloc = tree_alloc()) : _value_comp(comp), _allocator(alloc), _tree(first, last, _value_comp, alloc)
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const allocator_type &alloc = Allocator())
+			: _tree(comp, alloc)
+			{ insert(first, last); } 
+					
+			map(const map &other) : _tree(other._tree)
 			{}
-			
-			map(const map &other) 
-			{
-				// *this = other;
-				_value_comp = other._value_comp;
-				_allocator = other._allocator;
-				_tree = other._tree;
-			}
 
 /* --- [ Destructor ] --- */
-			~map() 
-			{ _tree.~tree(); }
+			~map() {}
 
 /* --- [ Operator= ] --- */
 			map &operator=(const map &other)
 			{
-				_value_comp = other._value_comp;
-				_allocator = other._allocator;
+				// _value_comp = other._value_comp;
+				// _allocator = other._allocator;
 				_tree = other._tree;
 				return (*this);
 			}
@@ -124,17 +120,34 @@ namespace ft
 			{ return (_tree.size()); }
 
 			size_type max_size() const 
-			{ return (_tree.get_allocator().max_size()); }
+			{ return (_tree.max_size()); }
 
 
 /* --- [ Element access ] --- */
-			T &at( const Key &key) ;
+			mapped_type &at( const Key &key)
+			{
+				iterator pos = find(key);
+				return (pos.base()->_value.second);
+			}
 			
-			const T &at( const Key &key) const;
+			const mapped_type &at( const Key &key) const
+			{
+				iterator pos = find(key);
+				return (pos.base()->_value.second);
+			}
+
+//  mapped_type& at (const key_type& k);const mapped_type& at (const key_type& k) const;
+
+			mapped_type& operator[]( const Key& key )
+			{
+				iterator pos = find(key);
+				return (pos.base()->_value.second);
+			}
 
 /* --- [ Modifiers ] --- */
 			// std::map<Key, T, Compare, Allocator>::clear
-			void clear() ;
+			void clear()
+			{ _tree.clear(); }
 			// erases all elements from the container
 			
 
@@ -221,7 +234,7 @@ namespace ft
 
 	template<class Key, class T, class Compare, class Alloc>
 	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
-	{ return (!(lhs = rhs)); }
+	{ return (!(lhs == rhs)); }
 
 	template<class Key, class T, class Compare, class Alloc>
 	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)

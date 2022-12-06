@@ -15,6 +15,18 @@ template<class Key, class Type, class Compare = std::less<Type>, class Allocator
 class tree
 {
 	public:
+		// typedef Key																key_type;
+		// typedef Type															value_type;
+		// typedef Compare															value_compare;
+		// typedef	std::less<Key>													key_compare;
+		// typedef Allocator														allocator_type;
+		// typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
+		// typedef std::size_t											size_type;
+		// typedef tree_iterator<value_type>							iterator;
+		// // typedef const_tree_iterator<const value_type> 					const_iterator;
+		// typedef const_tree_iterator<value_type> 					const_iterator;
+		// typedef tree_node<value_type>*								node_pointer;
+
 		typedef Key																key_type;
 		typedef Type															value_type;
 		typedef Compare															value_compare;
@@ -22,16 +34,19 @@ class tree
 		typedef Allocator														allocator_type;
 		typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
 		typedef std::size_t											size_type;
-		typedef tree_iterator<value_type>							iterator;
+		typedef typename std::ptrdiff_t								difference_type;
+		typedef tree_iterator<value_type *>	iterator;
+		typedef tree_iterator<const value_type*> const_iterator;
+		// typedef tree_iterator<value_type>							iterator;
 		// typedef const_tree_iterator<const value_type> 					const_iterator;
-		typedef const_tree_iterator<value_type> 					const_iterator;
+		// typedef const_tree_iterator<value_type> 					const_iterator;
 		typedef tree_node<value_type>*								node_pointer;
 
 	private:
 		node_pointer			_root;
 		node_pointer			_begin;
 		node_pointer			_end;
-		size_t					_size;
+		size_type				_size;
 		value_compare			_value_compare;
 		allocator_type			_allocator;
 
@@ -54,7 +69,6 @@ class tree
 		tree(const tree &other )
 		{
 			*this = other;
-			return (*this);
 		}
 
 		~tree() 
@@ -64,14 +78,31 @@ class tree
 
 		tree &operator=(const tree &other)
 		{
-			_root = other._root;
-			_begin = other._begin;
-			_end = other._end;
-			_allocator = other._allocator;
-			_value_compare = other._value_compare;
+			_root = other.get_root();
+			_begin = other.get_begin();
+			_end = other.get_end();
+			_size = other.size();
+			_allocator = other.get_allocator();
+			_value_compare = other.get_value_compare();
 		
 			return (*this);
 		}
+
+// getters
+		node_pointer get_root() const
+		{ return (_root); }
+
+		node_pointer get_begin() const
+		{ return (_begin); }
+
+		node_pointer get_end() const
+		{ return (_end); }
+
+		value_compare get_value_compare() const
+		{ return (_value_compare); }
+
+		allocator_type get_allocator() const 
+		{ return (_allocator); }
 
 // rotate & check balance
 		node_pointer	right_rotate(node_pointer node)
@@ -241,7 +272,8 @@ class tree
 		const_iterator root() const 
 		{ return (const_iterator(_root)); }
 
-		size_type max_size();
+		size_type max_size() const
+		{ return (_allocator.max_size()); }
 
 		void clear()
 		{
@@ -393,41 +425,43 @@ class tree
 // _rootから探す代わりにPositionから探す
 // Inserts value in the position as close as possible to the position just prior to pos
 
-		// iterator insert(iterator position, const value_type &value)
-		// {
-		// 	node_pointer new_node;
-		// 	if (_value_compare(value, *position)) //value < position
-		// 	{
-		// 		if (position == begin())
-		// 			new_node = find_insert_position(value, _begin);
-		// 		else 
-		// 		{
-		// 			iterator temp = position;
-		// 			--temp;
-		// 			if (_value_compare(*temp, value))
-		// 			{
-		// 				if (temp.base()->_right == NULL)
-		// 					new_node = find_insert_position
-		// 				else
-		// 					new_node = 
-		// 			}
+		iterator insert(iterator position, const value_type &value)
+		{
+			node_pointer new_node;
+			if (_value_compare(value, *position)) //value < position
+			{
+				if (position == begin())
+					new_node = find_insert_position(value, _begin);
+				else 
+				{
+					iterator temp = position;
+					--temp;
+					if (_value_compare(*temp, value))
+					{
+						if (temp.base()->_right == NULL)
+							new_node = find_insert_position(value);
+						// else
+						// 	new_node = 
+					}
 
-        //         // if (compare_(*prev, value))
-        //         // {
-        //         //     if (prev.base()->right == nil_)
-        //         //         return insert_node(value, prev.base()).first;
-        //         //     else
-        //         //         return insert_node(value, position.base()).first;
-        //         // }
-		// 		// 	new_node = find_insert_position(value);
-		// 		// }
-		// 	}
-		// 	else if (_value_compare(*position, value))
-		// 	{
-		// 		new_node = find_insert_position(value, _root);
-		// 	}
-		// 	return (insert_node(value, new_node).first);
-		// }
+                // if (compare_(*prev, value))
+                // {
+                //     if (prev.base()->right == nil_)
+                //         return insert_node(value, prev.base()).first;
+                //     else
+                //         return insert_node(value, position.base()).first;
+                // }
+				// 	new_node = find_insert_position(value);
+				// }
+				}
+			}
+			else if (_value_compare(*position, value))
+			{
+				new_node = find_insert_position(value, _root);
+			}
+			return (insert_node(value, new_node).first);
+		}
+
 
 		template<class InputIterator>
 		void	insert(InputIterator first, InputIterator last, 
@@ -442,15 +476,13 @@ class tree
 			_allocator.destroy(position.base());
 			_allocator.deallocate(position.base(), 1);
 
-			fix_balance();//
+			fix_balance(position.base());//
 			
 		}
 
 		size_type	erase (const value_type &value);
 
 		void		erase(iterator first, iterator last);
-
-		allocator_type get_allocator() const { return (_allocator); }
 
 // look up
 
