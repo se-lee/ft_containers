@@ -13,7 +13,7 @@ namespace ft
 
 /************************** [ TREE NODE ] **************************/
 
-	template<class T>
+	template<class T> // T :pair value
 	struct tree_node
 	{
 		tree_node<T>	*_parent;
@@ -39,54 +39,42 @@ namespace ft
 
 			typedef T /*pair<first, second> */						iterator_type;
 			// typedef tree_node<T>									iterator_type;
-			typedef	typename iterator_traits<tree_node<T> >::value_type			value_type;
-			typedef typename iterator_traits<tree_node<T> >::difference_type	difference_type;
-			typedef typename iterator_traits<tree_node<T> >::pointer			pointer;
-			typedef typename iterator_traits<tree_node<T> >::reference			reference;
-			typedef typename iterator_traits<tree_node<T> >::iterator_category	iterator_category;
+			typedef	typename iterator_traits<T>::value_type			value_type;
+			typedef typename iterator_traits<T>::difference_type	difference_type;
+			typedef typename iterator_traits<T>::pointer			pointer;
+			typedef typename iterator_traits<T>::reference			reference;
+			typedef typename iterator_traits<T>::iterator_category	iterator_category;
 
 
 		private:
-			// tree_node<T> *_root;
-			// tree_node<T> *_current;
-			iterator_type	_root;
-			iterator_type	_current;
+			tree_node<T> *_current;
+			// iterator_type	_root;
+			// iterator_type	_current;
 
 		public:
-			tree_iterator() : _root(NULL), _current(NULL) {}
-			// tree_iterator(tree_node<value_type> *rt, tree_node<value_type> *ptr) : _root(rt), _current(ptr) {}
-			// tree_iterator(tree_node<T> * rt, tree_node<T> *ptr) : _root(rt), _current(ptr) {}
-			tree_iterator(iterator_type ptr) : _current(ptr) {}
+			tree_iterator() : _current(NULL) {}
+			tree_iterator(tree_node<T> *ptr) : _current(ptr) {}
 		
 			template<class Iter>
 			tree_iterator(const tree_iterator<Iter> &other)
-			{
-				*this = other;
-			}
+			{ *this = other; }
 
 			template<class Iter>
 			tree_iterator &operator=(const tree_iterator<Iter> &other)
 			{	
-				_root = other.get_root();
 				_current = other.base();
 				return (*this);
 			}
 			~tree_iterator() {}
 
-
-			iterator_type base() const
+			tree_node<T> *base() const
 			{ return (_current); }
-
-			iterator_type get_root() const
-			{ return (_root); }
-
 
 			reference operator*() const
 			{ return (_current->_value); }
 
 			pointer operator->() const
 			{ return (&_current->_value); }
-
 
 			// reference operator*() const
 			// { return (*_current); }
@@ -173,19 +161,19 @@ namespace ft
 			typedef Allocator														allocator_type;
 			typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
 			typedef std::size_t														size_type;
-			typedef typename allocator_type::pointer										pointer;
-			typedef typename allocator_type::const_pointer								const_pointer;
+			typedef typename allocator_type::pointer								pointer;
+			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef tree_iterator<pointer>											iterator;
 			typedef tree_iterator<const_pointer>									const_iterator;
 			typedef tree_node<value_type>*											node_pointer;
 
 		private:
-			// node_pointer			_root;
-			// node_pointer			_begin;
-			// node_pointer			_end;
-			pointer					_root;
-			pointer					_begin;
-			pointer					_end;
+			node_pointer			_root;
+			node_pointer			_begin;
+			node_pointer			_end;
+			// pointer					_root;
+			// pointer					_begin;
+			// pointer					_end;
 	
 			size_t					_size;
 			value_compare			_value_compare;
@@ -379,7 +367,7 @@ namespace ft
 			bool empty() const { return (!_size); }
 
 			iterator begin() 
-			{ return (iterator( _begin)); }
+			{ return (iterator(_begin)); }
 
 			const_iterator begin() const 
 			{ return (const_iterator(_begin)); }
@@ -503,7 +491,7 @@ namespace ft
 			}
 
 	// どのノードの下に入るか、Insert positionはNew Nodeの親； 関数呼び出すときに親となるノードを引数としてパスする
-			ft::pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
+			pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
 			{
 				node_pointer new_node;
 				new_node = _allocator.allocate(1);
@@ -523,7 +511,7 @@ namespace ft
 				{
 					_allocator.destroy(new_node);
 					_allocator.deallocate(new_node, 1);
-					return (ft::make_pair(iterator(_root, insert_pos), false));
+					return (make_pair(iterator(insert_pos), false));
 				}
 				// fix_balance(new_node);
 				if (_value_compare(new_node->_value, _begin->_value))
@@ -531,7 +519,7 @@ namespace ft
 				if (_value_compare(_end->_value, new_node->_value))
 					_end = new_node;
 				_size++;
-				return (ft::make_pair(iterator(_root, new_node), true));
+				return (make_pair(iterator(new_node), true));
 			}
 
 			void	update_begin(node_pointer inserted_node)
