@@ -101,6 +101,13 @@ int main()
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
+
+		ft::map<char, int>::iterator lower = mymap.lower_bound('b');
+		std::cout << "lower bound: " << lower->first << std::endl;
+		ft::map<char, int>::iterator upper = mymap.upper_bound('b');
+		std::cout << "upper bound: " << upper->first << std::endl;
+
+
 		// std::cout << std::endl;
 		// mymap.printTree();
 		// std::cout << "Every node, from last to first:" << std::endl;
