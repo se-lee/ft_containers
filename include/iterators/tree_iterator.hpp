@@ -31,12 +31,12 @@ namespace ft {
 			// typedef T&									reference;
 			// typedef T*									pointer;
 
+			typedef T										iterator_type;
 			typedef	typename iterator_traits<T>::value_type			value_type;
-			typedef std::ptrdiff_t								 	difference_type;
+			typedef typename iterator_traits<T>::difference_type	difference_type;
 			typedef typename iterator_traits<T>::pointer			pointer;
 			typedef typename iterator_traits<T>::reference			reference;
 			typedef typename iterator_traits<T>::iterator_category	iterator_category;
-			typedef tree_node<value_type>*							node_pointer;
 
 		private:
 			node_pointer _root;
@@ -44,17 +44,14 @@ namespace ft {
 
 		public:
 			tree_iterator() {}
-			tree_iterator(tree_node<value_type> *rt, tree_node<value_type> *ptr)
-			{
-				_root = rt;
-				_current = ptr;
-			}
+			tree_iterator(tree_node<value_type> *rt, tree_node<value_type> *ptr) : _root(rt), _current(ptr) {}
 			
 			template<class Iter>
-			tree_iterator(const tree_iterator<Iter> &other)
+			tree_iterator(const tree_iterator<Iter> const &other)
 			{
 				*this = other;
-			}
+			} //: _root(other._root), _current(other._current) {}
+			
 			
 			template<class Iter>
 			tree_iterator &operator=(const tree_iterator<Iter> &other)
