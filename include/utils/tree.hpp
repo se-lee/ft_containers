@@ -22,8 +22,7 @@ namespace ft
 		T				_value;
 
 		tree_node() : _parent(NULL), _left(NULL), _right(NULL), _value(NULL) {}
-		tree_node(const T &pr) : _parent(NULL), _left(NULL), _right(NULL), _value(pr) {}
-
+		tree_node(const T &pair = T()) : _parent(NULL), _left(NULL), _right(NULL), _value(pair) {}
 	};
 
 /************************** [ TREE ITER ] **************************/
@@ -47,17 +46,20 @@ namespace ft
 
 
 		private:
-			tree_node<T> *_current;
-			// iterator_type	_root;
-			// iterator_type	_current;
+			typedef tree_node<value_type>*		node_pointer;
+			node_pointer _current;
 
 		public:
 			tree_iterator() : _current(NULL) {}
-			tree_iterator(tree_node<T> *ptr) : _current(ptr) {}
+			tree_iterator(node_pointer ptr) : _current(ptr) {}
 		
 			template<class Iter>
 			tree_iterator(const tree_iterator<Iter> &other)
-			{ *this = other; }
+			{
+				_current = other.base(); 
+			}
+
+			~tree_iterator() {}
 
 			template<class Iter>
 			tree_iterator &operator=(const tree_iterator<Iter> &other)
@@ -65,23 +67,15 @@ namespace ft
 				_current = other.base();
 				return (*this);
 			}
-			~tree_iterator() {}
 
-			tree_node<T> *base() const
+			node_pointer base() const
 			{ return (_current); }
 
 			reference operator*() const
 			{ return (_current->_value); }
 
 			pointer operator->() const
-			{ return (&_current->_value); }
-
-			// reference operator*() const
-			// { return (*_current); }
-
-			// pointer operator->() const
-			// { return (&(*_current)); }
-
+			{ return (&(_current->_value)); }
 
 			tree_iterator &operator++()
 			{
@@ -150,30 +144,32 @@ namespace ft
 
 /************************** [ TREE CLASS ] **************************/
 
-	template<class Key, class Type, class Compare = std::less<Type>, class Allocator = std::allocator<tree_node<Type> > >
+	// template<class Key, class Type, class Compare = std::less<Type>, class Allocator = std::allocator<Type> >
+	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class tree
 	{
 		public:
 			typedef Key																key_type;
-			typedef Type															value_type;
+			typedef T															value_type;
+			// typedef tree_node<Type>													node_type;
 			typedef Compare															value_compare;
 			typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
-			typedef typename Allocator::template rebind<tree_node<Type> >::other	node_allocator;
+			typedef typename Allocator::template rebind<tree_node <T> >::other			node_allocator;
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
-			typedef tree_iterator<pointer>											iterator;
-			typedef tree_iterator<const_pointer>									const_iterator;
+			typedef tree_iterator<T *>											iterator;
+			typedef tree_iterator<const T *>									const_iterator;
 			typedef tree_node<value_type>*											node_pointer;
 
 		private:
-			node_pointer			_root;
-			node_pointer			_begin;
-			node_pointer			_end;
-			// pointer					_root;
-			// pointer					_begin;
-			// pointer					_end;
+			// node_pointer			_root;
+			// node_pointer			_begin;
+			// node_pointer			_end;
+			pointer					_root;
+			pointer					_begin;
+			pointer					_end;
 	
 			size_t					_size;
 			value_compare			_value_compare;
@@ -491,7 +487,7 @@ namespace ft
 			}
 
 	// どのノードの下に入るか、Insert positionはNew Nodeの親； 関数呼び出すときに親となるノードを引数としてパスする
-			pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
+			ft::pair<iterator, bool> insert_node(const value_type &value, node_pointer insert_pos)
 			{
 				node_pointer new_node;
 				new_node = _allocator.allocate(1);
@@ -511,7 +507,7 @@ namespace ft
 				{
 					_allocator.destroy(new_node);
 					_allocator.deallocate(new_node, 1);
-					return (make_pair(iterator(insert_pos), false));
+					return (ft::make_pair(iterator(insert_pos), false));
 				}
 				// fix_balance(new_node);
 				if (_value_compare(new_node->_value, _begin->_value))
@@ -519,7 +515,7 @@ namespace ft
 				if (_value_compare(_end->_value, new_node->_value))
 					_end = new_node;
 				_size++;
-				return (make_pair(iterator(new_node), true));
+				return (ft::make_pair(iterator(new_node), true));
 			}
 
 			void	update_begin(node_pointer inserted_node)

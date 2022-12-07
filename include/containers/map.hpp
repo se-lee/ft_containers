@@ -13,6 +13,7 @@
 namespace ft
 {
 /************************** [ MAP CLASS ] **************************/
+	// template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<tree_node<pair<const Key, T> > >
 	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
@@ -49,8 +50,7 @@ namespace ft
 
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			// typedef std::bidirectional_iterator_tag<value_type>        iterator;
-			// typedef std::bidirectional_iterator_tag<const value_type>	const_iterator;
+
 			typedef tree_iterator<pointer>							iterator;
 			typedef tree_iterator<const_pointer>					const_iterator;
 			// typedef tree_iterator<const value_type> 				const_iterator;
@@ -67,12 +67,12 @@ namespace ft
 
 		public:
 /* --- [ Constructors ] --- */
-			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = Allocator())
+			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = tree_alloc())
 			: _tree(comp, alloc)
 			{}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const allocator_type &alloc = Allocator())
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const allocator_type &alloc = tree_alloc())
 			: _tree(comp, alloc)
 			{ insert(first, last); } 
 					
