@@ -61,8 +61,8 @@ namespace ft
 			typedef std::size_t										size_type;
 
 		private:
-			// value_compare	_value_comp;
-			// allocator_type	_allocator;
+			value_compare	_value_comp;
+			allocator_type	_allocator;
 			tree<key_type, value_type, value_compare, tree_alloc>	_tree;
 
 		public:
@@ -162,10 +162,17 @@ namespace ft
 			iterator insert(iterator position, const value_type &value)
 			{ return (_tree.insert(position, value)); }
 
-			template<class InputIterator>
-			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+			// template<class InputIterator>
+			// void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+			// {
+			// 	return (_tree.insert(first, last));
+			// }
+
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last)
 			{
-				return (_tree.insert(first, last));
+				for (; first != last; ++first)
+					_tree.insert(*first);
 			}
 
 			void erase(iterator position)

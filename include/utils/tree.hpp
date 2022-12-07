@@ -540,14 +540,13 @@ namespace ft
 	// 本家__tree より __find_equal（挿入のポジション探すFunction)、ヒントありとなし（通常）バージョンがある。 この場合ヒントありを参考に作成
 	// _rootから探す代わりにPositionから探す
 	// Inserts value in the position as close as possible to the position just prior to pos
-
 			iterator insert(iterator position, const value_type &value)
 			{
 				node_pointer new_node;
 				if (_value_compare(value, *position)) //value < position
 				{
 					if (position == begin())
-						new_node = find_insert_position(value, _begin);
+						new_node = find_insert_position(value);
 					else 
 					{
 						iterator temp = position;
@@ -556,32 +555,17 @@ namespace ft
 						{
 							if (temp.base()->_right == NULL)
 								new_node = find_insert_position(value);
-							// else
-							// 	new_node = 
-						}
-
-					// if (compare_(*prev, value))
-					// {
-					//     if (prev.base()->right == nil_)
-					//         return insert_node(value, prev.base()).first;
-					//     else
-					//         return insert_node(value, position.base()).first;
-					// }
-					// 	new_node = find_insert_position(value);
-					// }
+						}					
+						// 	new_node = find_insert_position(value);
 					}
+		
 				}
 				else if (_value_compare(*position, value))
 				{
-					new_node = find_insert_position(value, _root);
+					new_node = find_insert_position(value);
 				}
 				return (insert_node(value, new_node).first);
 			}
-
-
-			template<class InputIterator>
-			void	insert(InputIterator first, InputIterator last, 
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL);
 
 	// erase
 
@@ -636,7 +620,7 @@ namespace ft
 				{
 					if (!_value_compare(temp->_value, value))
 					{
-						it = iterator(_root, temp);
+						it = iterator(temp);
 						temp = temp->_left;
 					}
 					else
@@ -653,7 +637,7 @@ namespace ft
 				{
 					if (!_value_compare(temp->_value, value))
 					{
-						it = const_iterator(_root, temp);
+						it = const_iterator(temp);
 						temp = temp->_left;
 					}
 					else
@@ -671,7 +655,7 @@ namespace ft
 				{
 					if (_value_compare(value, temp->_value))
 					{
-						it = iterator(_root, temp);
+						it = iterator(temp);
 						temp = temp->_left;
 					}
 					else
@@ -688,7 +672,7 @@ namespace ft
 				{
 					if (_value_compare(value, temp->_value))
 					{
-						it = iterator(_root, temp);
+						it = iterator(temp);
 						temp = temp->_left;
 					}
 					else
