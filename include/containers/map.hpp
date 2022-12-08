@@ -182,7 +182,10 @@ namespace ft
 			{ return (_tree.erase(make_pair(key, mapped_type()))); }
 
 			void erase(iterator first, iterator last)
-			{ _tree.erase(first, last); }
+			{ 
+				for (; first != last; ++first)
+					_tree.erase(first);
+			}
 		
 			
 			void swap( map &other )
