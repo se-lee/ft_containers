@@ -206,7 +206,8 @@ namespace ft
 
 			~tree() 
 			{
-				clear_all_elements();
+				std::cout << "destructor" << std::endl;
+				remove_branch(_root);
 			}
 
 			tree &operator=(const tree &other)
@@ -399,12 +400,25 @@ namespace ft
 				_end->_left = NULL;
 			}
 
-			void clear_all_elements()
+			void	delete_node(node_pointer node)
 			{
-				for (node_pointer ptr = _begin; ptr != _end; ptr++)
-					_allocator.destroy(ptr);
-				_size = 0;
+				if (node == NULL)
+					return ;
+				_allocator.destroy(node);
+				_allocator.deallocate(node, 1);
+				_size--;
+				std::cout << node->_value.first << " : delete node" << std::endl;
 			}
+
+			void	remove_branch(node_pointer node)
+			{
+				if (node == NULL)
+					return ;
+				remove_branch(node->_left);
+				remove_branch(node->_right);
+				delete_node(node);
+			}
+
 
 			void swap(tree	&other)
 			{
@@ -444,7 +458,9 @@ namespace ft
 
 			void set_parent(node_pointer child, node_pointer parent)
 			{ 
-				child->_parent = parent; }
+				child->_parent = parent;
+				std::cout << "set parent" << std::endl;	
+			}
 
 			void	tree_left_rotate(node_pointer x) const
 			{
@@ -568,18 +584,28 @@ namespace ft
 				return (insert_node(value, new_node).first);
 			}
 
+			// node_pointer find_max_node(node_pointer node)
+			// {
+			// 	node_pointer max = node->_right;
+			// 	while (node->_right)
+			// 	{
+			// 	std::cout << "find max" << std::endl;
+			// 		max = node->_right;
+			// 	std::cout << "aaaahhh" << std::endl;
+			// 		node = node->_right;
+			// 	}
+			// 	std::cout << "bbbbbbb" << std::endl;
+			// 	return (max);
+			// }
+
 			node_pointer find_max_node(node_pointer node)
 			{
-				node_pointer max;
 				while (node->_right != NULL)
 				{
-				std::cout << "find max" << std::endl;
-					max = node->_right;
+					std::cout << "max test" << std::endl;
 					node = node->_right;
-					std::cout << "aaaahhh" << std::endl;
 				}
-					std::cout << "bbbbbbb" << std::endl;
-				return (max);
+				return (node);
 			}
 
 	// erase
@@ -597,7 +623,6 @@ namespace ft
 					std::cout << "replace_node 2" << std::endl;
 					old_node->_parent->_right = new_node;
 					std::cout << "replace_node 3" << std::endl;
-				
 				}
 			}
 
@@ -607,8 +632,18 @@ namespace ft
 					return ;
 
 				node_pointer target = position.base();
+			
+				std::cout << "target value: " << target->_value.first << std::endl;
 				
-				if (target->_left == NULL && target->_right != NULL)
+				if ((target->_left == NULL) && (target->_right == NULL))
+				{
+					std::cout << " erase: here0" << std::endl;
+					if (is_left_child(target))
+						target->_parent->_left = NULL;
+					else
+						target->_parent->_right = NULL;
+				}
+				else if ((target->_left == NULL) && (target->_right != NULL)) //
 				{
 					std::cout << " erase: here1" << std::endl;
 
@@ -616,7 +651,7 @@ namespace ft
 					set_parent(target->_right, target->_parent);
 					std::cout << "set parent" << std::endl;
 				}
-				else if (target->_right == NULL && target->_left != NULL)
+				else if ((target->_right == NULL) && (target->_left != NULL))
 				{
 					std::cout << " erase: here2" << std::endl;
 					replace_node(target, target->_left);
@@ -627,16 +662,15 @@ namespace ft
 					// has both
 					// search for max number from left subtree;
 					std::cout << " erase: here3" << std::endl;
-					node_pointer replace = find_max_node(target->_left);
-					std::cout << "max_node: " << replace->_value.first << std::endl;
-					replace_node(target, replace);
-					set_parent(replace, target->_parent);
-					// has no child
+					node_pointer prev_node = find_max_node(target->_left);
+					std::cout << "max_node: " << prev_node->_value.first << std::endl;
+					replace_node(target, prev_node);
+					set_parent(prev_node, target->_parent);
 				}
 				_allocator.destroy(target);
 				_allocator.deallocate(target, 1);
 				_size--;
-				fix_balance(position.base());//
+				// fix_balance(position.base());//
 			}
 
 			size_type	erase (const value_type &value)
@@ -654,7 +688,6 @@ namespace ft
 			allocator_type get_allocator() const { return (_allocator); }
 
 	// look up
-
 			size_type	count(const value_type &value) const
 			{
 				const_iterator it = find(value);
