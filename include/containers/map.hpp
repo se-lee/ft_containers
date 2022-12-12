@@ -76,8 +76,13 @@ namespace ft
 			: _tree(comp, alloc)
 			{ insert(first, last); } 
 					
-			map(const map &other) : _tree(other._tree)
-			{}
+			map(const map &other)
+			{
+				_value_comp = other._value_comp;
+				_allocator = other._allocator;
+				_tree = other._tree;
+				*this = other;
+			}
 
 /* --- [ Destructor ] --- */
 			~map() {}
@@ -85,8 +90,8 @@ namespace ft
 /* --- [ Operator= ] --- */
 			map &operator=(const map &other)
 			{
-				// _value_comp = other._value_comp;
-				// _allocator = other._allocator;
+				_value_comp = other._value_comp;
+				_allocator = other._allocator;
 				_tree = other._tree;
 				return (*this);
 			}

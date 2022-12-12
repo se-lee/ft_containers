@@ -151,7 +151,7 @@ namespace ft
 		public:
 			typedef Key																key_type;
 			typedef T															value_type;
-			// typedef tree_node<Type>													node_type;
+			typedef tree_node<T>													node_type;
 			typedef Compare															value_compare;
 			typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
@@ -159,17 +159,19 @@ namespace ft
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
-			typedef tree_iterator<T *>											iterator;
-			typedef tree_iterator<const T *>									const_iterator;
+			typedef tree_iterator<node_type>											iterator;
+			typedef tree_iterator<const node_type>									const_iterator;
+			// typedef tree_iterator<pointer>		iterator;
+			// typedef tree_iterator<const_pointer> const_iterator;
 			typedef tree_node<value_type>*											node_pointer;
 
 		private:
-			// node_pointer			_root;
-			// node_pointer			_begin;
-			// node_pointer			_end;
-			pointer					_root;
-			pointer					_begin;
-			pointer					_end;
+			node_pointer			_root;
+			node_pointer			_begin;
+			node_pointer			_end;
+			// pointer					_root;
+			// pointer					_begin;
+			// pointer					_end;
 	
 			size_t					_size;
 			value_compare			_value_compare;
@@ -201,23 +203,22 @@ namespace ft
 
 			tree(const tree &other )
 			{
+				// std::cout << "copy" << std::endl;
 				*this = other;
 			}
 
 			~tree() 
 			{
 				std::cout << "destructor" << std::endl;
-				remove_branch(_root);
+				// remove_branch(_root);
+				remove_all();
 			}
 
 			tree &operator=(const tree &other)
 			{
-				_root = other._root;
-				_begin = other._begin;
-				_end = other._end;
-				_allocator = other._allocator;
-				_value_compare = other._value_compare;
-			
+				clear();
+				for (iterator it = other._begin; it != other._end; ++it)
+					insert(*it);
 				return (*this);
 			}
 
@@ -394,29 +395,44 @@ namespace ft
 
 			void clear()
 			{
-				_allocator.destroy(_root);
+				remove_branch(_root);
 				_size = 0;
-				_begin = _end;
-				_end->_left = NULL;
+				_begin = NULL;
+				_end = NULL;
 			}
 
 			void	delete_node(node_pointer node)
 			{
-				if (node == NULL)
-					return ;
-				_allocator.destroy(node);
-				_allocator.deallocate(node, 1);
-				_size--;
-				std::cout << node->_value.first << " : delete node" << std::endl;
+				if (node)
+				{
+					// std::cout << node->_value.first << " : delete node" << std::endl;
+					_allocator.destroy(node);
+					_allocator.deallocate(node, 1);
+					_size--;
+				}
 			}
 
 			void	remove_branch(node_pointer node)
 			{
-				if (node == NULL)
-					return ;
-				remove_branch(node->_left);
-				remove_branch(node->_right);
-				delete_node(node);
+				if (node)
+				{
+					remove_branch(node->_left);
+					remove_branch(node->_right);
+					delete_node(node->_left);
+					delete_node(node->_right);
+					// delete_node(node);
+					// node = NULL;
+				}
+			}
+
+			void remove_all()
+			{
+				remove_branch(_root);
+				_begin = NULL;
+				_end = NULL;
+				_root = NULL;
+				_size = 0;
+				// delete_node(_root);
 			}
 
 
