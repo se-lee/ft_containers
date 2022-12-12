@@ -159,6 +159,10 @@ namespace ft
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
+			typedef tree_iterator<node_type>											iterator;
+			typedef tree_iterator<const node_type>									const_iterator;
+			// typedef tree_iterator<pointer>		iterator;
+			// typedef tree_iterator<const_pointer> const_iterator;
 			// typedef tree_iterator<node_type>											iterator;
 			// typedef tree_iterator<const node_type>									const_iterator;
 			// typedef tree_iterator<pointer>		iterator;
@@ -168,12 +172,12 @@ namespace ft
 			typedef tree_node<value_type>*											node_pointer;
 
 		private:
-			node_pointer			_root;
-			node_pointer			_begin;
-			node_pointer			_end;
-			// pointer					_root;
-			// pointer					_begin;
-			// pointer					_end;
+			// node_pointer			_root;
+			// node_pointer			_begin;
+			// node_pointer			_end;
+			pointer					_root;
+			pointer					_begin;
+			pointer					_end;
 	
 			size_t					_size;
 			value_compare			_value_compare;
