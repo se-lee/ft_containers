@@ -417,19 +417,14 @@ namespace ft
 
 			void	delete_node(node_pointer node)
 			{
-				if (node != NULL)
-				{
-					_allocator.destroy(node);
-					_allocator.deallocate(node, 1);
-					// _size--;
-				}
+				_allocator.destroy(node);
+				_allocator.deallocate(node, 1);
 			}
 
 			void	remove_branch(node_pointer node)
 			{
 				if (node != NULL)
 				{
-					// std::cout << " remove_branch" << std::endl;
 					remove_branch(node->_left);
 					remove_branch(node->_right);
 					delete_node(node);
@@ -552,7 +547,7 @@ namespace ft
 				{
 					insert_pos->_right = new_node;
 				}
-				else //ここが変
+				else
 				{
 					delete_node(new_node);
 					return (ft::make_pair(iterator(insert_pos), false));
@@ -566,19 +561,13 @@ namespace ft
 				return (ft::make_pair(iterator(new_node), true));
 			}
 
-			void	update_begin(node_pointer inserted_node)
-			{
-				if (_begin == _end || _value_compare(inserted_node->_value, _begin->_value))
-					_begin = inserted_node;
-			}
-
+		// insert with value
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{
 				node_pointer new_node;
 				new_node = find_insert_position(value);
 				return (insert_node(value, new_node));
 			}
-
 
 	// new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
 				// if key doesnt exist, create a new node
@@ -631,12 +620,24 @@ namespace ft
 
 			node_pointer find_max_node(node_pointer node)
 			{
-				while (node->_right != NULL)
+				node_pointer current = node;
+				while (current->_right != NULL)
 				{
 					std::cout << "max test" << std::endl;
-					node = node->_right;
+					current = current->_right;
 				}
-				return (node);
+				return (current);
+			}
+
+			node_pointer find_mind_node(node_pointer node)
+			{
+				node_pointer current = node;
+				while (current->_left != NULL)
+				{
+					std::cout << "min test" << std::endl;
+					current = current->_left;
+				}
+				return (current);
 			}
 
 	// erase
@@ -663,46 +664,73 @@ namespace ft
 					return ;
 
 				node_pointer target = position.base();
+
+				//if target is equal _begin, update _begin
+				if (position == begin())
+				{
+					position++;
+					_begin = position.base();
+				}
 			
 				std::cout << "target value: " << target->_value.first << std::endl;
 				
-				if ((target->_left == NULL) && (target->_right == NULL))
+				if ((target->_left == NULL) && (target->_right == NULL)) // has no child
 				{
-					std::cout << " erase: here0" << std::endl;
+					std::cout << " erase: no child" << std::endl;
 					if (is_left_child(target))
+					{
+						std::cout << "is left child" << std::endl;
 						target->_parent->_left = NULL;
+					}
 					else
+					{
+						std::cout << "is right child" << std::endl;
 						target->_parent->_right = NULL;
+					}
 				}
-				else if ((target->_left == NULL) && (target->_right != NULL)) //
+				else if ((target->_right == NULL) && (target->_left != NULL)) // has only left child
 				{
-					std::cout << " erase: here1" << std::endl;
+					std::cout << " erase: only left child" << std::endl;
+					replace_node(target, target->_left);
+					set_parent(target->_left, target->_parent);
+				}
+				else if ((target->_left == NULL) && (target->_right != NULL)) // has only right child
+				{
+					std::cout << " erase: only right child" << std::endl;
 
 					replace_node(target, target->_right);
 					set_parent(target->_right, target->_parent);
 					std::cout << "set parent" << std::endl;
 				}
-				else if ((target->_right == NULL) && (target->_left != NULL))
-				{
-					std::cout << " erase: here2" << std::endl;
-					replace_node(target, target->_left);
-					set_parent(target->_left, target->_parent);
-				}
 				else
 				{
 					// has both
 					// search for max number from left subtree;
-					std::cout << " erase: here3" << std::endl;
+					std::cout << " erase: both child" << std::endl;
 					node_pointer prev_node = find_max_node(target->_left);
 					std::cout << "max_node: " << prev_node->_value.first << std::endl;
 					replace_node(target, prev_node);
 					set_parent(prev_node, target->_parent);
 				}
-				_allocator.destroy(target);
-				_allocator.deallocate(target, 1);
+				// _allocator.destroy(target);
+				// _allocator.deallocate(target, 1);
+				std::cout << " check ! " << std::endl;
+				delete_node(target);
 				_size--;
 				// fix_balance(position.base());//
 			}
+
+			// void	erase(iterator position)
+			// {
+			// 	// has no child
+
+
+			// 	// has only left child
+
+			// 	// has only right child
+
+			// 	// has both child
+			// }
 
 			size_type	erase (const value_type &value)
 			{

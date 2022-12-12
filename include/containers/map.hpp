@@ -162,6 +162,8 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{ return (_tree.insert(value)); }
 
+
+			// insert with hint 
 			iterator insert(iterator position, const value_type &value)
 			{ return (_tree.insert(position, value)); }
 
