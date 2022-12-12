@@ -135,6 +135,8 @@ namespace ft
 			mapped_type &at( const Key &key)
 			{
 				iterator pos = find(key);
+				if (pos == end())
+					throw std::out_of_range("out of range.");
 				return (pos.base()->_value.second);
 			}
 			
@@ -144,11 +146,11 @@ namespace ft
 				return (pos.base()->_value.second);
 			}
 
-//  mapped_type& at (const key_type& k);const mapped_type& at (const key_type& k) const;
-
 			mapped_type& operator[]( const Key& key )
 			{
 				iterator pos = find(key);
+				if (pos == end())
+					pos = insert(ft::make_pair(key, mapped_type())).first;
 				return (pos.base()->_value.second);
 			}
 
@@ -205,35 +207,44 @@ namespace ft
 
 /* --- [ Operations / Lookup ] --- */
 			size_type	count( const Key &key ) const
-			{ return (_tree.count(make_pair(key, mapped_type()))); }
+			{ return (_tree.count(ft::make_pair(key, mapped_type()))); }
 
 			iterator find( const Key &key )
-			{ return (_tree.find(make_pair(key, mapped_type()))); }
+			{ return (_tree.find(ft::make_pair(key, mapped_type()))); }
 
 			const_iterator find( const Key &key ) const
-			{ return (_tree.find(make_pair(key, mapped_type()))); }
+			{ return (_tree.find(ft::make_pair(key, mapped_type()))); }
 
-			ft::pair<iterator, iterator> equal_range( const Key &key );
-			ft::pair<const_iterator, const_iterator> equal_range( const Key &key ) const;
+			ft::pair<iterator, iterator> equal_range( const Key &key )
+			{
+				return ( _tree.equal_range(ft::make_pair(key, mapped_type())));
+			}
+
+			ft::pair<const_iterator, const_iterator> equal_range( const Key &key ) const
+			{
+				return (_tree.equal_range(ft::make_pair(key, mapped_type())));
+			}
+
 
 			iterator lower_bound( const Key &key )
 			{
-				return (_tree.lower_bound(make_pair(key, mapped_type())));
+				return (_tree.lower_bound(ft::make_pair(key, mapped_type())));
 			}
 			const_iterator lower_bound(const Key &key ) const
 			{
-				return (_tree.lower_bound(make_pair(key, mapped_type())));
+				return (_tree.lower_bound(ft::make_pair(key, mapped_type())));
 			}
 
 			iterator upper_bound( const Key &key )
 			{
-				return (_tree.upper_bound(make_pair(key, mapped_type())));
+				return (_tree.upper_bound(ft::make_pair(key, mapped_type())));
 			}
 
 			const_iterator upper_bound( const Key &key ) const
 			{
-				return (_tree.upper_bound(make_pair(key, mapped_type())));
+				return (_tree.upper_bound(ft::make_pair(key, mapped_type())));
 			}
+
 
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const { return (_tree.get_allocator()); }

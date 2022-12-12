@@ -825,10 +825,10 @@ namespace ft
 			}
 
 			ft::pair<iterator, iterator> equal_range(const value_type &value)
-			{ return (make_pair(find(value), upper_bound(value))); }
+			{ return (ft::make_pair(find(value), upper_bound(value))); }
 
 			ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const
-			{ return (make_pair(find(value), upper_bound(value))); }
+			{ return (ft::make_pair(find(value), upper_bound(value))); }
 
 			void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
 			{
