@@ -411,6 +411,7 @@ namespace ft
 			{
 				remove_branch(_root);
 				_size = 0;
+				_root = NULL;
 				_begin = NULL;
 				_end = NULL;
 			}
@@ -629,7 +630,7 @@ namespace ft
 				return (current);
 			}
 
-			node_pointer find_mind_node(node_pointer node)
+			node_pointer find_min_node(node_pointer node)
 			{
 				node_pointer current = node;
 				while (current->_left != NULL)
@@ -647,14 +648,13 @@ namespace ft
 					new_node->_parent = NULL;
 				else if (is_left_child(old_node))
 				{
-					std::cout << "replace_node 1" << std::endl;
+					std::cout << "replace_node left" << std::endl;
 					old_node->_parent->_left = new_node;
 				}
 				else
 				{
-					std::cout << "replace_node 2" << std::endl;
+					std::cout << "replace_node right" << std::endl;
 					old_node->_parent->_right = new_node;
-					std::cout << "replace_node 3" << std::endl;
 				}
 			}
 
@@ -671,8 +671,6 @@ namespace ft
 					position++;
 					_begin = position.base();
 				}
-			
-				std::cout << "target value: " << target->_value.first << std::endl;
 				
 				if ((target->_left == NULL) && (target->_right == NULL)) // has no child
 				{
@@ -697,40 +695,26 @@ namespace ft
 				else if ((target->_left == NULL) && (target->_right != NULL)) // has only right child
 				{
 					std::cout << " erase: only right child" << std::endl;
-
 					replace_node(target, target->_right);
 					set_parent(target->_right, target->_parent);
-					std::cout << "set parent" << std::endl;
 				}
 				else
 				{
-					// has both
 					// search for max number from left subtree;
 					std::cout << " erase: both child" << std::endl;
-					node_pointer prev_node = find_max_node(target->_left);
-					std::cout << "max_node: " << prev_node->_value.first << std::endl;
-					replace_node(target, prev_node);
-					set_parent(prev_node, target->_parent);
+					node_pointer next_node = find_min_node(target->_right);
+					replace_node(target, next_node);
+					set_parent(next_node, target->_parent);
+
+					// node_pointer prev_node = find_max_node(target->_left);
+					// std::cout << "max_node: " << prev_node->_value.first << std::endl;
+					// replace_node(target, prev_node);
+					// set_parent(prev_node, target->_parent);
 				}
-				// _allocator.destroy(target);
-				// _allocator.deallocate(target, 1);
-				std::cout << " check ! " << std::endl;
 				delete_node(target);
+				//fix balance
 				_size--;
-				// fix_balance(position.base());//
 			}
-
-			// void	erase(iterator position)
-			// {
-			// 	// has no child
-
-
-			// 	// has only left child
-
-			// 	// has only right child
-
-			// 	// has both child
-			// }
 
 			size_type	erase (const value_type &value)
 			{
