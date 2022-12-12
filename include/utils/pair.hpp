@@ -30,7 +30,6 @@ namespace ft
 			second = pr.second;
 			return (*this);
 		}
-
 	};
 
 /* --- [ Non-member function overloads ] --- */

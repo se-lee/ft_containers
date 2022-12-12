@@ -159,16 +159,12 @@ namespace ft
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
-			typedef tree_iterator<node_type>											iterator;
-			typedef tree_iterator<const node_type>									const_iterator;
-			// typedef tree_iterator<pointer>		iterator;
-			// typedef tree_iterator<const_pointer> const_iterator;
 			// typedef tree_iterator<node_type>											iterator;
 			// typedef tree_iterator<const node_type>									const_iterator;
 			// typedef tree_iterator<pointer>		iterator;
 			// typedef tree_iterator<const_pointer> const_iterator;
-			typedef tree_iterator<T *>	iterator;
-			typedef tree_iterator<const T *> const_iterator;
+			typedef tree_iterator<T *>			iterator;
+			typedef tree_iterator<const T *>	const_iterator;
 			typedef tree_node<value_type>*											node_pointer;
 
 		private:
@@ -185,7 +181,8 @@ namespace ft
 
 		public:
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
-			tree(const value_compare &comp, const allocator_type &a) : _root(NULL), _begin(NULL), _end(NULL), _size(0) 
+			tree(const value_compare &comp, const allocator_type &a) 
+			: _root(NULL), _begin(NULL), _end(NULL), _size(0) 
 			{ 
 				_value_compare = comp; 
 				_allocator = a;
@@ -207,24 +204,35 @@ namespace ft
 				insert(first, last);
 			}
 
-			tree(const tree &other )
+			tree(const tree &other) : _value_compare(other._value_compare), _allocator(other._allocator)
 			{
-				// std::cout << "copy" << std::endl;
-				*this = other;
-			}
+				_root = NULL;
+				_begin = NULL;
+				_end = NULL;
+				_size = 0;
+
+				for (iterator it = other.begin(); it != other.end(); ++it)
+					insert(*it);
+			}	
 
 			~tree() 
 			{
-				std::cout << "destructor" << std::endl;
 				// remove_branch(_root);
 				remove_all();
 			}
 
 			tree &operator=(const tree &other)
 			{
-				clear();
-				for (iterator it = other._begin; it != other._end; ++it)
-					insert(*it);
+				if (this != &other)
+				{
+					clear();
+					_value_compare = other._value_compare;
+					_allocator = other._allocator;
+					for (iterator it = other.begin(); it != other.end(); ++it)
+					{
+						insert(*it);
+					}
+				}
 				return (*this);
 			}
 
@@ -409,24 +417,22 @@ namespace ft
 
 			void	delete_node(node_pointer node)
 			{
-				if (node)
+				if (node != NULL)
 				{
-					// std::cout << node->_value.first << " : delete node" << std::endl;
 					_allocator.destroy(node);
 					_allocator.deallocate(node, 1);
-					_size--;
+					// _size--;
 				}
 			}
 
 			void	remove_branch(node_pointer node)
 			{
-				if (node)
+				if (node != NULL)
 				{
+					// std::cout << " remove_branch" << std::endl;
 					remove_branch(node->_left);
 					remove_branch(node->_right);
-					delete_node(node->_left);
-					delete_node(node->_right);
-					// delete_node(node);
+					delete_node(node);
 					// node = NULL;
 				}
 			}
@@ -438,7 +444,7 @@ namespace ft
 				_end = NULL;
 				_root = NULL;
 				_size = 0;
-				// delete_node(_root);
+				delete_node(_root);
 			}
 
 
@@ -532,20 +538,23 @@ namespace ft
 				new_node = _allocator.allocate(1);
 				_allocator.construct(new_node, value);
 				new_node->_parent = insert_pos;
-				if (insert_pos == NULL)
+				if (insert_pos == NULL) // root;
 				{
 					_root = new_node;
 					_begin = new_node;
 					_end = new_node;
 				}
 				else if (_value_compare(new_node->_value, insert_pos->_value))
-					insert_pos->_left = new_node;
-				else if (_value_compare(insert_pos->_value, new_node->_value))
-					insert_pos->_right = new_node;
-				else
 				{
-					_allocator.destroy(new_node);
-					_allocator.deallocate(new_node, 1);
+					insert_pos->_left = new_node;
+				}
+				else if (_value_compare(insert_pos->_value, new_node->_value))
+				{
+					insert_pos->_right = new_node;
+				}
+				else //ここが変
+				{
+					delete_node(new_node);
 					return (ft::make_pair(iterator(insert_pos), false));
 				}
 				// fix_balance(new_node);

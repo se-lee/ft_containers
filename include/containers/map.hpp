@@ -77,11 +77,9 @@ namespace ft
 			{ insert(first, last); } 
 					
 			map(const map &other)
+			: _value_comp(other._value_comp), _allocator(other._allocator), _tree(_value_comp, _allocator)
 			{
-				_value_comp = other._value_comp;
-				_allocator = other._allocator;
 				_tree = other._tree;
-				*this = other;
 			}
 
 /* --- [ Destructor ] --- */
