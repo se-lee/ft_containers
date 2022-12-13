@@ -238,14 +238,11 @@ namespace ft
 
 	// rotate & check balance
 			node_pointer	right_rotate(node_pointer node)
-			{ //eg. node == 1; no
+			{
 				node_pointer temp = node->_left;
 				node->_left = temp->_right;
 				if (temp->_right)
-				{
-					// node->_left = temp->_right;
 					temp->_right->_parent = node;
-				}
 				if (node->_parent == NULL)
 				{
 					temp->_parent = NULL;
@@ -253,7 +250,10 @@ namespace ft
 				}
 				else
 				{
-					node->_parent->_left = temp;
+					if (is_left_child(node))
+						node->_parent->_left = temp;
+					else if (!is_left_child(node))
+						node->_parent->_right = temp;
 					temp->_parent = node->_parent;
 				}
 				temp->_right = node;
@@ -263,7 +263,7 @@ namespace ft
 			}
 
 			node_pointer	left_rotate(node_pointer node)
-			{ 	// eg: node == c; node->right == d;
+			{
 				node_pointer temp = node->_right;
 				node->_right = temp->_left;
 				if (temp->_left)
@@ -278,8 +278,14 @@ namespace ft
 				}
 				else
 				{
-					node->_parent->_right = temp;
+
+					if (is_left_child(node))
+						node->_parent->_left = temp;
+					else if (!is_left_child(node))
+						node->_parent->_right = temp;
 					temp->_parent = node->_parent;
+					// node->_parent->_right = temp;
+					// temp->_parent = node->_parent;
 				}
 				temp->_left = node;
 				node->_parent = temp;
@@ -360,10 +366,8 @@ namespace ft
 							std::cout << node->_value.first << ": left rotate" << std::endl;
 							left_rotate(node);
 						}
-						else// if (get_balance_factor(node->_right) > 0 )
+						else // if (get_balance_factor(n ftfde->_right) > 0 )
 						{
-							// std::cout << node->_value.first << ": right left" << std::endl;
-							// right_left_rotate(node);
 							std::cout << node->_value.first << ": left-right" << std::endl;
 							left_right_rotate(node);
 						}
@@ -553,7 +557,7 @@ namespace ft
 					delete_node(new_node);
 					return (ft::make_pair(iterator(insert_pos), false));
 				}
-				// fix_balance(new_node);
+				fix_balance(new_node);
 				if (_value_compare(new_node->_value, _begin->_value))
 					_begin = new_node;
 				if (_value_compare(_end->_value, new_node->_value))
@@ -837,7 +841,7 @@ namespace ft
 					std::cout << prefix;
 					std::cout << (isLeft ? "└──L:" : "└──R:" );
 					// print the value of the node
-					std::cout << "[" << node->_value.first << " -- ";
+					std::cout << "[ " << node->_value.first << " -- ";
 					std::cout << node->_value.second << "] : [h " << get_height(node) << " b " << get_balance_factor(node) 
 									<< " " << std::boolalpha << is_balanced(node) << " ] "<< std::endl;
 					// enter the next tree level - left and right branch
