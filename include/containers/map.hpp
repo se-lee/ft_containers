@@ -53,10 +53,10 @@ namespace ft
 
 			typedef tree_iterator<pointer>							iterator;
 			typedef tree_iterator<const_pointer>					const_iterator;
-			// typedef tree_iterator<const value_type> 				const_iterator;
-			// typedef const_tree_iterator<value_type>					const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			// typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;
 			typedef std::size_t										size_type;
 
@@ -108,16 +108,20 @@ namespace ft
 			{ return (_tree.end()); }
 
 			reverse_iterator rbegin() 
-			{ return (reverse_iterator(_tree.end())); }
+			{ 
+				std::cout << " rbegin test" << std::endl;
+				return (reverse_iterator(end())); }
 
 			const_reverse_iterator rbegin() const 
-			{ return (const_reverse_iterator(_tree.end())); }
+			{ return (const_reverse_iterator(end())); }
 
 			reverse_iterator rend() 
-			{ return(reverse_iterator(_tree.begin())); }
+			{ 
+				std::cout << "rend test" << std::endl;
+				return(reverse_iterator(begin())); }
 
 			const_reverse_iterator rend() const
-			{ return (const_reverse_iterator(_tree.begin())); }
+			{ return (const_reverse_iterator(begin())); }
 
 		
 /* --- [ Capacity ] --- */

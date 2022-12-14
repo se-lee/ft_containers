@@ -386,9 +386,13 @@ namespace ft
 
 			iterator end() 
 			{
-				if (_end == NULL)
+				// if (_end == NULL)
+				// 	return (begin());
+				// return (iterator(NULL)); 
+				if (_end != NULL)
+					return (iterator(_end->_right));
+				else
 					return (begin());
-				return (iterator(NULL)); 
 			}
 			
 			const_iterator end() const 
@@ -693,18 +697,21 @@ namespace ft
 						std::cout << "is right child" << std::endl;
 						target->_parent->_right = NULL;
 					}
+					// fix_balance(target->_parent);
 				}
 				else if ((target->_right == NULL) && (target->_left != NULL)) // has only left child
 				{
 					std::cout << " erase: only left child" << std::endl;
 					replace_node(target, target->_left);
 					set_parent(target->_left, target->_parent);
+					// fix_balance(target->_left);
 				}
 				else if ((target->_left == NULL) && (target->_right != NULL)) // has only right child
 				{
 					std::cout << " erase: only right child" << std::endl;
 					replace_node(target, target->_right);
 					set_parent(target->_right, target->_parent);
+					// fix_balance(target->_right);
 				}
 				else
 				{
@@ -718,9 +725,9 @@ namespace ft
 					// std::cout << "max_node: " << prev_node->_value.first << std::endl;
 					// replace_node(target, prev_node);
 					// set_parent(prev_node, target->_parent);
+					// fix_balance(next_node);
 				}
 				delete_node(target);
-				//fix balance
 				_size--;
 			}
 
