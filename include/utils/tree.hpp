@@ -386,13 +386,9 @@ namespace ft
 
 			iterator end() 
 			{
-				// if (_end == NULL)
-				// 	return (begin());
-				// return (iterator(NULL)); 
-				if (_end != NULL)
-					return (iterator(_end->_right));
-				else
+				if (_end == NULL)
 					return (begin());
+				return (iterator(NULL));
 			}
 			
 			const_iterator end() const 
@@ -495,7 +491,10 @@ namespace ft
 			void set_parent(node_pointer child, node_pointer parent)
 			{ 
 				child->_parent = parent;
-				std::cout << "set parent" << std::endl;	
+				if (is_left_child(child))
+					parent->_left = child;
+				else
+					parent->_right = child;
 			}
 
 			void	tree_left_rotate(node_pointer x) const
@@ -611,34 +610,15 @@ namespace ft
 		
 				}
 				else if (_value_compare(*position, value))
-				{
 					new_node = find_insert_position(value);
-				}
 				return (insert_node(value, new_node).first);
 			}
-
-			// node_pointer find_max_node(node_pointer node)
-			// {
-			// 	node_pointer max = node->_right;
-			// 	while (node->_right)
-			// 	{
-			// 	std::cout << "find max" << std::endl;
-			// 		max = node->_right;
-			// 	std::cout << "aaaahhh" << std::endl;
-			// 		node = node->_right;
-			// 	}
-			// 	std::cout << "bbbbbbb" << std::endl;
-			// 	return (max);
-			// }
 
 			node_pointer find_max_node(node_pointer node)
 			{
 				node_pointer current = node;
 				while (current->_right != NULL)
-				{
-					std::cout << "max test" << std::endl;
 					current = current->_right;
-				}
 				return (current);
 			}
 
@@ -646,10 +626,7 @@ namespace ft
 			{
 				node_pointer current = node;
 				while (current->_left != NULL)
-				{
-					std::cout << "min test" << std::endl;
 					current = current->_left;
-				}
 				return (current);
 			}
 
@@ -657,17 +634,16 @@ namespace ft
 			void	replace_node(node_pointer old_node, node_pointer new_node)	
 			{
 				if (old_node->_parent == NULL)
+				{
 					new_node->_parent = NULL;
+					_root = new_node;
+				}
 				else if (is_left_child(old_node))
-				{
-					std::cout << "replace_node left" << std::endl;
 					old_node->_parent->_left = new_node;
-				}
 				else
-				{
-					std::cout << "replace_node right" << std::endl;
 					old_node->_parent->_right = new_node;
-				}
+				set_parent(new_node, old_node->_parent);
+				
 			}
 
 			void	erase (iterator position)
@@ -684,48 +660,40 @@ namespace ft
 					_begin = position.base();
 				}
 				
-				if ((target->_left == NULL) && (target->_right == NULL)) // has no child
+				if (is_leaf(target)) // has no child
 				{
 					std::cout << " erase: no child" << std::endl;
 					if (is_left_child(target))
-					{
-						std::cout << "is left child" << std::endl;
 						target->_parent->_left = NULL;
-					}
 					else
-					{
-						std::cout << "is right child" << std::endl;
 						target->_parent->_right = NULL;
-					}
 					// fix_balance(target->_parent);
 				}
 				else if ((target->_right == NULL) && (target->_left != NULL)) // has only left child
 				{
 					std::cout << " erase: only left child" << std::endl;
 					replace_node(target, target->_left);
-					set_parent(target->_left, target->_parent);
+					// set_parent(target->_left, target->_parent);
 					// fix_balance(target->_left);
 				}
 				else if ((target->_left == NULL) && (target->_right != NULL)) // has only right child
 				{
 					std::cout << " erase: only right child" << std::endl;
 					replace_node(target, target->_right);
-					set_parent(target->_right, target->_parent);
+					// set_parent(target->_right, target->_parent);
 					// fix_balance(target->_right);
 				}
 				else
 				{
-					// search for max number from left subtree;
 					std::cout << " erase: both child" << std::endl;
-					node_pointer next_node = find_min_node(target->_right);
-					replace_node(target, next_node);
-					set_parent(next_node, target->_parent);
-
-					// node_pointer prev_node = find_max_node(target->_left);
-					// std::cout << "max_node: " << prev_node->_value.first << std::endl;
-					// replace_node(target, prev_node);
-					// set_parent(prev_node, target->_parent);
-					// fix_balance(next_node);
+					node_pointer temp = find_max_node(target->_left);
+					replace_node(target, temp);
+					// set_parent(temp, target->_parent);
+					temp->_right = target->_right;
+					if (temp != target->_left)
+					{
+						temp->_left = target->_left;
+					}
 				}
 				delete_node(target);
 				_size--;
@@ -840,10 +808,10 @@ namespace ft
 			}
 
 			ft::pair<iterator, iterator> equal_range(const value_type &value)
-			{ return (ft::make_pair(find(value), upper_bound(value))); }
+			{ return (ft::make_pair(lower_bound(value), upper_bound(value))); }
 
 			ft::pair<const_iterator, const_iterator> equal_range( const value_type &value ) const
-			{ return (ft::make_pair(find(value), upper_bound(value))); }
+			{ return (ft::make_pair(lower_bound(value), upper_bound(value))); }
 
 			void printAVL(const std::string& prefix, const node_pointer node, bool isLeft)
 			{

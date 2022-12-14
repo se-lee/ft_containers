@@ -107,9 +107,8 @@ int main()
 		mymap.insert(ft::make_pair(50, 'a'));
 		mymap.insert(ft::make_pair(60, 'c'));
 		mymap.insert(ft::make_pair(70, 'd'));
-		mymap.insert(ft::make_pair(40, 'e'));
-		mymap.insert(ft::make_pair(45, 'f'));
-		// mymap.insert(ft::make_pair(7, 'g'));
+		mymap.insert(ft::make_pair(40, 'f'));
+		mymap.insert(ft::make_pair(55, 'g'));
 		// mymap.insert(ft::make_pair(13, 'i'));
 		// mymap.insert(ft::make_pair(10, 'b'));
 		// mymap.insert(ft::make_pair(14, 'h'));
@@ -117,6 +116,10 @@ int main()
 		// mymap.insert(ft::make_pair(20, 'h'));
 		// mymap.insert(ft::make_pair(25, 'h'));
 
+		mymap.printTree();
+
+		std::cout << "==========================" << std::endl;
+		mymap.erase(60);
 
 		mymap.printTree();
 
