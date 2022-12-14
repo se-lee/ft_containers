@@ -250,6 +250,7 @@ namespace ft
 				}
 				else
 				{
+					temp->_parent = node->_parent;
 					if (is_left_child(node))
 						node->_parent->_left = temp;
 					else if (!is_left_child(node))
@@ -268,7 +269,6 @@ namespace ft
 				node->_right = temp->_left;
 				if (temp->_left)
 				{
-					// node->_right = temp->_left;
 					temp->_left->_parent = node;
 				}
 				if (node->_parent == NULL)
@@ -278,14 +278,12 @@ namespace ft
 				}
 				else
 				{
-
+					temp->_parent = node->_parent;
 					if (is_left_child(node))
 						node->_parent->_left = temp;
 					else if (!is_left_child(node))
 						node->_parent->_right = temp;
 					temp->_parent = node->_parent;
-					// node->_parent->_right = temp;
-					// temp->_parent = node->_parent;
 				}
 				temp->_left = node;
 				node->_parent = temp;
@@ -293,26 +291,19 @@ namespace ft
 				return (temp);
 			}
 
-			// node_pointer	left_right_rotate(node_pointer node)
-			// {
-			// 	node->_left = left_rotate(node->_left);
-			// 	return (right_rotate(node));
-			// }
-
-			// node_pointer	right_left_rotate(node_pointer node)
-			// {
-			// 	node->_right = right_rotate(node->_right);
-			// 	return (left_rotate(node));
-			// }
-
 			node_pointer	left_right_rotate(node_pointer node)
 			{
-				node->_right = left_rotate(node->_left);
+				// node_pointer temp;
+				// temp = left_rotate(node->_left);
+				
+				node->_left = left_rotate(node->_left);
 				return (right_rotate(node));
 			}
 
 			node_pointer	right_left_rotate(node_pointer node)
 			{
+				// node_pointer temp;
+				// temp = right_rotate(node->_right);
 				node->_left = right_rotate(node->_right);
 				return (left_rotate(node));
 			}
@@ -342,34 +333,39 @@ namespace ft
 			{
 				if (node == NULL)
 					return ;
+				if (is_leaf(node))
+					return ;
 				if (!is_balanced(node))
 				{
 					if (get_balance_factor(node) > 0) // left-heavy
 					{
 						if (get_balance_factor(node->_left) > 0)
 						{
-							std::cout << node->_value.first << " :right rotate" << std::endl;
+							// std::cout << node->_value.first << " :right rotate" << std::endl;
 							right_rotate(node);
 						}
 						else// if (get_balance_factor(node->_left) < 0)
 						{
-							// std::cout << node->_value.first << ": left-right" << std::endl;
-							// left_right_rotate(node);
-							std::cout << node->_value.first << ": right left" << std::endl;
-							right_left_rotate(node);
+							std::cout << node->_value.first << ": left-right" << std::endl;
+							left_right_rotate(node);
+							// std::cout << node->_value.first << ": right left" << std::endl;
+							// right_left_rotate(node);
 						}
 					}
 					else// if (get_balance_factor(node) < 0) // right-heavy
 					{
 						if (get_balance_factor(node->_right) < 0 )
 						{
-							std::cout << node->_value.first << ": left rotate" << std::endl;
+							// std::cout << node->_value.first << ": left rotate" << std::endl;
 							left_rotate(node);
 						}
-						else // if (get_balance_factor(n ftfde->_right) > 0 )
+						else // if (get_balance_factor(node->_right) > 0 )
 						{
-							std::cout << node->_value.first << ": left-right" << std::endl;
-							left_right_rotate(node);
+							// std::cout << node->_value.first << ": left-right" << std::endl;
+							// left_right_rotate(node);
+							std::cout << node->_value.first << ": right left" << std::endl;
+							right_left_rotate(node);
+
 						}
 					}
 				}
@@ -473,16 +469,24 @@ namespace ft
 
 			}
 
-			bool is_left_child(node_pointer x) const
+			bool is_left_child(node_pointer node) const
 			{ 
-				if (x->_parent)
-					return (x == x->_parent->_left); 
+				if (node->_parent)
+					return (node == node->_parent->_left); 
 				else
 					return (false);
 			}
 
-			bool is_right_child(node_pointer x) const
-			{ return (x == x->_parent->_right); }
+			bool is_right_child(node_pointer node) const
+			{ return (node == node->_parent->_right); }
+
+			bool is_leaf(node_pointer node) const
+			{
+				if ((node->_left == NULL) && (node->_right == NULL))
+					return (true);
+				else
+					return (false);
+			}
 
 			void set_parent(node_pointer child, node_pointer parent)
 			{ 
