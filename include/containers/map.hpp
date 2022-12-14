@@ -53,8 +53,8 @@ namespace ft
 
 			typedef tree_iterator<pointer>							iterator;
 			typedef tree_iterator<const_pointer>					const_iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			// typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			// typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;
@@ -108,17 +108,13 @@ namespace ft
 			{ return (_tree.end()); }
 
 			reverse_iterator rbegin() 
-			{ 
-				std::cout << " rbegin test" << std::endl;
-				return (reverse_iterator(end())); }
+			{ return (reverse_iterator(end())); }
 
 			const_reverse_iterator rbegin() const 
 			{ return (const_reverse_iterator(end())); }
 
 			reverse_iterator rend() 
-			{ 
-				std::cout << "rend test" << std::endl;
-				return(reverse_iterator(begin())); }
+			{ return(reverse_iterator(begin())); }
 
 			const_reverse_iterator rend() const
 			{ return (const_reverse_iterator(begin())); }
@@ -159,25 +155,16 @@ namespace ft
 			}
 
 /* --- [ Modifiers ] --- */
-			// std::map<Key, T, Compare, Allocator>::clear
 			void clear()
 			{ _tree.clear(); }
 			// erases all elements from the container
 			
-
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{ return (_tree.insert(value)); }
-
 
 			// insert with hint 
 			iterator insert(iterator position, const value_type &value)
 			{ return (_tree.insert(position, value)); }
-
-			// template<class InputIterator>
-			// void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
-			// {
-			// 	return (_tree.insert(first, last));
-			// }
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)

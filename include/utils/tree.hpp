@@ -348,8 +348,6 @@ namespace ft
 						{
 							std::cout << node->_value.first << ": left-right" << std::endl;
 							left_right_rotate(node);
-							// std::cout << node->_value.first << ": right left" << std::endl;
-							// right_left_rotate(node);
 						}
 					}
 					else// if (get_balance_factor(node) < 0) // right-heavy
@@ -361,8 +359,6 @@ namespace ft
 						}
 						else // if (get_balance_factor(node->_right) > 0 )
 						{
-							// std::cout << node->_value.first << ": left-right" << std::endl;
-							// left_right_rotate(node);
 							std::cout << node->_value.first << ": right left" << std::endl;
 							right_left_rotate(node);
 
@@ -388,14 +384,14 @@ namespace ft
 			{
 				if (_end == NULL)
 					return (begin());
-				return (iterator(NULL));
+				return (iterator(_end->_right));
 			}
 			
 			const_iterator end() const 
 			{ 
 				if (_end == NULL)
 					return (begin());
-				return (const_iterator(NULL)); 
+				return (iterator(_end->_right));
 			}
 
 			iterator root() 
@@ -638,12 +634,7 @@ namespace ft
 					new_node->_parent = NULL;
 					_root = new_node;
 				}
-				else if (is_left_child(old_node))
-					old_node->_parent->_left = new_node;
-				else
-					old_node->_parent->_right = new_node;
 				set_parent(new_node, old_node->_parent);
-				
 			}
 
 			void	erase (iterator position)
@@ -659,7 +650,6 @@ namespace ft
 					position++;
 					_begin = position.base();
 				}
-				
 				if (is_leaf(target)) // has no child
 				{
 					std::cout << " erase: no child" << std::endl;
@@ -673,22 +663,20 @@ namespace ft
 				{
 					std::cout << " erase: only left child" << std::endl;
 					replace_node(target, target->_left);
-					// set_parent(target->_left, target->_parent);
 					// fix_balance(target->_left);
 				}
 				else if ((target->_left == NULL) && (target->_right != NULL)) // has only right child
 				{
 					std::cout << " erase: only right child" << std::endl;
 					replace_node(target, target->_right);
-					// set_parent(target->_right, target->_parent);
 					// fix_balance(target->_right);
 				}
 				else
 				{
 					std::cout << " erase: both child" << std::endl;
 					node_pointer temp = find_max_node(target->_left);
+
 					replace_node(target, temp);
-					// set_parent(temp, target->_parent);
 					temp->_right = target->_right;
 					if (temp != target->_left)
 					{
