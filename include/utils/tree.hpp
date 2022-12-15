@@ -487,10 +487,10 @@ namespace ft
 			void set_parent(node_pointer child, node_pointer parent)
 			{ 
 				child->_parent = parent;
-				if (is_left_child(child))
-					parent->_left = child;
-				else
-					parent->_right = child;
+				// if (is_left_child(child))
+				// 	parent->_left = child;
+				// else
+				// 	parent->_right = child;
 			}
 
 			void	tree_left_rotate(node_pointer x) const
@@ -634,7 +634,12 @@ namespace ft
 					new_node->_parent = NULL;
 					_root = new_node;
 				}
-				set_parent(new_node, old_node->_parent);
+				if (is_left_child(old_node))
+					old_node->_parent->_left = new_node;
+				else
+					old_node->_parent->_right = new_node;
+				new_node->_parent = old_node->_parent;
+				// set_parent(new_node, old_node->_parent);
 			}
 
 			void	erase (iterator position)
@@ -644,12 +649,6 @@ namespace ft
 
 				node_pointer target = position.base();
 
-				//if target is equal _begin, update _begin
-				if (position == begin())
-				{
-					position++;
-					_begin = position.base();
-				}
 				if (is_leaf(target)) // has no child
 				{
 					std::cout << " erase: no child" << std::endl;
@@ -675,16 +674,28 @@ namespace ft
 				{
 					std::cout << " erase: both child" << std::endl;
 					node_pointer temp = find_max_node(target->_left);
-
+					if (target->_parent == NULL)
+						_root = target;
 					replace_node(target, temp);
-					temp->_right = target->_right;
+					if (temp->_parent != target)
+						temp->_parent->_right = NULL;
 					if (temp != target->_left)
 					{
+						temp->_parent->_right = temp->_left;
+						if (temp->_left != NULL)
+							temp->_left->_parent = temp->_parent;
 						temp->_left = target->_left;
+						if (temp->_left != NULL)
+							temp->_left->_parent = temp;
 					}
+					temp->_parent = target->_parent;
+					temp->_right = target->_right;
+					temp->_right->_parent = temp;
 				}
 				delete_node(target);
 				_size--;
+				_begin = find_min_node(_root);
+				_end = find_max_node(_root);
 			}
 
 			size_type	erase (const value_type &value)
