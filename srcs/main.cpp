@@ -104,22 +104,26 @@ int main()
 		// mymap.insert(it, ft::make_pair<char, int>('f',300));  // max efficiency inserting
 		// mymap.insert(it, ft::make_pair<char, int>('2',400)); 
 
-		mymap.insert(ft::make_pair(50, 'a'));
-		mymap.insert(ft::make_pair(60, 'c'));
-		mymap.insert(ft::make_pair(70, 'd'));
-		mymap.insert(ft::make_pair(40, 'f'));
-		mymap.insert(ft::make_pair(55, 'g'));
-		// mymap.insert(ft::make_pair(13, 'i'));
-		// mymap.insert(ft::make_pair(10, 'b'));
-		// mymap.insert(ft::make_pair(14, 'h'));
-		// mymap.insert(ft::make_pair(17, 'h'));
-		// mymap.insert(ft::make_pair(20, 'h'));
-		// mymap.insert(ft::make_pair(25, 'h'));
+		mymap.insert(ft::make_pair(8, 'a'));
+		mymap.insert(ft::make_pair(3, 'c'));
+		mymap.insert(ft::make_pair(1, 'd'));
+		mymap.insert(ft::make_pair(9, 'f'));
+		mymap.insert(ft::make_pair(4, 'g'));
+		mymap.insert(ft::make_pair(7, 'i'));
+		mymap.insert(ft::make_pair(13, 'b'));
+		mymap.insert(ft::make_pair(10, 'h'));
+		mymap.insert(ft::make_pair(14, 'h'));
+		mymap.insert(ft::make_pair(12, 'h'));
+		mymap.insert(ft::make_pair(0, 'h'));
 
 		mymap.printTree();
 
 		std::cout << "==========================" << std::endl;
-		mymap.erase(60);
+		mymap.erase(9);
+		mymap.printTree();
+		
+		std::cout << "==========================" << std::endl;
+		mymap.erase(8);
 
 		mymap.printTree();
 
