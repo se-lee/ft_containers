@@ -304,7 +304,9 @@ namespace ft
 			{
 				// node_pointer temp;
 				// temp = right_rotate(node->_right);
-				node->_left = right_rotate(node->_right);
+				// node->_left = right_rotate(node->_right);
+				node->_right = right_rotate(node->_right);
+		
 				return (left_rotate(node));
 			}
 
@@ -339,7 +341,7 @@ namespace ft
 				{
 					if (get_balance_factor(node) > 0) // left-heavy
 					{
-						std::cout << "left heavy" << std::endl;
+						// std::cout << "left heavy" << std::endl;
 						if (get_balance_factor(node->_left) > 0)
 						{
 							right_rotate(node);
@@ -357,6 +359,7 @@ namespace ft
 						}
 						else // if (get_balance_factor(node->_right) > 0 )
 						{
+						// std::cout << "right heavy" << std::endl;
 							right_left_rotate(node);
 						}
 					}
@@ -623,10 +626,7 @@ namespace ft
 			void	replace_node(node_pointer old_node, node_pointer new_node)	
 			{
 				if (old_node == _root)
-				{
-					std::cout << "---replace root" << std::endl;
 					_root = new_node;
-				}
 				else if (is_left_child(old_node))
 					old_node->_parent->_left = new_node;
 				else
@@ -638,33 +638,29 @@ namespace ft
 			{
 				if (target->_right == NULL) // has only left child
 				{
-					// std::cout << "left child " << std::endl;
 					replace_node(target, target->_left);
 					return (target->_left);
 				}
 				else if (target->_left == NULL)
 				{
-					// std::cout << "right child " << std::endl;
 					replace_node(target, target->_right);
 					return (target->_right);
 				}
 				else
 				{
-					std::cout << "both child " << std::endl;
-
 					node_pointer temp = find_max_node(target->_left);
-					if (temp->_parent == target) //temp is target's left child
-					{
-						std::cout << "   check 1 " << std::endl;
-					}
-					else //if(temp != target->_left)  //left max is not target's child
+					// if (temp->_parent == target) //temp is target's left child
+					// {
+					// 	std::cout << "   check 1 " << std::endl;
+					// }
+					if(temp->_parent != target)  //left max is not target's child
 					{
 						temp->_parent->_right = temp->_left; //put temp's prev node to parent's right
 						if (temp->_left != NULL)
 							temp->_left->_parent = temp->_parent;
 						temp->_left = target->_left;
 						target->_left->_parent = temp;
-						std::cout << "   check 2 " << std::endl; 
+						// std::cout << "   check 2 " << std::endl; 
 					}
 					replace_node(target, temp);
 					temp->_right = target->_right;
@@ -673,19 +669,15 @@ namespace ft
 				}
 			}
 
-
-			
-
 			void	erase (iterator position)
 			{ // usage eg. iter = find(value); -> erase(iter);
 				node_pointer target = position.base();
 				if (target == NULL)
 					return ;
-				std::cout << "target: " << target->_value.first << std::endl;
+				// std::cout << "target: " << target->_value.first << std::endl;
 				node_pointer pos = NULL;
 				if ((target == _end) && (target == _begin)) // last one node of the tree
 				{
-					std::cout << "end here" << std::endl;
 					return (clear());
 				}
 				if (is_leaf(target)) // has no child
@@ -694,7 +686,6 @@ namespace ft
 						target->_parent->_left = NULL;
 					else
 						target->_parent->_right = NULL;
-					std::cout << " erase: no child" << std::endl;
 					pos = target->_parent;
 				}
 				else
@@ -766,8 +757,6 @@ namespace ft
 			// 	_end = find_max_node(_root);
 			// 	_size--;
 			// }
-
-			
 
 			size_type	erase (const value_type &value)
 			{
