@@ -181,8 +181,9 @@ namespace ft
 
 			void erase(iterator first, iterator last)
 			{ 
-				for (; first != last; ++first)
-					_tree.erase(first);
+				// for (; first != last; ++first)
+				// 	_tree.erase(first);
+				_tree.erase(first, last);
 			}
 		
 			

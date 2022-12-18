@@ -770,6 +770,18 @@ namespace ft
 					return (0);
 			}
 
+			void erase(iterator first, iterator last)
+			{
+				// while (first != last)
+				// {
+				// 	erase(first++);
+				// }
+				for (;first != last;)
+					erase(first++);
+
+			}
+
+
 			allocator_type get_allocator() const { return (_allocator); }
 
 	// look up

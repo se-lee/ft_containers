@@ -119,13 +119,10 @@ int main()
 		mymap.printTree();
 
 		std::cout << "==========================" << std::endl;
-		mymap.erase(9);
+		mymap.erase(mymap.begin(), mymap.end());
+		// mymap.erase(9);
 		mymap.printTree();
 		
-		std::cout << "==========================" << std::endl;
-		mymap.erase(8);
-
-		mymap.printTree();
 
 
 		// std::cout << "Every node, from first to last:" << std::endl;
