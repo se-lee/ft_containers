@@ -31,6 +31,7 @@ void	print_ft_map(std::string_view comment, ft::map<char, int> &m)
 
 int main()
 {
+
 	{
 		std::cout << "======== [ std::map ] ========" << std::endl;
 		std::map<int, char> mymap;
@@ -54,6 +55,14 @@ int main()
 		mymap.insert(std::make_pair(14, 'h'));
 
 
+		// mymap.insert(mymap.end(), ft::make_pair(2, 'a'));
+		mymap.insert(mymap.find(14), std::make_pair(0, 'd'));
+		mymap.insert(mymap.find(3), std::make_pair(13, 'd'));
+		mymap.insert(mymap.find(7), std::make_pair(12, 'd'));
+		
+		std::map<int, char>::iterator  it;
+		it = mymap.insert(mymap.begin(), std::make_pair(15, 'a'));
+
 		std::cout << "Every node, from first to last:" << std::endl;
 		for (std::map<int, char>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
 			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
@@ -61,11 +70,12 @@ int main()
 		std::cout << "size: " << mymap.size() << std::endl;
 		std::cout << "max: " << mymap.max_size() << std::endl;
 
-		std::map<int, char>::reverse_iterator it = mymap.rbegin();
-		std::cout << "rbegin(): " << it->first << std::endl;
-		for (std::map<int, char>::reverse_iterator rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
-			std::cout << rit->first << " | ";
-		std::cout << std::endl;
+
+		// std::map<int, char>::reverse_iterator it = mymap.rbegin();
+		// std::cout << "rbegin(): " << it->first << std::endl;
+		// for (std::map<int, char>::reverse_iterator rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
+		// 	std::cout << rit->first << " | ";
+		// std::cout << std::endl;
 
 		// std::map<int, char>::reverse_iterator rit = mymap.rend();
 		// std::cout << "rit->first: " << rit->first << std::endl;
@@ -128,31 +138,33 @@ int main()
 		mymap.insert(ft::make_pair(10, 'h'));
 		mymap.insert(ft::make_pair(14, 'h'));
 
-		ft::map<int, char>::reverse_iterator it = mymap.rbegin();
-		std::cout << "rbegin(): " << it->first << std::endl;
+		mymap.printTree();
+		std::cout << "==========================" << std::endl;
+
+		// mymap.insert(mymap.end(), ft::make_pair(2, 'a'));
+		mymap.insert(mymap.find(14), ft::make_pair(0, 'd'));
+		mymap.insert(mymap.find(3), ft::make_pair(13, 'd'));
+		mymap.insert(mymap.find(7), ft::make_pair(12, 'd'));
+		
+		ft::map<int, char>::iterator  it = mymap.insert(mymap.begin(), ft::make_pair(15, 'a'));
+
+		// ft::map<int, char>::reverse_iterator it = mymap.rbegin();
+		// std::cout << "rbegin(): " << it->first << std::endl;
 		// for (std::map<int, char>::reverse_iterator rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
 		// 	std::cout << rit->first << " | ";
 		// std::cout << std::endl;
 
+		mymap.printTree();
 
-		// mymap.printTree();
+		std::cout << "Every node, from first to last:" << std::endl;
+		for (ft::map<int, char>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+		{
+			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works
+		}
+		std::cout << std::endl;
 
-		// std::cout << "==========================" << std::endl;
-		// mymap.erase(mymap.begin(), mymap.end());
-		// // mymap.erase(9);
-		// mymap.printTree();
-		
-
-
-		// std::cout << "Every node, from first to last:" << std::endl;
-		// for (ft::map<int, char>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
-		// {
-		// 	std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works
-		// }
-		// std::cout << std::endl;
-
-		// std::cout << "size: " << mymap.size() << std::endl;
-		// std::cout << "max: " << mymap.max_size() << std::endl;
+		std::cout << "size: " << mymap.size() << std::endl;
+		std::cout << "max: " << mymap.max_size() << std::endl;
 
 
 		// ft::map<char, int>::iterator lower = mymap.lower_bound('b');

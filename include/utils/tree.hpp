@@ -419,13 +419,13 @@ namespace ft
 
 			size_type max_size() const
 			{ 
-				std::cout << "numeric limits size_type: " << std::numeric_limits<size_type>::max() << std::endl;
-				std::cout << "numeric limits diff_type: " << std::numeric_limits<difference_type>::max() << std::endl;
-				std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
-				std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
-				std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
-				std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
-				std::cout << "sizeof(node_type) : " << sizeof(node_type) << std::endl;
+				// std::cout << "numeric limits size_type: " << std::numeric_limits<size_type>::max() << std::endl;
+				// std::cout << "numeric limits diff_type: " << std::numeric_limits<difference_type>::max() << std::endl;
+				// std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
+				// std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
+				// std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
+				// std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
+				// std::cout << "sizeof(node_type) : " << sizeof(node_type) << std::endl;
 				// size_type /40 | diff_type / 20 but why
 				return (_allocator.max_size());
 				// // std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
@@ -531,10 +531,12 @@ namespace ft
 					x->set_parent(y);
 			}
 
-			node_pointer find_insert_position(const value_type &value)
+			node_pointer find_insert_position(const value_type &value, node_pointer start_node)
 			{
 				node_pointer parent_node = NULL;
-				node_pointer current_node = _root;
+				node_pointer current_node = start_node;
+				// if (start_node->_parent != NULL)
+				// 	parent_node = start_node->_parent;
 				while (current_node != NULL)
 				{
 					parent_node = current_node;
@@ -595,40 +597,29 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{
 				node_pointer new_node;
-				new_node = find_insert_position(value);
+				new_node = find_insert_position(value, _root);
 				return (insert_node(value, new_node));
 			}
 
-	// new_node にInsert placeのポインター代入。NULLでなければ重複あり、Nullであれば重複なし
-				// if key doesnt exist, create a new node
-				// if there is no root node, set new node as the root;
-				// else, search for the place to insert new_node;
-
-	// 本家__tree より __find_equal（挿入のポジション探すFunction)、ヒントありとなし（通常）バージョンがある。 この場合ヒントありを参考に作成
 	// _rootから探す代わりにPositionから探す
 	// Inserts value in the position as close as possible to the position just prior to pos
+	// Positionのすぐ前に入れるのが◎。　PoisitionよりValueの値が小さいと正しいヒント
 			iterator insert(iterator position, const value_type &value)
 			{
-				node_pointer new_node;
-				if (_value_compare(value, *position)) //value < position
+				node_pointer pos = position.base();
+				if (pos == _root)
+					return (insert(value).first);
+				if (position == end())
+					pos = _end;
+				if (_value_compare(value, pos->_value))
 				{
-					if (position == begin())
-						new_node = find_insert_position(value);
-					else 
-					{
-						iterator temp = position;
-						--temp;
-						if (_value_compare(*temp, value))
-						{
-							if (temp.base()->_right == NULL)
-								new_node = find_insert_position(value);
-						}					
-						// 	new_node = find_insert_position(value);
-					}
+					if (_value_compare(value, _root->_value))
+						return (insert(value).first);
+					else
+						return (insert_node(value, find_insert_position(value, pos->_parent)).first);
 				}
-				else if (_value_compare(*position, value))
-					new_node = find_insert_position(value);
-				return (insert_node(value, new_node).first);
+				else
+					return (insert(value).first);
 			}
 
 			node_pointer find_max_node(node_pointer node)

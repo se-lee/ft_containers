@@ -170,7 +170,7 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{ return (_tree.insert(value)); }
 
-			// insert with hint 
+			// insert with hint - insert value as close as possible to the position just prior to [position]
 			iterator insert(iterator position, const value_type &value)
 			{ return (_tree.insert(position, value)); }
 
