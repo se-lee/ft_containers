@@ -142,45 +142,169 @@ namespace ft
 	{ return (!(lhs.base() == rhs.base())); }
 
 
+
+/************************** [ TREE REVERSE ITER ] **************************/
+
+	template<class Iterator>
+	class tree_reverse_iterator
+	{
+		protected:
+			Iterator	_current;
+		
+		public:
+			typedef Iterator	iterator_type;
+			typedef typename	iterator_traits<Iterator>::iterator_category	iterator_category;
+			typedef typename	iterator_traits<Iterator>::value_type			value_type;
+			typedef typename	iterator_traits<Iterator>::difference_type		difference_type;
+			typedef typename	iterator_traits<Iterator>::pointer				pointer;
+			typedef typename	iterator_traits<Iterator>::reference			reference;
+		
+
+			tree_reverse_iterator() {}
+			explicit tree_reverse_iterator(iterator_type x) : _current(x) {}
+			template <class U>
+			tree_reverse_iterator(const tree_reverse_iterator<U> &other) : _current(other.base()) {}
+
+			template <class U>
+			tree_reverse_iterator &operator=(const ft::tree_reverse_iterator<U> &other)
+			{
+				_current = other.base();
+				return (*this);
+			}
+
+			~tree_reverse_iterator() {}
+
+			iterator_type base() const
+			{ return (_current); }
+
+			reference operator*() const
+			{
+				Iterator temp = _current;
+				return (*temp);
+			}
+
+			pointer operator->() const
+			{
+				return (&(operator*()));
+			}
+
+			reference operator[] (difference_type n) const
+			{ return (*(*this + n)); }
+
+			tree_reverse_iterator &operator++()
+			{
+				--_current;
+				return (*this);
+			}
+			
+			tree_reverse_iterator &operator--()
+			{
+				++_current;
+				return (*this);
+			}
+
+			tree_reverse_iterator operator++(int)
+			{
+				tree_reverse_iterator temp = *this;
+				--_current;
+				return (temp);
+			}
+
+			tree_reverse_iterator operator--(int)
+			{
+				tree_reverse_iterator temp = *this;
+				++_current;
+				return (temp);
+			}
+
+			tree_reverse_iterator operator+(difference_type n) const
+			{ return (tree_reverse_iterator(_current - n)); }
+
+			tree_reverse_iterator operator-(difference_type n) const
+			{ return (tree_reverse_iterator(_current + n)); }
+
+			tree_reverse_iterator &operator+=(difference_type n)
+			{
+				_current -= n;
+				return (*this);
+			}
+
+			tree_reverse_iterator &operator-=(difference_type n )
+			{
+				_current += n;
+				return (*this);
+			};
+	};
+
+	template <class Iterator1, class Iterator2> 
+	bool operator== (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() == rhs.base()); };
+
+	template <class Iterator1, class Iterator2>
+	bool operator!= (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() != rhs.base()); };
+
+	template <class Iterator1, class Iterator2>
+	bool operator< (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() < rhs.base()); };
+
+	template <class Iterator1, class Iterator2>
+	bool operator<= (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() <= rhs.base()); };
+
+	template <class Iterator1, class Iterator2>
+	bool operator> (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() > rhs.base()); };
+	
+	template <class Iterator1, class Iterator2>
+	bool operator>= (const ft::tree_reverse_iterator<Iterator1> &lhs, const ft::tree_reverse_iterator<Iterator2> &rhs)
+	{ return (lhs.base() >= rhs.base()); };
+
+	/* operator+ */
+	template <class Iterator>
+	tree_reverse_iterator<Iterator> operator+ (typename ft::tree_reverse_iterator<Iterator>::difference_type n, const ft::tree_reverse_iterator<Iterator> &it)
+	{ return (it - n); };
+
+	/* operator- */
+	template <class Iterator>
+	typename tree_reverse_iterator<Iterator>::difference_type operator- (const ft::tree_reverse_iterator<Iterator> &lhs, const ft::tree_reverse_iterator<Iterator> &rhs)
+	{ return (lhs.base() - rhs.base()); };
+
+
+
 /************************** [ TREE CLASS ] **************************/
 
-	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<tree_node<T> > >
+	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class tree
 	{
 		public:
 			typedef Key																key_type;
 			typedef T																value_type;
-			typedef tree_node<T>													node_type;
 			typedef Compare															value_compare;
 			typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
-			typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
+			// typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
+			// typedef typename Allocator::template rebind<T>::other		node_allocator;
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef typename allocator_type::difference_type						difference_type;
-			// typedef tree_iterator<node_type>											iterator;
-			// typedef tree_iterator<const node_type>									const_iterator;
-			// typedef tree_iterator<pointer>		iterator;
-			// typedef tree_iterator<const_pointer> const_iterator;
-			typedef tree_iterator<T *>												iterator;
-			typedef tree_iterator<const T *>										const_iterator;
+			typedef tree_iterator<T *>												iterator; //ok
+			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
-			typedef ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef ft::tree_reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::tree_reverse_iterator<const_iterator>			tree_reverse_iterator;
 
 		private:
-			// node_pointer			_root;
-			// node_pointer			_begin;
-			// node_pointer			_end;
-			pointer					_root;
-			pointer					_begin;
-			pointer					_end;
-	
+			node_pointer			_root;
+			node_pointer			_begin;
+			node_pointer			_end;
 			size_t					_size;
 			value_compare			_value_compare;
-			allocator_type			_allocator;
+			allocator_type			_allocator; //ok
+			// node_allocator			_allocator;
+
 
 		public:
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
@@ -193,6 +317,7 @@ namespace ft
 		
 			template<class InputIterator>
 			tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc,
+			// tree (InputIterator first, InputIterator last, const Compare &comp, const node_allocator &alloc,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			: _allocator(alloc), _value_compare(comp)
 			{
@@ -419,14 +544,12 @@ namespace ft
 
 			size_type max_size() const
 			{ 
-				// std::cout << "numeric limits size_type: " << std::numeric_limits<size_type>::max() << std::endl;
-				// std::cout << "numeric limits diff_type: " << std::numeric_limits<difference_type>::max() << std::endl;
-				// std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
-				// std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
-				// std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
-				// std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
-				// std::cout << "sizeof(node_type) : " << sizeof(node_type) << std::endl;
-				// size_type /40 | diff_type / 20 but why
+				std::cout << "numeric limits size_type: " << std::numeric_limits<size_type>::max() << std::endl;
+				std::cout << "numeric limits diff_type: " << std::numeric_limits<difference_type>::max() << std::endl;
+				std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
+				std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
+				std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
+				std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
 				return (_allocator.max_size());
 				// // std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
 				// return (std::numeric_limits<size_type>::max() / sizeof(node_type));// / sizeof(value_type))

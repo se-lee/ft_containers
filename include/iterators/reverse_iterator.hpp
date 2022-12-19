@@ -47,6 +47,7 @@ namespace ft
 			{
 				Iterator temp = _current;
 				// temp--;
+				--temp;
 				return (*temp);
 			}
 

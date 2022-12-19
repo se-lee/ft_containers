@@ -12,8 +12,8 @@
 
 namespace ft
 {
-/************************** [ MAP CLASS ] **************************/
-	// template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<tree_node<pair<const Key, T> > >
+	/************************** [ MAP CLASS ] **************************/
+
 	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<pair<const Key, T> >
 	> class map
 	{
@@ -26,6 +26,9 @@ namespace ft
 			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
 			typedef value_type&										reference;
 			typedef const value_type&								const_reference;
+
+			typedef typename allocator_type::template rebind< tree_node< value_type > >::other			node_alloc;
+
 
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
@@ -53,17 +56,16 @@ namespace ft
 
 			typedef tree_iterator<pointer>							iterator;
 			typedef tree_iterator<const_pointer>					const_iterator;
-			typedef ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
-			// typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef ft::tree_reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::tree_reverse_iterator<const_iterator>			const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;
 			typedef std::size_t										size_type;
 
 		private:
 			value_compare	_value_comp;
 			allocator_type	_allocator;
-			tree<key_type, value_type, value_compare, tree_alloc>	_tree;
+			// tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
+			tree<key_type, value_type, value_compare, node_alloc>	_tree;
 
 		public:
 /* --- [ Constructors ] --- */
@@ -109,30 +111,22 @@ namespace ft
 
 			reverse_iterator rbegin() 
 			{ 
-				// return (reverse_iterator(end())); 
 				return (_tree.rbegin());
-				// return (reverse_iterator(_tree.get_end()));
 			}
 
 			const_reverse_iterator rbegin() const 
 			{
-				// return (const_reverse_iterator(_tree.get_end()));  
 				return (_tree.rbegin());  
-
-				// return (const_reverse_iterator(end())); 
 			}
 
-//Returns a reverse iterator pointing to the theoretical element right before the first element.
 			reverse_iterator rend() 
 			{ 
-				// return(reverse_iterator(begin()));
 				return (_tree.rend());
 			}
 
 			const_reverse_iterator rend() const
 			{ 
 				return (_tree.rend());
-				// return (const_reverse_iterator(begin())); 
 			}
 
 		
