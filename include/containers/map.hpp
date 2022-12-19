@@ -108,13 +108,21 @@ namespace ft
 			{ return (_tree.end()); }
 
 			reverse_iterator rbegin() 
-			{ return (reverse_iterator(end())); }
+			{ 
+				// return (_tree.rbegin());
+				return (reverse_iterator(end())); 
+				// return (reverse_iterator(_tree.get_end()));
+			}
 
 			const_reverse_iterator rbegin() const 
 			{ return (const_reverse_iterator(end())); }
 
+//Returns a reverse iterator pointing to the theoretical element right before the first element.
 			reverse_iterator rend() 
-			{ return(reverse_iterator(begin())); }
+			{ 
+				// return(reverse_iterator(begin()));
+				return (_tree.rend());
+			}
 
 			const_reverse_iterator rend() const
 			{ return (const_reverse_iterator(begin())); }
@@ -180,13 +188,10 @@ namespace ft
 			{ return (_tree.erase(make_pair(key, mapped_type()))); }
 
 			void erase(iterator first, iterator last)
-			{ 
-				// for (; first != last; ++first)
-				// 	_tree.erase(first);
+			{
 				_tree.erase(first, last);
 			}
 		
-			
 			void swap( map &other )
 			{
 				_tree.swap(other._tree);

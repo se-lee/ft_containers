@@ -144,28 +144,31 @@ namespace ft
 
 /************************** [ TREE CLASS ] **************************/
 
-	// template<class Key, class Type, class Compare = std::less<Type>, class Allocator = std::allocator<Type> >
-	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<tree_node<T> > >
 	class tree
 	{
 		public:
 			typedef Key																key_type;
-			typedef T															value_type;
+			typedef T																value_type;
 			typedef tree_node<T>													node_type;
 			typedef Compare															value_compare;
 			typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
-			typedef typename Allocator::template rebind<tree_node <T> >::other			node_allocator;
+			typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
+			typedef typename allocator_type::difference_type						difference_type;
 			// typedef tree_iterator<node_type>											iterator;
 			// typedef tree_iterator<const node_type>									const_iterator;
 			// typedef tree_iterator<pointer>		iterator;
 			// typedef tree_iterator<const_pointer> const_iterator;
-			typedef tree_iterator<T *>			iterator;
-			typedef tree_iterator<const T *>	const_iterator;
+			typedef tree_iterator<T *>												iterator;
+			typedef tree_iterator<const T *>										const_iterator;
 			typedef tree_node<value_type>*											node_pointer;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 		private:
 			// node_pointer			_root;
@@ -400,6 +403,14 @@ namespace ft
 				return (iterator(_end->_right));
 			}
 
+			reverse_iterator rbegin()
+			{
+				return (reverse_iterator(_end));
+			}
+
+			reverse_iterator rend()
+			{ return (reverse_iterator(_begin->_left)); }
+
 			iterator root() 
 			{ return (iterator(_root, _root)); }
 			
@@ -407,7 +418,21 @@ namespace ft
 			{ return (const_iterator(_root, _root)); }
 
 			size_type max_size() const
-			{ return (_allocator.max_size()); }
+			{ 
+				std::cout << "numeric limits size_type: " << std::numeric_limits<size_type>::max() << std::endl;
+				std::cout << "numeric limits diff_type: " << std::numeric_limits<difference_type>::max() << std::endl;
+				std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
+				std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
+				std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
+				std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
+				std::cout << "sizeof(node_type) : " << sizeof(node_type) << std::endl;
+				// size_type /40 | diff_type / 20 but why
+				return (_allocator.max_size());
+				// // std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
+				// return (std::numeric_limits<size_type>::max() / sizeof(node_type));// / sizeof(value_type))
+				// return (std::numeric_limits<size_type>::max() / 40);// / sizeof(value_type))
+				// return (std::numeric_limits<size_type>::max() / sizeof(node_type));// / sizeof(value_type))
+			}
 
 			void clear()
 			{
@@ -772,15 +797,9 @@ namespace ft
 
 			void erase(iterator first, iterator last)
 			{
-				// while (first != last)
-				// {
-				// 	erase(first++);
-				// }
 				for (;first != last;)
 					erase(first++);
-
 			}
-
 
 			allocator_type get_allocator() const { return (_allocator); }
 
@@ -901,6 +920,12 @@ namespace ft
 			}
 			node_pointer get_root()
 			{ return (_root); }
+
+			node_pointer get_begin()
+			{ return (_begin); }
+
+			node_pointer get_end()
+			{ return (_end); }
 	};
 }
 

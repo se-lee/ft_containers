@@ -31,56 +31,70 @@ void	print_ft_map(std::string_view comment, ft::map<char, int> &m)
 
 int main()
 {
-	// {
-	// 	std::cout << "======== [ std::map ] ========" << std::endl;
-	// 	std::map<char, int> mymap;
+	{
+		std::cout << "======== [ std::map ] ========" << std::endl;
+		std::map<int, char> mymap;
 
-	// 	// mymap.insert(std::make_pair<char, int>('a', 10)); //Insert Simple Values
-	// 	// mymap.insert(std::make_pair<char, int>('b', 20));
-	// 	// mymap.insert(std::make_pair<char, int>('c', 30));
-	// 	// mymap.insert(std::make_pair<char, int>('d', 3)); // Insert does sort by first ('d') and not (3)
-	// 	// mymap.insert(std::make_pair<char, int>('1', 100));
-	// 	// mymap.insert(std::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
-	// 	// mymap.insert(std::make_pair<char, int>('e', 30));
+		// mymap.insert(std::make_pair<char, int>('a', 10)); //Insert Simple Values
+		// mymap.insert(std::make_pair<char, int>('b', 20));
+		// mymap.insert(std::make_pair<char, int>('c', 30));
+		// mymap.insert(std::make_pair<char, int>('d', 3)); // Insert does sort by first ('d') and not (3)
+		// mymap.insert(std::make_pair<char, int>('1', 100));
+		// mymap.insert(std::make_pair<char, int>('a', 5)); //Doesn't insert as 'a' already exist
+		// mymap.insert(std::make_pair<char, int>('e', 30));
 
-	// 	mymap.insert(std::make_pair(8, 'a'));
-	// 	mymap.insert(std::make_pair(3, 'c'));
-	// 	mymap.insert(std::make_pair(1, 'd'));
-	// 	mymap.insert(std::make_pair(6, 'e'));
-	// 	mymap.insert(std::make_pair(4, 'f'));
-	// 	mymap.insert(std::make_pair(7, 'g'));
-	// 	mymap.insert(std::make_pair(13, 'i'));
-	// 	mymap.insert(std::make_pair(10, 'b'));
-	// 	mymap.insert(std::make_pair(14, 'h'));
+		mymap.insert(std::make_pair(8, 'a'));
+		mymap.insert(std::make_pair(3, 'c'));
+		mymap.insert(std::make_pair(1, 'd'));
+		mymap.insert(std::make_pair(6, 'e'));
+		mymap.insert(std::make_pair(4, 'f'));
+		mymap.insert(std::make_pair(7, 'g'));
+		mymap.insert(std::make_pair(13, 'i'));
+		mymap.insert(std::make_pair(10, 'b'));
+		mymap.insert(std::make_pair(14, 'h'));
 
 
-	// 	std::cout << "Every node, from first to last:" << std::endl;
-	// 	for (std::map<char, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
-	// 		std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
-	// 	std::cout << std::endl;
-	// 	std::cout << "size: " << mymap.size() << std::endl;
-	// 	std::cout << "max: " << mymap.max_size() << std::endl;
+		std::cout << "Every node, from first to last:" << std::endl;
+		for (std::map<int, char>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+			std::cout << it->first << "=>" << it->second << std::endl; // Shows that the map works;
+		std::cout << std::endl;
+		std::cout << "size: " << mymap.size() << std::endl;
+		std::cout << "max: " << mymap.max_size() << std::endl;
+
+		std::map<int, char>::reverse_iterator it = mymap.rbegin();
+		std::cout << "rbegin(): " << it->first << std::endl;
+		for (std::map<int, char>::reverse_iterator rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
+			std::cout << rit->first << " | ";
+		std::cout << std::endl;
+
+		// std::map<int, char>::reverse_iterator rit = mymap.rend();
+		// std::cout << "rit->first: " << rit->first << std::endl;
+
+		// // Reverse
+		// std::cout << " [ reverse ] " << std::endl; 
+		// ft::map<int, char>::reverse_iterator rit = m.rend();
+		// 	t.print<int>(rit->first);
+		// for (ft::map<int, char>::reverse_iterator rit = m.rbegin(); rit != m.rend(); ++rit) {
+		// 	t.print<int>(rit->first);
+		// 	rit->second = 'e';
+		// }
+		// for (ft::map<int, char>::const_reverse_iterator rit = m.rbegin(); rit != m.rend(); ++rit) {
+		// 	t.print<int>(rit->second);
+		// }
+
+		// std::cout << "lower bound: " << lower->first << std::endl;
+		// std::map<char, int>::iterator upper = mymap.upper_bound('b');
+		// std::cout << "upper bound: " << upper->first << std::endl;
+
+
+		// std::cout << "Every node, from last to first:" << std::endl;
+		// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+		// {
+		// 	std::cout << it->first << "=>" << it->second << std::endl;
+		// }
+		// std::cout << std::endl;
 		
-	// 	std::map<char, int>::iterator lower = mymap.lower_bound('b');
-	// 	if (lower != mymap.end()) 
-	// 		{ std::cout << "lower: " << lower->first << std::endl; } 
-	// 	else 
-	// 		{ std::cout << "it == end" << std::endl; }
-
-	// 	// std::cout << "lower bound: " << lower->first << std::endl;
-	// 	// std::map<char, int>::iterator upper = mymap.upper_bound('b');
-	// 	// std::cout << "upper bound: " << upper->first << std::endl;
-
-
-	// 	// std::cout << "Every node, from last to first:" << std::endl;
-	// 	// for (std::map<char, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
-	// 	// {
-	// 	// 	std::cout << it->first << "=>" << it->second << std::endl;
-	// 	// }
-	// 	// std::cout << std::endl;
-		
-	// }
-
+	}
 	{
 		std::cout << "======== [ ft ] ========" << std::endl;
 		ft::map<int, char> mymap;
@@ -107,21 +121,26 @@ int main()
 		mymap.insert(ft::make_pair(8, 'a'));
 		mymap.insert(ft::make_pair(3, 'c'));
 		mymap.insert(ft::make_pair(1, 'd'));
-		mymap.insert(ft::make_pair(9, 'f'));
+		mymap.insert(ft::make_pair(6, 'f'));
 		mymap.insert(ft::make_pair(4, 'g'));
 		mymap.insert(ft::make_pair(7, 'i'));
 		mymap.insert(ft::make_pair(13, 'b'));
 		mymap.insert(ft::make_pair(10, 'h'));
 		mymap.insert(ft::make_pair(14, 'h'));
-		mymap.insert(ft::make_pair(12, 'h'));
-		mymap.insert(ft::make_pair(0, 'h'));
 
-		mymap.printTree();
+		ft::map<int, char>::reverse_iterator it = mymap.rbegin();
+		std::cout << "rbegin(): " << it->first << std::endl;
+		// for (std::map<int, char>::reverse_iterator rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
+		// 	std::cout << rit->first << " | ";
+		// std::cout << std::endl;
 
-		std::cout << "==========================" << std::endl;
-		mymap.erase(mymap.begin(), mymap.end());
-		// mymap.erase(9);
-		mymap.printTree();
+
+		// mymap.printTree();
+
+		// std::cout << "==========================" << std::endl;
+		// mymap.erase(mymap.begin(), mymap.end());
+		// // mymap.erase(9);
+		// mymap.printTree();
 		
 
 
@@ -158,5 +177,6 @@ int main()
 		// }
 		// std::cout << std::endl;
 	}
+
 	return 0;
 }
