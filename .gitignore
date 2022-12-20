@@ -1,16 +1,16 @@
 
-include/containers/container_tester
-include/containers/containers_test
+include/container_tester
+include/containers_test
+include/ft_containers_tests
 
 !main.cpp
 
-
-FT_CONTAINERS_42_tester/*.*
 .gitignore
 ft_containers
 
-
 .vscode
+
+*.txt
 
 # Prerequisites
 *.d

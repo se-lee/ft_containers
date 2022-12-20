@@ -105,7 +105,6 @@ namespace ft
 			}
 	};
 
-
 	template<class Iter>
 	bool	operator==(const vector_iterator<Iter> &lhs, const vector_iterator<Iter> &rhs)
 	{ return (lhs.base() == rhs.base()); }
@@ -133,8 +132,9 @@ namespace ft
 	template<class Iter>
 	vector_iterator<Iter> operator+(typename vector_iterator<Iter>::difference_type n, const vector_iterator<Iter> &vec_it)
 	{ 
-		vec_it += n;
-		return (vec_it);
+		// vec_it += n;
+		// return (vec_it);
+		return (vec_it + n);
 	}
 
 	template<class Iter>

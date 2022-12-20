@@ -1,63 +1,49 @@
-# Program name
-NAME	= ft_containers
-NAME^^	= $(shell echo $(NAME) | tr 'a-z' 'A-Z')
+CC = clang++
 
-# Directories
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address
+STLFLAG = -DSTL_CONTAINERS
 
-INC_DIR	= ./include
+INCLUDES = -I./header
 
-# Sources
-__SRCS	= $(shell find . -type f -name "main.cpp" | cut -c 3-)
-__HEAD	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
+# HEADER =	header/iterator.hpp				\
+# 			header/map.hpp					\
+# 			header/set.hpp					\
+# 			header/stack.hpp				\
+# 			header/tree.hpp					\
+# 			header/type_traits.hpp			\
+# 			header/utility.hpp				\
+# 			header/vector.hpp				\
 
-SRCS	= $(__SRCS)
-OBJS	= $(__SRCS:.cpp=.o)
+HEADER = $(shell find . -type f -name "*.hpp" | cut -c 3-)
 
-# Compile
-CC		= c++
+SRCS =	srcs/main.cpp
 
-CFLAGS	= -Wall -Werror -Wextra -std=c++98 -fsanitize=address
-INCLUDE	= -I $(INC_DIR)
-LIBS	=
+OBJS = $(SRCS:.cpp=.o)
 
-# Format
+MAIN = containers
+MAIN2 = containers_stl
 
-OFFSET		= 25
-OFFSET_OBJ	= 60
+RM = rm -rf
 
-RESET		= \033[0;0m
-FG_BWHIT	= \033[1;97m
-FG_WHIT		= \033[0;97m
-FG_BGRAY	= \033[1;37m
-FG_GRAY		= \033[0;37m
-FG_BMAGE	= \033[1;35m
-FG_MAGE		= \033[0;35m
-FG_BCYAN	= \033[1;36m
-FG_CYAN		= \033[0;36m
-FG_BGREE	= \033[1;32m
-FG_GREE		= \033[0;32m
+all:    $(MAIN)
 
-# Rules
-all: $(NAME)
+$(MAIN): $(OBJS)
+		$(CC) $(CFLAGS) -o $(MAIN) $(OBJS)
 
-%.o: %.cpp $(__HEAD)
-	printf "$(FG_BGRAY)[ $(NAME^^) ] $(FG_BCYAN)OBJ\033[$(OFFSET)G$(FG_BWHIT): $(FG_WHIT)$@ $(FG_BCYAN)\033[$(OFFSET_OBJ)G[.]$(RESET)\r"
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-	printf "$(FG_BGRAY)[ $(NAME^^) ] $(FG_BCYAN)OBJ\033[$(OFFSET)G$(FG_BWHIT): $(FG_WHIT)$@ $(FG_BGREE)\033[$(OFFSET_OBJ)G[✓]$(RESET)\n"
+stl: $(OBJS)
+		$(CC) $(CFLAGS) -D STL_CONTAINERS -c $(SRCS) -o $(OBJS)
+		$(CC) $(CFLAGS) -o $(MAIN2) $(OBJS)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $(NAME) $(LIBS)
-	printf "$(FG_BGRAY)[ $(NAME^^) ] $(FG_BGREE)BUILD\033[$(OFFSET)G$(FG_BWHIT): $(FG_BWHIT)$(NAME)$(RESET)\n"
+%.o: %.cpp $(HEADER)
+		$(CC) $(CFLAGS) -c $<  -o $@ $(INCLUDES)
 
 clean:
-	rm -f $(OBJS)
-	printf "$(FG_BGRAY)[ $(NAME^^) ] $(FG_BMAGE)CLEAN\033[$(OFFSET)G$(FG_BWHIT): $(FG_WHIT).o files cleaned$(RESET)\n"
+		$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
-	printf "$(FG_BGRAY)[ $(NAME^^) ] $(FG_BMAGE)FCLEAN\033[$(OFFSET)G$(FG_BWHIT): $(FG_WHIT)executable cleaned$(RESET)\n"
+		$(RM) $(MAIN)
+		$(RM) $(MAIN2)
 
 re: fclean all
 
-.PHONY: all clean fclean re
-.SILENT:
+.PHONY: all clean fclean re stl

@@ -1,14 +1,14 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include <memory> // allocator
-# include <functional> // std::less
-# include <iterator> //std::bidirectional_iterator
-# include "../iterators/reverse_iterator.hpp"
-# include "../utils/pair.hpp"
-# include "../iterators/iterator_traits.hpp"
-# include "../utils/tree.hpp"
-# include "../utils/algorithm.hpp"
+# include <memory>
+# include <functional>
+# include <iterator>
+# include "reverse_iterator.hpp"
+# include "pair.hpp"
+# include "iterator_traits.hpp"
+# include "tree.hpp"
+# include "algorithm.hpp"
 
 namespace ft
 {
@@ -18,18 +18,15 @@ namespace ft
 	> class map
 	{
 		public:
-			typedef Key												key_type;
-			typedef T												mapped_type;
-			typedef pair<const key_type, mapped_type>				value_type;
-			typedef	Compare											key_compare;
-			typedef Allocator										allocator_type;
-			typedef std::allocator<ft::tree_node<value_type> >		tree_alloc;
-			typedef value_type&										reference;
-			typedef const value_type&								const_reference;
-
+			typedef Key																					key_type;
+			typedef T																					mapped_type;
+			typedef pair<const key_type, mapped_type>													value_type;
+			typedef	Compare																				key_compare;
+			typedef Allocator																			allocator_type;
+			typedef std::allocator<ft::tree_node<value_type> >											tree_alloc;
+			typedef value_type&																			reference;
+			typedef const value_type&																	const_reference;
 			typedef typename allocator_type::template rebind< tree_node< value_type > >::other			node_alloc;
-
-
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			 {
@@ -64,6 +61,7 @@ namespace ft
 		private:
 			value_compare	_value_comp;
 			allocator_type	_allocator;
+			key_compare		_key_comp;
 			// tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
 			tree<key_type, value_type, value_compare, node_alloc>	_tree;
 
@@ -110,24 +108,16 @@ namespace ft
 			{ return (_tree.end()); }
 
 			reverse_iterator rbegin() 
-			{ 
-				return (_tree.rbegin());
-			}
+			{ return (_tree.rbegin()); }
 
 			const_reverse_iterator rbegin() const 
-			{
-				return (_tree.rbegin());  
-			}
+			{ return (_tree.rbegin()); }
 
 			reverse_iterator rend() 
-			{ 
-				return (_tree.rend());
-			}
+			{ return (_tree.rend()); }
 
 			const_reverse_iterator rend() const
-			{ 
-				return (_tree.rend());
-			}
+			{ return (_tree.rend()); }
 
 		
 /* --- [ Capacity ] --- */
@@ -146,7 +136,7 @@ namespace ft
 			{
 				iterator pos = find(key);
 				if (pos == end())
-					throw std::out_of_range("out of range.");
+					throw std::out_of_range("out of range");
 				return (pos.base()->_value.second);
 			}
 			
@@ -167,12 +157,11 @@ namespace ft
 /* --- [ Modifiers ] --- */
 			void clear()
 			{ _tree.clear(); }
-			// erases all elements from the container
 			
 			ft::pair<iterator, bool> insert(const value_type &value)
 			{ return (_tree.insert(value)); }
 
-			// insert with hint - insert value as close as possible to the position just prior to [position]
+			// insert with hint - insert value as close as possible to the position prior to [position]
 			iterator insert(iterator position, const value_type &value)
 			{ return (_tree.insert(position, value)); }
 
@@ -181,7 +170,7 @@ namespace ft
 			{
 				for (; first != last; ++first)
 					_tree.insert(*first);
-			}
+			} 
 
 			void erase(iterator position)
 			{ _tree.erase(position); }
@@ -190,19 +179,17 @@ namespace ft
 			{ return (_tree.erase(make_pair(key, mapped_type()))); }
 
 			void erase(iterator first, iterator last)
-			{
-				_tree.erase(first, last);
-			}
+			{ _tree.erase(first, last); }
 		
 			void swap( map &other )
-			{
-				_tree.swap(other._tree);
-			}
+			{ _tree.swap(other._tree); }
 
 
 /* --- [ Observers ] --- */
-			key_compare key_comp() const;
-			value_compare value_comp() const;
+			key_compare key_comp() const
+			{ return (_key_comp); }
+			value_compare value_comp() const
+			{ return (_value_comp); }
 
 /* --- [ Operations / Lookup ] --- */
 			size_type	count( const Key &key ) const
@@ -215,35 +202,23 @@ namespace ft
 			{ return (_tree.find(ft::make_pair(key, mapped_type()))); }
 
 			ft::pair<iterator, iterator> equal_range( const Key &key )
-			{
-				return ( _tree.equal_range(ft::make_pair(key, mapped_type())));
-			}
+			{ return ( _tree.equal_range(ft::make_pair(key, mapped_type()))); }
 
 			ft::pair<const_iterator, const_iterator> equal_range( const Key &key ) const
-			{
-				return (_tree.equal_range(ft::make_pair(key, mapped_type())));
-			}
+			{ return (_tree.equal_range(ft::make_pair(key, mapped_type()))); }
 
 
 			iterator lower_bound( const Key &key )
-			{
-				return (_tree.lower_bound(ft::make_pair(key, mapped_type())));
-			}
+			{ return (_tree.lower_bound(ft::make_pair(key, mapped_type()))); }
+
 			const_iterator lower_bound(const Key &key ) const
-			{
-				return (_tree.lower_bound(ft::make_pair(key, mapped_type())));
-			}
+			{ return (_tree.lower_bound(ft::make_pair(key, mapped_type()))); }
 
 			iterator upper_bound( const Key &key )
-			{
-				return (_tree.upper_bound(ft::make_pair(key, mapped_type())));
-			}
+			{ return (_tree.upper_bound(ft::make_pair(key, mapped_type()))); }
 
 			const_iterator upper_bound( const Key &key ) const
-			{
-				return (_tree.upper_bound(ft::make_pair(key, mapped_type())));
-			}
-
+			{ return (_tree.upper_bound(ft::make_pair(key, mapped_type()))); }
 
 /* --- [ Allocator ] --- */
 			allocator_type get_allocator() const { return (_tree.get_allocator()); }
@@ -254,7 +229,6 @@ namespace ft
 				_tree.printAVL("", _tree.get_root(), false);
 				std::cout << std::endl;
 			}
-
 
 	};
 
@@ -286,8 +260,6 @@ namespace ft
 	void swap( map<Key, T, Compare, Alloc> &lhs, map<Key, T, Compare, Alloc> &rhs)
 	{ lhs.swap(rhs); }
 
-
 }
-
 
 #endif

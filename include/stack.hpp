@@ -1,7 +1,3 @@
-/*stack
-It will use your vector class as default underlying container. But it must still be
-compatible with other containers, the STL ones included
-*/
 #ifndef STACK_HPP
 # define STACK_HPP
 
@@ -13,7 +9,7 @@ namespace ft
 	class stack
 	{
 		public:
-			typedef Container					container_type;
+			typedef Container							container_type;
 			typedef typename Container::value_type		value_type;
 			typedef typename Container::size_type		size_type;
 			typedef typename Container::reference		reference;
@@ -64,12 +60,12 @@ namespace ft
 
 /* --- [ Modifiers ] --- */
 /* push: */
-	void	push(const value_type &value)
+	void push(const value_type &value)
 	{ _stack.push_back(value); }
 
 /* pop: */
 	// pop back
-	void	pop()
+	void pop()
 	{ _stack.pop_back(); }
 
 	};
@@ -103,9 +99,6 @@ namespace ft
 	void swap(stack<T, Container> &lhs, stack<T, Container> &rhs )
 	{ lhs._stack.swap(rhs); }
 
-
 }
-
-
 
 #endif
