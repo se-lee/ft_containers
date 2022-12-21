@@ -1,9 +1,7 @@
 #include <iostream>
 #include <deque>
-#include <ctime>
-#include <sys/time.h>
 
-#ifdef STD
+#ifdef STL_CONTAINERS
 	#include <iterator>
 	#include <vector>
 	#include <stack>
@@ -11,9 +9,9 @@
 	#include <set>
 	namespace ft = std;
 #else
-	#include "../include/vector.hpp"
-	#include "../include/stack.hpp"
-	#include "../include/map.hpp"
+	#include "vector.hpp"
+	#include "stack.hpp"
+	#include "map.hpp"
 #endif
 
 template<typename T>
@@ -404,7 +402,6 @@ void reverseIteratorTests( void ) {
 		vec.push_back( 35 );
 		ft::vector<int>::reverse_iterator a = vec.rbegin();
 		std::cout << *(a + 2) << std::endl;
-		std::cout << *(1 + a) << std::endl;
 		a += 3;
 		std::cout << *(a - 2) << std::endl;
 		std::cout << *a << std::endl;
@@ -548,7 +545,6 @@ void constReverseIteratorTests( void ) {
 		const ft::vector<int> cvec( vec );
 		ft::vector<int>::const_reverse_iterator a = cvec.rbegin();
 		std::cout << *(a + 2) << std::endl;
-		std::cout << *(1 + a) << std::endl;
 		a += 3;
 		std::cout << *(a - 2) << std::endl;
 		std::cout << *a << std::endl;
@@ -599,7 +595,7 @@ void constReverseIteratorTests( void ) {
 }
 
 void treeIteratorTests( void ) {
-	std::cout << "TREE ITERATOR TESTS:" << std::endl << std::endl;
+	std::cout << "MAP ITERATOR TESTS:" << std::endl << std::endl;
 
 	{
 		std::cout << "Constructors:" << std::endl;
@@ -1764,6 +1760,7 @@ void mapModifiersTests( void ) {
 		displayMap( a, "Erase test 15" );
 		std::cout << 20 << std::endl;
 		a.erase( 20 );
+
 		displayMap( a, "Erase test 16" );
 		std::cout << 51 << std::endl;
 		a.erase( 51 );
@@ -1968,12 +1965,6 @@ void mapOperationsTests( void ) {
 }
 
 int	main(void) {
-	struct timeval timer;
-	time_t before, after;
-
-	gettimeofday( &timer, NULL );
-	before = ( timer.tv_sec * 1000 ) + ( timer.tv_usec / 1000 );
-
 	// Iterator Tests
 	iteratorTests();
 	constIteratorTests();
@@ -2003,10 +1994,5 @@ int	main(void) {
 	mapModifiersTests();
 	mapOperationsTests();
 
-	gettimeofday( &timer, NULL );
-	after = ( timer.tv_sec * 1000 ) + ( timer.tv_usec / 1000 );
-
-	std::cout << std::endl << after - before << " ms" << std::endl;
-	
 	return (0);
 }

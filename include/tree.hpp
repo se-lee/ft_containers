@@ -10,8 +10,7 @@
 
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<tree_node<T> > >
-	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class tree
 	{
 		public:
@@ -21,8 +20,7 @@ namespace ft
 			typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
 			typedef tree_node<T>													node_type;
-			// typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
-			// typedef typename Allocator::template rebind<T>::other		node_allocator;
+			typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
 			typedef std::size_t														size_type;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
@@ -30,8 +28,8 @@ namespace ft
 			typedef tree_iterator<T *>												iterator; //ok
 			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
-			typedef ft::tree_reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::tree_reverse_iterator<const_iterator>			tree_reverse_iterator;
+			typedef ft::tree_reverse_iterator<iterator>								reverse_iterator;
+			typedef ft::tree_reverse_iterator<const_iterator>						tree_reverse_iterator;
 
 
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
@@ -43,8 +41,8 @@ namespace ft
 			}
 		
 			template<class InputIterator>
-			tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc,
-			// tree (InputIterator first, InputIterator last, const Compare &comp, const node_allocator &alloc,
+			// tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc,
+			tree (InputIterator first, InputIterator last, const Compare &comp, const node_allocator &alloc,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			: _allocator(alloc), _value_comp(comp)
 			{
@@ -124,14 +122,7 @@ namespace ft
 
 			size_type max_size() const
 			{ 
-				std::cout << "allocator max_size: " << _allocator.max_size() << std::endl;
-				std::cout << "sizeof(diff_type) : " << sizeof(difference_type) << std::endl;
-				std::cout << "sizeof(size_type) : " << sizeof(size_type) << std::endl;
-				std::cout << "sizeof(value_type): " << sizeof(value_type) << std::endl;
-				std::cout << "sizeof(node_type): " << sizeof(node_type) << std::endl;
-
-				return (std::numeric_limits<size_type>::max() / sizeof(node_type));// / sizeof(value_type))
-				// return (_allocator.max_size());
+				return (std::numeric_limits<size_type>::max() / sizeof(node_type));
 			}
 
 			void clear()
@@ -629,7 +620,6 @@ namespace ft
 				_end = NULL;
 				_root = NULL;
 				_size = 0;
-				delete_node(_root);
 			}
 
 			void	replace_node(node_pointer old_node, node_pointer new_node)	

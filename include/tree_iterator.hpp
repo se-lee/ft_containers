@@ -34,14 +34,16 @@ namespace ft {
 		private:
 			typedef tree_node<value_type>*		node_pointer;
 			node_pointer _current;
-
+			
 		public:
 			tree_iterator() : _current(NULL) {}
 			tree_iterator(node_pointer ptr) : _current(ptr) {}
 		
 			template<class Iter>
 			tree_iterator(const tree_iterator<Iter> &other)
-			{ _current = other.base(); }
+			{ 
+				_current = other.base();
+			}
 
 			~tree_iterator() {}
 
@@ -63,6 +65,11 @@ namespace ft {
 
 			tree_iterator &operator++()
 			{
+				if (_current == NULL)
+				{
+					while (_current->_left != NULL)
+						_current = _current->_left;
+				}
 				if (_current->_right != NULL)
 				{
 					_current = _current->_right;
@@ -90,6 +97,11 @@ namespace ft {
 
 			tree_iterator &operator--()
 			{
+				if (_current == NULL)
+				{
+					while (_current->_right != NULL)
+						_current = _current->_right;
+				}
 				if (_current->_left != NULL)
 				{
 					_current = _current->_left;

@@ -62,8 +62,8 @@ namespace ft
 			value_compare	_value_comp;
 			allocator_type	_allocator;
 			key_compare		_key_comp;
-			// tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
-			tree<key_type, value_type, value_compare, node_alloc>	_tree;
+			tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
+			// tree<key_type, value_type, value_compare, node_alloc>	_tree;
 
 		public:
 /* --- [ Constructors ] --- */
