@@ -1,18 +1,18 @@
 #include <iostream>
 #include <deque>
 
-#ifdef STL_CONTAINERS
+// #ifdef STL_CONTAINERS
 	#include <iterator>
 	#include <vector>
 	#include <stack>
 	#include <map>
 	#include <set>
 	namespace ft = std;
-#else
-	#include "vector.hpp"
-	#include "stack.hpp"
-	#include "map.hpp"
-#endif
+// #else
+// 	#include "vector.hpp"
+// 	#include "stack.hpp"
+// 	#include "map.hpp"
+// #endif
 
 template<typename T>
 void	displayVect( ft::vector<T> &vect, std::string test ) {

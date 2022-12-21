@@ -29,10 +29,6 @@ namespace ft
 			typedef tree_iterator<T *>												iterator; //ok
 			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
-			// typedef ft::tree_reverse_iterator<iterator>								reverse_iterator;
-			// typedef ft::tree_reverse_iterator<const_iterator>						const_reverse_iterator;
-			typedef ft::reverse_iterator<iterator>										reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
 			tree(const value_compare &comp, const allocator_type &a) 
@@ -43,7 +39,6 @@ namespace ft
 			}
 		
 			template<class InputIterator>
-			// tree (InputIterator first, InputIterator last, const Compare &comp, const Allocator &alloc,
 			tree (InputIterator first, InputIterator last, const Compare &comp, const node_allocator &alloc,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			: _allocator(alloc), _value_comp(comp)
@@ -101,26 +96,17 @@ namespace ft
 
 			iterator end() 
 			{
-				// if (_end == NULL)
-				// 	return (begin());
+				if (_end == NULL)
+					return (begin());
 				return (iterator(NULL, _root));
 			}
 			
 			const_iterator end() const 
 			{ 
-				// if (_end == NULL)
-				// 	return (begin());
+				if (_end == NULL)
+					return (begin());
 				return (iterator(NULL, _root));
 			}
-
-			reverse_iterator rbegin()
-			{
-				return (reverse_iterator(end()));
-			}
-
-			reverse_iterator rend()
-			{ return (reverse_iterator(begin())); }
-
 
 			size_type max_size() const
 			{ 

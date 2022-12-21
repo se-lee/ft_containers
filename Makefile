@@ -16,7 +16,7 @@ OBJS	= $(__SRCS:.cpp=.o)
 # Compile
 CC		= c++
 
-CFLAGS	= -Wall -Werror -Wextra -std=c++98 -fsanitize=address
+CFLAGS	= -Wall -Werror -Wextra -std=c++98 #-fsanitize=address
 INCLUDE	= -I $(INC_DIR)
 LIBS	=
 
