@@ -33,6 +33,19 @@ namespace ft
 			pointer				_begin;
 			pointer				_end;
 			pointer				_capacity_end;
+		
+		private:
+		
+		size_type	recommend_new_capacity(size_type new_size)
+		{
+			size_type max = max_size();
+			if (new_size > max)
+				throw std::length_error("exceeds max range");
+			size_type temp_cap = capacity();
+			if (temp_cap >= max / 2)
+				return (max);
+			return (std::max(temp_cap * 2, new_size));
+		}
 
 		public:
 	/* --- [ Constructors ] --- */
@@ -290,6 +303,22 @@ namespace ft
 		}
 
 	/* insert */
+
+// //  Precondition:  __new_size > capacity()
+// template <class _Tp, class _Allocator>
+// inline _LIBCPP_INLINE_VISIBILITY
+// typename vector<_Tp, _Allocator>::size_type
+// vector<_Tp, _Allocator>::__recommend(size_type __new_size) const
+// {
+//     const size_type __ms = max_size();
+//     if (__new_size > __ms)
+//         this->__throw_length_error();
+//     const size_type __cap = capacity();
+//     if (__cap >= __ms / 2)
+//         return __ms;
+//     return _VSTD::max<size_type>(2*__cap, __new_size);
+// }
+
 		iterator insert (iterator position, const value_type &value)
 		{
 			size_type	pos_count = position - begin();
@@ -302,12 +331,17 @@ namespace ft
 			size_type	new_size = size() + count;
 			size_type	pos_count = position - begin();
 
-			if (size() < new_size)
+			// if (size() < new_size)
+			// {
+			// 	if (capacity() < new_size && size())
+			// 		reserve(size() * 2);
+			// 	else
+			// 		reserve(new_size);
+				
+			// }
+			if (new_size > capacity())
 			{
-				if (capacity() < new_size && size())
-					reserve(size() * 2);
-				else
-					reserve(new_size);
+				reserve(recommend_new_capacity(new_size));
 			}
 			// 後ろからいれる
 			for (size_type i = 0; i < new_size - (pos_count + count); i++)
@@ -366,8 +400,8 @@ namespace ft
 		void	swap(vector &other)
 		{
 			allocator_type temp_alloc = _allocator;
-			pointer temp_first = _begin;
-			pointer temp_last = _end;
+			pointer temp_begin = _begin;
+			pointer temp_end = _end;
 			pointer temp_capacity_last = _capacity_end;
 		
 			_allocator = other._allocator;
@@ -376,8 +410,8 @@ namespace ft
 			_capacity_end = other._capacity_end;
 
 			other._allocator = temp_alloc;
-			other._begin = temp_first;
-			other._end = temp_last;
+			other._begin = temp_begin;
+			other._end = temp_end;
 			other._capacity_end = temp_capacity_last;
 		}
 

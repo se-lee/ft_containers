@@ -34,15 +34,17 @@ namespace ft {
 		private:
 			typedef tree_node<value_type>*		node_pointer;
 			node_pointer _current;
+			node_pointer _root;
 			
 		public:
-			tree_iterator() : _current(NULL) {}
-			tree_iterator(node_pointer ptr) : _current(ptr) {}
+			tree_iterator() : _current(NULL), _root(NULL) {}
+			tree_iterator(node_pointer ptr, node_pointer root) : _current(ptr), _root(root) {}
 		
 			template<class Iter>
 			tree_iterator(const tree_iterator<Iter> &other)
 			{ 
 				_current = other.base();
+				_root = other.root();
 			}
 
 			~tree_iterator() {}
@@ -51,11 +53,15 @@ namespace ft {
 			tree_iterator &operator=(const tree_iterator<Iter> &other)
 			{	
 				_current = other.base();
+				_root = other.root();
 				return (*this);
 			}
 
 			node_pointer base() const
 			{ return (_current); }
+
+			node_pointer root() const
+			{ return (_root); }
 
 			reference operator*() const
 			{ return (_current->_value); }
@@ -67,6 +73,7 @@ namespace ft {
 			{
 				if (_current == NULL)
 				{
+					_current = _root;
 					while (_current->_left != NULL)
 						_current = _current->_left;
 				}
@@ -99,6 +106,7 @@ namespace ft {
 			{
 				if (_current == NULL)
 				{
+					_current = _root;
 					while (_current->_right != NULL)
 						_current = _current->_right;
 				}
@@ -138,6 +146,7 @@ namespace ft {
 
 /************************** [ TREE REVERSE ITER ] **************************/
 
+/*
 	template<class Iterator>
 	class tree_reverse_iterator
 	{
@@ -260,6 +269,7 @@ namespace ft {
 	template <class Iterator>
 	typename tree_reverse_iterator<Iterator>::difference_type operator- (const ft::tree_reverse_iterator<Iterator> &lhs, const ft::tree_reverse_iterator<Iterator> &rhs)
 	{ return (lhs.base() - rhs.base()); };
+*/
 
 }
 

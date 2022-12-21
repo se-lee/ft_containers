@@ -6,6 +6,7 @@
 # include <algorithm>
 # include "pair.hpp"
 # include "tree_iterator.hpp"
+# include "reverse_iterator.hpp"
 # include "sfinae.hpp"
 
 namespace ft
@@ -28,9 +29,10 @@ namespace ft
 			typedef tree_iterator<T *>												iterator; //ok
 			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
-			typedef ft::tree_reverse_iterator<iterator>								reverse_iterator;
-			typedef ft::tree_reverse_iterator<const_iterator>						tree_reverse_iterator;
-
+			// typedef ft::tree_reverse_iterator<iterator>								reverse_iterator;
+			// typedef ft::tree_reverse_iterator<const_iterator>						const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>										reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
 			tree(const value_compare &comp, const allocator_type &a) 
@@ -92,32 +94,32 @@ namespace ft
 			bool empty() const { return (!_size); }
 
 			iterator begin() 
-			{ return (iterator(_begin)); }
+			{ return (iterator(_begin, _root)); }
 
 			const_iterator begin() const 
-			{ return (const_iterator(_begin)); }
+			{ return (const_iterator(_begin, _root)); }
 
 			iterator end() 
 			{
-				if (_end == NULL)
-					return (begin());
-				return (iterator(_end->_right));
+				// if (_end == NULL)
+				// 	return (begin());
+				return (iterator(NULL, _root));
 			}
 			
 			const_iterator end() const 
 			{ 
-				if (_end == NULL)
-					return (begin());
-				return (iterator(_end->_right));
+				// if (_end == NULL)
+				// 	return (begin());
+				return (iterator(NULL, _root));
 			}
 
 			reverse_iterator rbegin()
 			{
-				return (reverse_iterator(_end));
+				return (reverse_iterator(end()));
 			}
 
 			reverse_iterator rend()
-			{ return (reverse_iterator(_begin->_left)); }
+			{ return (reverse_iterator(begin())); }
 
 
 			size_type max_size() const
@@ -302,7 +304,7 @@ namespace ft
 				{
 					if (!_value_comp(temp->_value, value))
 					{
-						it = iterator(temp);
+						it = iterator(temp, _root);
 						temp = temp->_left;
 					}
 					else
@@ -319,7 +321,7 @@ namespace ft
 				{
 					if (!_value_comp(temp->_value, value))
 					{
-						it = const_iterator(temp);
+						it = const_iterator(temp, _root);
 						temp = temp->_left;
 					}
 					else
@@ -337,7 +339,7 @@ namespace ft
 				{
 					if (_value_comp(value, temp->_value))
 					{
-						it = iterator(temp);
+						it = iterator(temp, _root);
 						temp = temp->_left;
 					}
 					else
@@ -354,7 +356,7 @@ namespace ft
 				{
 					if (_value_comp(value, temp->_value))
 					{
-						it = iterator(temp);
+						it = iterator(temp, _root);
 						temp = temp->_left;
 					}
 					else
@@ -583,7 +585,7 @@ namespace ft
 				else
 				{
 					delete_node(new_node);
-					return (ft::make_pair(iterator(insert_pos), false));
+					return (ft::make_pair(iterator(insert_pos, _root), false));
 				}
 				balance_fix(new_node);
 				if (_value_comp(new_node->_value, _begin->_value))
@@ -591,7 +593,7 @@ namespace ft
 				if (_value_comp(_end->_value, new_node->_value))
 					_end = new_node;
 				_size++;
-				return (ft::make_pair(iterator(new_node), true));
+				return (ft::make_pair(iterator(new_node, _root), true));
 			}
 
 
