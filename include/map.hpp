@@ -23,7 +23,8 @@ namespace ft
 			typedef pair<const key_type, mapped_type>													value_type;
 			typedef	Compare																				key_compare;
 			typedef Allocator																			allocator_type;
-			typedef std::allocator<ft::tree_node<value_type> >											tree_alloc;
+			// typedef std::allocator<ft::tree_node<value_type> >											tree_alloc;
+			// typedef typename Allocator::template rebind< tree_node< value_type > >::other				tree_alloc;
 			typedef value_type&																			reference;
 			typedef const value_type&																	const_reference;
 			typedef typename allocator_type::template rebind< tree_node< value_type > >::other			node_alloc;
@@ -63,17 +64,18 @@ namespace ft
 			value_compare	_value_comp;
 			allocator_type	_allocator;
 			key_compare		_key_comp;
-			tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
-			// tree<key_type, value_type, value_compare, node_alloc>	_tree;
+			// tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
+			tree<value_type, value_compare, allocator_type>	_tree;
+			// tree<value_type, value_compare, tree_alloc>	_tree; //ok
 
 		public:
 /* --- [ Constructors ] --- */
-			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = tree_alloc())
+			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 			: _tree(comp, alloc)
 			{}
 
 			template<class InputIterator>
-			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const allocator_type &alloc = tree_alloc())
+			map (InputIterator first, InputIterator last, const Compare &comp = Compare(), const allocator_type &alloc = allocator_type())
 			: _tree(comp, alloc)
 			{ insert(first, last); } 
 					

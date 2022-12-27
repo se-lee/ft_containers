@@ -9,9 +9,9 @@
 	#include <set>
 	namespace ft = std;
 // #else
-// 	#include "vector.hpp"
-// 	#include "stack.hpp"
-// 	#include "map.hpp"
+// 	#include "../include/vector.hpp"
+// 	#include "../include/stack.hpp"
+// 	#include "../include/map.hpp"
 // #endif
 
 template<typename T>
@@ -675,6 +675,7 @@ void treeIteratorTests( void ) {
 		std::cout << a->first << " " << a->second << std::endl;
 		--a;
 		std::cout << a->first << " " << a->second << std::endl;
+		std::cout << "- - - - - - - - - - " << std::endl;
 		for ( ft::map<int, int>::iterator it = --m.end(); it != m.begin(); --it )
 			std::cout << it->first << " " << it->second << std::endl;
 		std::cout << "=======================================================" << std::endl;

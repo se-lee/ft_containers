@@ -226,12 +226,16 @@ namespace ft
 		reference at(size_type pos)
 		{ 
 			if (pos > size())
-				throw std::out_of_range("out of range.");
+				throw std::out_of_range ("vector");	
 			return (_begin[pos]); 
 		}
 
 		const_reference at(size_type pos) const
-		{ return (_begin[pos]); }
+		{ 
+			if (pos > size())
+				throw std::out_of_range ("vector");	
+			return (_begin[pos]); 
+		}
 
 
 	/* front : returns a reference to the first element in the container */

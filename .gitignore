@@ -4,6 +4,7 @@ include/containers_test
 include/ft_containers_tests
 
 !main.cpp
+test_main.cpp
 
 .gitignore
 ft_containers

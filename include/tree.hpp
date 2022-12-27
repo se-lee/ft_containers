@@ -11,27 +11,29 @@
 
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator< pair< const Key, T > > >
+	// template <class T, class Compare = std::less<T>, class Allocator = std::allocator< tree_node< T > > >
+	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class tree
 	{
 		public:
-			typedef Key																key_type;
+			// typedef Key																key_type;
 			typedef T																value_type;
 			typedef Compare															value_compare;
-			typedef	std::less<Key>													key_compare;
+			// typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
 			typedef tree_node<T>													node_type;
 			typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
 			typedef std::size_t														size_type;
-			typedef typename allocator_type::pointer								pointer;
-			typedef typename allocator_type::const_pointer							const_pointer;
-			typedef typename allocator_type::difference_type						difference_type;
+			typedef typename Allocator::pointer								pointer;
+			typedef typename Allocator::const_pointer							const_pointer;
+			typedef typename Allocator::difference_type						difference_type;
 			typedef tree_iterator<T *>												iterator; //ok
 			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
 
 			tree() : _root(NULL), _begin(NULL), _end(NULL), _size(0) {}
-			tree(const value_compare &comp, const allocator_type &a) 
+			tree(const value_compare &comp, const node_allocator &a) 
 			: _root(NULL), _begin(NULL), _end(NULL), _size(0) 
 			{ 
 				_value_comp = comp; 
@@ -96,23 +98,25 @@ namespace ft
 
 			iterator end() 
 			{
-				if (_end == NULL)
-					return (begin());
+				// if (_end == NULL)
+				// 	return (begin());
 				return (iterator(NULL, _root));
 			}
 			
 			const_iterator end() const 
 			{ 
-				if (_end == NULL)
-					return (begin());
-				return (iterator(NULL, _root));
+				// if (_end == NULL)
+					// return (begin());
+				return (const_iterator(NULL, _root));
 			}
 
 			size_type max_size() const
 			{ 
-				return (std::numeric_limits<size_type>::max() / sizeof(node_type));
-			}
+				return (std::numeric_limits<size_type>::max() / sizeof(tree_node<T>));
 
+				// return (std::min<size_type>(node_traits::max_size(alloc_node()),std::numeric_limits<difference_type >::max()));
+			}
+			
 			void clear()
 			{
 				remove_branch(_root);
@@ -387,9 +391,9 @@ namespace ft
 			node_pointer			_end;
 			size_t					_size;
 			value_compare			_value_comp;
-			key_compare				_key_comp;
-			allocator_type			_allocator; //ok
-			// node_allocator			_allocator;
+			// key_compare				_key_comp;
+			// allocator_type			_allocator; //ok
+			node_allocator			_allocator;
 
 
 /* utils */

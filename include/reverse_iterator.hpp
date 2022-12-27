@@ -41,8 +41,7 @@ namespace ft
 			reference operator*() const
 			{
 				Iterator temp = _current;
-				// --temp;
-				temp--;
+				--temp;
 				return (*temp);
 			}
 
