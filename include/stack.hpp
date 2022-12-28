@@ -42,7 +42,6 @@ namespace ft
 
 
 /* --- [ Element access ] --- */
-/* top : 次の要素へアクセスする */
 	reference top ()
 	{ return (_stack.back()); }
 
@@ -50,21 +49,16 @@ namespace ft
 	{ return (_stack.back()); }
 
 /* --- [ Capacity ] --- */
-/* empty: */
 	bool empty () const
 	{ return (_stack.begin() == _stack.end()); }
 
-/* size: */
 	size_type size() const
 	{ return (_stack.size()); }
 
 /* --- [ Modifiers ] --- */
-/* push: */
 	void push(const value_type &value)
 	{ _stack.push_back(value); }
 
-/* pop: */
-	// pop back
 	void pop()
 	{ _stack.pop_back(); }
 

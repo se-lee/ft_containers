@@ -11,23 +11,19 @@
 
 namespace ft
 {
-	// template<class Key, class T, class Compare = std::less<T>, class Allocator = std::allocator< pair< const Key, T > > >
-	// template <class T, class Compare = std::less<T>, class Allocator = std::allocator< tree_node< T > > >
 	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class tree
 	{
 		public:
-			// typedef Key																key_type;
 			typedef T																value_type;
 			typedef Compare															value_compare;
-			// typedef	std::less<Key>													key_compare;
 			typedef Allocator														allocator_type;
 			typedef tree_node<T>													node_type;
 			typedef typename Allocator::template rebind<tree_node <T> >::other		node_allocator;
 			typedef std::size_t														size_type;
-			typedef typename Allocator::pointer								pointer;
-			typedef typename Allocator::const_pointer							const_pointer;
-			typedef typename Allocator::difference_type						difference_type;
+			typedef typename Allocator::pointer										pointer;
+			typedef typename Allocator::const_pointer								const_pointer;
+			typedef typename Allocator::difference_type								difference_type;
 			typedef tree_iterator<T *>												iterator; //ok
 			typedef tree_iterator<const T *>										const_iterator; //ok
 			typedef tree_node<value_type>*											node_pointer;
@@ -97,25 +93,13 @@ namespace ft
 			{ return (const_iterator(_begin, _root)); }
 
 			iterator end() 
-			{
-				// if (_end == NULL)
-				// 	return (begin());
-				return (iterator(NULL, _root));
-			}
+			{ return (iterator(NULL, _root)); }
 			
 			const_iterator end() const 
-			{ 
-				// if (_end == NULL)
-					// return (begin());
-				return (const_iterator(NULL, _root));
-			}
+			{ return (const_iterator(NULL, _root)); }
 
 			size_type max_size() const
-			{ 
-				return (std::numeric_limits<size_type>::max() / sizeof(tree_node<T>));
-
-				// return (std::min<size_type>(node_traits::max_size(alloc_node()),std::numeric_limits<difference_type >::max()));
-			}
+			{ return (std::numeric_limits<size_type>::max() / sizeof(tree_node<T>)); }
 			
 			void clear()
 			{
@@ -193,9 +177,7 @@ namespace ft
 				return (insert_node(value, new_node));
 			}
 
-	// _rootから探す代わりにPositionから探す
-	// Inserts value in the position as close as possible to the position just prior to pos
-	// Positionのすぐ前に入れるのが◎。　PoisitionよりValueの値が小さいと正しいヒント
+		// insert with hint : inserts value in the position as close as possible to the position just prior to pos
 			iterator insert(iterator position, const value_type &value)
 			{
 				node_pointer pos = position.base();
@@ -214,7 +196,7 @@ namespace ft
 					return (insert(value).first);
 			}
 
-	// erase
+		// erase
 			void	erase (iterator position)
 			{
 				node_pointer target = position.base();
@@ -391,10 +373,7 @@ namespace ft
 			node_pointer			_end;
 			size_t					_size;
 			value_compare			_value_comp;
-			// key_compare				_key_comp;
-			// allocator_type			_allocator; //ok
 			node_allocator			_allocator;
-
 
 /* utils */
 			node_pointer find_max_node(node_pointer node)
@@ -413,8 +392,7 @@ namespace ft
 				return (current);
 			}
 
-/* Balancing functions */
-// balance utils
+/* Balancing */
 			int	get_height(node_pointer node)
 			{
 				if (node == NULL)
@@ -437,7 +415,7 @@ namespace ft
 			{ return (std::abs(get_balance_factor(node)) < 2); }
 
 
-// rotations
+/* Rotations */
 			node_pointer	right_rotate(node_pointer node)
 			{
 				node_pointer temp = node->_left;
@@ -528,7 +506,6 @@ namespace ft
 				return (balance_fix(node->_parent));
 			}
 
-
 /* Functions for insert */
 			node_pointer find_insert_position(const value_type &value, node_pointer start_node)
 			{
@@ -587,8 +564,7 @@ namespace ft
 			}
 
 
-
-/* Functions for erasing & removing */
+/* Functions for erase */
 			void	delete_node(node_pointer node)
 			{
 				_allocator.destroy(node);
@@ -655,10 +631,6 @@ namespace ft
 					return (target->_left);
 				}
 			}
-
-
-
-
 
 	};
 }

@@ -22,7 +22,7 @@ namespace ft
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef vector_iterator<pointer>							iterator;
-			typedef vector_iterator<const_pointer>					const_iterator;
+			typedef vector_iterator<const_pointer>						const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename std::ptrdiff_t								difference_type;
@@ -34,19 +34,6 @@ namespace ft
 			pointer				_end;
 			pointer				_capacity_end;
 		
-		private:
-		
-		size_type	recommend_new_capacity(size_type new_size)
-		{
-			size_type max = max_size();
-			if (new_size > max)
-				throw std::length_error("exceeds max range");
-			size_type temp_cap = capacity();
-			if (temp_cap >= max / 2)
-				return (max);
-			return (std::max(temp_cap * 2, new_size));
-		}
-
 		public:
 	/* --- [ Constructors ] --- */
 	/* empty container constructor (default constructor) */
@@ -214,7 +201,6 @@ namespace ft
 		}
 
 	/* --- [ Element access ] --- */
-	/* operator [] */
 		reference operator[] (size_type pos)
 		{ return (_begin[pos]); }
 
@@ -307,22 +293,6 @@ namespace ft
 		}
 
 	/* insert */
-
-// //  Precondition:  __new_size > capacity()
-// template <class _Tp, class _Allocator>
-// inline _LIBCPP_INLINE_VISIBILITY
-// typename vector<_Tp, _Allocator>::size_type
-// vector<_Tp, _Allocator>::__recommend(size_type __new_size) const
-// {
-//     const size_type __ms = max_size();
-//     if (__new_size > __ms)
-//         this->__throw_length_error();
-//     const size_type __cap = capacity();
-//     if (__cap >= __ms / 2)
-//         return __ms;
-//     return _VSTD::max<size_type>(2*__cap, __new_size);
-// }
-
 		iterator insert (iterator position, const value_type &value)
 		{
 			size_type	pos_count = position - begin();
@@ -335,14 +305,6 @@ namespace ft
 			size_type	new_size = size() + count;
 			size_type	pos_count = position - begin();
 
-			// if (size() < new_size)
-			// {
-			// 	if (capacity() < new_size && size())
-			// 		reserve(size() * 2);
-			// 	else
-			// 		reserve(new_size);
-				
-			// }
 			if (new_size > capacity())
 			{
 				reserve(recommend_new_capacity(new_size));
@@ -376,7 +338,6 @@ namespace ft
 				_begin[pos_count + i] = *first;
 			_end = _end + diff;
 		}
-
 
 		//destroy from end to new_last
 		void	destruct_at_end(pointer new_last)
@@ -430,6 +391,19 @@ namespace ft
 	/* --- [ Allocator ] --- */
 		allocator_type get_allocator() const
 		{ return (_allocator); }
+
+		private:
+		size_type	recommend_new_capacity(size_type new_size)
+		{
+			size_type max = max_size();
+			if (new_size > max)
+				throw std::length_error("exceeds max range");
+			size_type temp_cap = capacity();
+			if (temp_cap >= max / 2)
+				return (max);
+			return (std::max(temp_cap * 2, new_size));
+		}
+
 	};
 
 /* --- [ Non-member function overloads ] --- */

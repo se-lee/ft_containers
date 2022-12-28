@@ -23,11 +23,8 @@ namespace ft
 			typedef pair<const key_type, mapped_type>													value_type;
 			typedef	Compare																				key_compare;
 			typedef Allocator																			allocator_type;
-			// typedef std::allocator<ft::tree_node<value_type> >											tree_alloc;
-			// typedef typename Allocator::template rebind< tree_node< value_type > >::other				tree_alloc;
 			typedef value_type&																			reference;
 			typedef const value_type&																	const_reference;
-			typedef typename allocator_type::template rebind< tree_node< value_type > >::other			node_alloc;
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			 {
@@ -53,8 +50,6 @@ namespace ft
 			typedef typename Allocator::const_pointer				const_pointer;
 			typedef tree_iterator<pointer>							iterator;
 			typedef tree_iterator<const_pointer>					const_iterator;
-			// typedef ft::tree_reverse_iterator<iterator>					reverse_iterator;
-			// typedef ft::tree_reverse_iterator<const_iterator>			const_reverse_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef	std::ptrdiff_t									difference_type;
@@ -64,9 +59,7 @@ namespace ft
 			value_compare	_value_comp;
 			allocator_type	_allocator;
 			key_compare		_key_comp;
-			// tree<key_type, value_type, value_compare, tree_alloc>	_tree; //ok
 			tree<value_type, value_compare, allocator_type>	_tree;
-			// tree<value_type, value_compare, tree_alloc>	_tree; //ok
 
 		public:
 /* --- [ Constructors ] --- */
@@ -146,6 +139,8 @@ namespace ft
 			const mapped_type &at( const Key &key) const
 			{
 				iterator pos = find(key);
+				if (pos == end())
+					throw std::out_of_range("out of range");
 				return (pos.base()->_value.second);
 			}
 
