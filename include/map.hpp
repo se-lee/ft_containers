@@ -86,6 +86,7 @@ namespace ft
 			{
 				_value_comp = other._value_comp;
 				_allocator = other._allocator;
+				_key_comp = other._key_comp;
 				_tree = other._tree;
 				return (*this);
 			}

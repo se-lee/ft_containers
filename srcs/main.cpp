@@ -1,5 +1,7 @@
 #include <iostream>
 #include <deque>
+#include <ctime>
+#include <sys/time.h>
 
 #ifdef STL_CONTAINERS
 	#include <iterator>
@@ -1623,6 +1625,7 @@ void mapModifiersTests( void ) {
 	{
 		ft::map<int, int> a;
 		displayMap( a, "Insert test 1" );
+
 		a.insert( ft::make_pair<int, int>( 5, 5 ) );
 		a.insert( ft::make_pair<int, int>( 15, 15 ) );
 		a.insert( ft::make_pair<int, int>( 25, 25 ) );
@@ -1965,7 +1968,45 @@ void mapOperationsTests( void ) {
 	}
 }
 
+// int	main(void) {
+// 	// Iterator Tests
+// 	iteratorTests();
+// 	constIteratorTests();
+// 	reverseIteratorTests();
+// 	constReverseIteratorTests();
+// 	treeIteratorTests();
+// 	constTreeIteratorTests();
+
+// 	// Vector Tests
+// 	vectorConstructorTests();
+// 	vectorIteratorTests();
+// 	vectorCapacityTests();
+// 	vectorElementAccessTests();
+// 	vectorModifiersTests();
+// 	vectorNonMemberOverloadsTests();
+
+// 	// Stack Tests
+// 	stackConstructorTests();
+// 	stackMemberFunctionTests();
+// 	stackNonMemberOverloadsTests();
+
+// 	// Map Tests
+// 	mapConstructorTests();
+// 	mapIteratorTests();
+// 	mapCapacityTests();
+// 	mapElementAccessTests();
+// 	mapModifiersTests();
+// 	mapOperationsTests();
+
+// 	return (0);
+// }
 int	main(void) {
+	struct timeval timer;
+	time_t before, after;
+
+	gettimeofday( &timer, NULL );
+	before = ( timer.tv_sec * 1000 ) + ( timer.tv_usec / 1000 );
+
 	// Iterator Tests
 	iteratorTests();
 	constIteratorTests();
@@ -1995,5 +2036,10 @@ int	main(void) {
 	mapModifiersTests();
 	mapOperationsTests();
 
+	gettimeofday( &timer, NULL );
+	after = ( timer.tv_sec * 1000 ) + ( timer.tv_usec / 1000 );
+
+	std::cout << std::endl << after - before << " ms" << std::endl;
+	
 	return (0);
 }

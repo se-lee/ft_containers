@@ -484,9 +484,7 @@ namespace ft
 			{
 				if (node == NULL)
 					return ;
-				if (is_leaf(node))
-					return ;
-				if (!is_balanced(node))
+				if (is_balanced(node) == false)
 				{
 					if (get_balance_factor(node) > 0) // left-heavy
 					{
