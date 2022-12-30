@@ -47,18 +47,11 @@ namespace ft
 				
 				for (size_type i = 0; i < range_size; ++i, ++first)
 					insert(*first);
-				_allocator = alloc;
-				_value_comp = comp;
 				insert(first, last);
 			}
 
-			tree(const tree &other) : _value_comp(other._value_comp), _allocator(other._allocator)
+			tree(const tree &other) : _allocator(other._allocator), _value_comp(other._value_comp), _root(NULL), _begin(NULL), _end(NULL), _size(0)
 			{
-				_root = NULL;
-				_begin = NULL;
-				_end = NULL;
-				_size = 0;
-
 				for (iterator it = other.begin(); it != other.end(); ++it)
 					insert(*it);
 			}	
@@ -368,12 +361,12 @@ namespace ft
 			{ return (_end); }
 
 		private:
+			node_allocator			_allocator;
+			value_compare			_value_comp;
 			node_pointer			_root;
 			node_pointer			_begin;
 			node_pointer			_end;
 			size_t					_size;
-			value_compare			_value_comp;
-			node_allocator			_allocator;
 
 /* utils */
 			node_pointer find_max_node(node_pointer node)
